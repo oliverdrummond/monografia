@@ -4,7 +4,13 @@
 
     <script>
 
-        var context = new webkitAudioContext();
+        try {
+            context = new webkitAudioContext();
+            alert("context created"); //test
+        }
+        catch (e) {
+            alert('Sorry, your browser does not support the Web Audio API.');
+        }
         //Criação do Nó do Oscilador
         oscillatorOne = context.createOscillator();
         oscillatorOne.type = 2;
