@@ -1,10 +1,25 @@
-<!DOCTYPE html>
 <html>
-    <head>
-        <title></title>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    </head>
-    <body>
-        <div>TODO write content</div>
-    </body>
+
+    <h1> Aprendizado WebAudio API </h1>
+
+    <script>
+
+        var context = new webkitAudioContext();
+
+        oscillator = context.createOscillator();
+
+
+
+        oscillator.connect(context.destination);
+
+        oscillator.type = 2;
+
+        var i = 3000;
+
+        oscillator.frequency.value = i;
+//        oscillator.noteOn(0);
+
+
+    </script>
+
 </html>
