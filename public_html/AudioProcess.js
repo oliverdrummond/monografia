@@ -16,7 +16,7 @@ oscillatorTwo.type = 1;
 
 var i = 440;
 oscillatorOne.frequency.value = i;
-oscillatorTwo.frequency.value = i * 1,7;
+oscillatorTwo.frequency.value = i * 4;
 
 //Criação do Nó de volume
 var gainNode = context.createGainNode();
@@ -25,11 +25,14 @@ var filter = context.createBiquadFilter();
 oscillatorTwo.connect(filter);
 gainNode.connect(filter);//Conecta saída do ganho na "entrada da saída"
 gainNode.gain.value = 0.6;
+//gainNode.setValueAtTime( 0, now);
+//gainNode.gain.linearRampToValueAtTime( 1.0, now + 2.0);
+//gainNode.gain.linearRampToValueAtTime( 0.0, now + 4.0);
 
 //Criando nó de filtro
 filter.connect(context.destination);
 filter.type = 0; // Low-pass filter. See BiquadFilterNode docs
-filter.frequency.value = 440; // Set cutoff to 440 HZ
+filter.frequency.value = 940; // Set cutoff to 440 HZ
 
 //Começa a executar o som de fato
 oscillatorOne.noteOn(0);
@@ -37,13 +40,13 @@ oscillatorTwo.noteOn(0);
 
 
 //Carregar um buffer
-var request = new XMLHttpRequest(); request.open('GET', url, true); request.responseType = 'arraybuffer';
-request.onload = function() {
-    context.decodeAudioData(request.response, function(theBuffer) { buffer = theBuffer;
-    }, onError);
-}
-request.send();
-    
-    function playSound(buffer) {
-var source = context.createBufferSource(); source.buffer = buffer; source.connect(context.destination); source.start(0);
-}
+//var request = new XMLHttpRequest(); request.open('GET', url, true); request.responseType = 'arraybuffer';
+//request.onload = function() {
+//    context.decodeAudioData(request.response, function(theBuffer) { buffer = theBuffer;
+//    }, onError);
+//};
+//request.send();
+//    
+//    function playSound(buffer) {
+//var source = context.createBufferSource(); source.buffer = buffer; source.connect(context.destination); source.start(0);
+//}
