@@ -34,10 +34,54 @@ filter.connect(context.destination);
 filter.type = 0; // Low-pass filter. See BiquadFilterNode docs
 filter.frequency.value = 940; // Set cutoff to 440 HZ
 
-//Começa a executar o som de fato
-oscillatorOne.noteOn(0);
-oscillatorTwo.noteOn(0);
 
+
+//Associando uma variável interna a um elemento do HTML
+var botaoLigar = document.getElementById("bLigar");
+
+//Ligar o som
+botaoLigar.onclick = function(){
+    oscillatorOne.noteOn(0);
+//    oscillatorTwo.noteOn(0);
+};
+
+//Associando uma variável interna a um elemento do HTML
+var botaoDesligar = document.getElementById("bDesligar");
+
+//Desligar o som
+botaoDesligar.onclick = function(){
+    oscillatorOne.noteOff(0);
+    oscillatorTwo.noteOff(0);
+};
+
+
+//Aumentar Frequência
+var botaoAumentarFreq = document.getElementById("bAumentarFreq");
+botaoAumentarFreq.onclick = function(){
+    oscillatorOne.frequency.value = oscillatorOne.frequency.value + 100;
+};
+
+
+//Diminuir Frequência
+var botaoDiminuirFreq = document.getElementById("bDiminuirFreq");
+botaoDiminuirFreq.onclick = function(){
+    oscillatorOne.frequency.value = oscillatorOne.frequency.value - 100;
+};
+
+//Ligar Delay
+var botaoLigarDelay = document.getElementById("bLigarDelay");
+botaoLigarDelay.onclick = function(){
+    var delayNode = context.createDelayNode();
+    delayNode.delayTime.value = 30;
+    oscillatorOne.connect(delayNode);
+    delayNode.connect(context.destination);
+}
+
+//Desligar Delay (NÃO ESTÁ FUNCIONANDO)
+var botaoDesligarDelay = document.getElementById("bDesligarDelay");
+    botaoDesligarDelay.onclick = function(){
+    delayNode.disconnect();
+}
 
 //Carregar um buffer
 //var request = new XMLHttpRequest(); request.open('GET', url, true); request.responseType = 'arraybuffer';
