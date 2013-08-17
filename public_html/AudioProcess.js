@@ -17,6 +17,8 @@ var botaoAumentarFreq = document.getElementById("bAumentarFreq");
 var botaoDiminuirFreq = document.getElementById("bDiminuirFreq");
 var botaoLigarLiveInput = document.getElementById("bLigarLiveInput");
 var botaoDesligarLiveInput= document.getElementById("bDesligarLiveInput");
+var botaoIniciarGravacao = document.getElementById("bIniciarGravacao");
+var botaoPararGravacao = document.getElementById("bPararGravacao");
 
 //
 //OSCILADOR
@@ -80,8 +82,6 @@ botaoDesligarDelay.onclick = function(){
     oscillatorOne.connect(context.destination);
 };
 
-
-
 //
 //MICROFONE
 //
@@ -90,12 +90,13 @@ botaoLigarLiveInput.onclick = function(){
     botaoDesligarLiveInput.disable = false;
     botaoLigarLiveInput.disable = true;
     function gotStream(stream) {
-    liveInput = context.createMediaStreamSource( stream );
+    liveInput = context.createMediaStreamSource(stream);
     delayNode = context.createDelayNode();
     delayNode.delayTime.value = 30;
     liveInput.connect(delayNode);
     delayNode.connect(context.destination);
-    liveInput.connect( context.destination );   
+    liveInput.connect( context.destination );
+    var recorder = new Recorder(liveInput);
     };
 navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia;
 navigator.getUserMedia( {audio:true}, gotStream );
@@ -107,4 +108,15 @@ botaoDesligarLiveInput.onclick = function(){
     botaoDesligarLiveInput.disable = true;
     liveInput.disconnect(0);
     delayNode.disconnect(0);
+};
+
+botaoIniciarGravacao.onclick = function(){
+    recorder.record();
+};
+
+botaoPararGravacao.onclick = function(){
+    recorder.stop();
+    recorder.exportWAV(function(s) {
+    audio.src = window.URL.createObjectURL(s);
+    });
 };
