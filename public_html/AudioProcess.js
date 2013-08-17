@@ -120,3 +120,11 @@ botaoPararGravacao.onclick = function(){
     audio.src = window.URL.createObjectURL(s);
     });
 };
+
+
+//ROTEAMENTO
+function insertNewNode(sourceNode, previousDestinationNode, newDestinationNode){
+    sourceNode.disconnect(0);
+    sourceNode.connect(newDestinationNode);
+    newDestinationNode.connect(previousDestinationNode);
+}
