@@ -8,64 +8,43 @@ try {
 catch (e) {
     alert('Sorry, your browser does not support the Web Audio API.');
 }
-//Criação do Nó do Oscilador
-oscillatorOne = context.createOscillator();
-oscillatorOne.type = 2;
-oscillatorTwo = context.createOscillator();
-oscillatorTwo.type = 1;
 
 var i = 440;
-oscillatorOne.frequency.value = i;
+//Criação do Nó do Oscilador
+oscillatorTwo = context.createOscillator();
+oscillatorTwo.type = 1;
 oscillatorTwo.frequency.value = i * 4;
 
-//Criação do Nó de volume
-var gainNode = context.createGainNode();
-oscillatorOne.connect(gainNode);//Conecta saída do oscilador na entrada do ganho
-var filter = context.createBiquadFilter();
-oscillatorTwo.connect(filter);
-gainNode.connect(filter);//Conecta saída do ganho na "entrada da saída"
-gainNode.gain.value = 0.6;
-//gainNode.setValueAtTime( 0, now);
-//gainNode.gain.linearRampToValueAtTime( 1.0, now + 2.0);
-//gainNode.gain.linearRampToValueAtTime( 0.0, now + 4.0);
-
-//Criando nó de filtro
-filter.connect(context.destination);
-filter.type = 0; // Low-pass filter. See BiquadFilterNode docs
-filter.frequency.value = 940; // Set cutoff to 440 HZ
-
-
-
-//Associando uma variável interna a um elemento do HTML
+//Ligar o oscilador
 var botaoLigar = document.getElementById("bLigar");
-
-//Ligar o som
 botaoLigar.onclick = function(){
+    oscillatorOne = context.createOscillator();
+    oscillatorOne.type = 2;
+    oscillatorOne.frequency.value = i;
     oscillatorOne.noteOn(0);
-//    oscillatorTwo.noteOn(0);
+    oscillatorOne.connect(context.destination);
 };
 
-//Associando uma variável interna a um elemento do HTML
+//Desligar o oscilador
 var botaoDesligar = document.getElementById("bDesligar");
-
-//Desligar o som
 botaoDesligar.onclick = function(){
     oscillatorOne.noteOff(0);
-    oscillatorTwo.noteOff(0);
 };
 
-
-//Aumentar Frequência
+//Aumentar um semitom no oscilador
 var botaoAumentarFreq = document.getElementById("bAumentarFreq");
 botaoAumentarFreq.onclick = function(){
-    oscillatorOne.frequency.value = oscillatorOne.frequency.value + 100;
+    var semitoneRatio = Math.pow(2, 1/12);
+    i =  semitoneRatio * i;
+    oscillatorOne.frequency.value = i;
 };
 
-
-//Diminuir Frequência
+//Diminuir um semitom no oscilador
 var botaoDiminuirFreq = document.getElementById("bDiminuirFreq");
 botaoDiminuirFreq.onclick = function(){
-    oscillatorOne.frequency.value = oscillatorOne.frequency.value - 100;
+    var semitoneRatio = Math.pow(2, 1/12);
+    i =  i / semitoneRatio;
+    oscillatorOne.frequency.value = i;
 };
 
 //Ligar Delay
@@ -75,13 +54,15 @@ botaoLigarDelay.onclick = function(){
     delayNode.delayTime.value = 30;
     oscillatorOne.connect(delayNode);
     delayNode.connect(context.destination);
-}
+};
 
-//Desligar Delay (NÃO ESTÁ FUNCIONANDO)
+//Desligar Delay
 var botaoDesligarDelay = document.getElementById("bDesligarDelay");
     botaoDesligarDelay.onclick = function(){
-    delayNode.disconnect();
-}
+    oscillatorOne.disconnect(0); 
+    delayNode.disconnect(0);
+    oscillatorOne.connect(context.destination);
+};
 
 //Carregar um buffer
 //var request = new XMLHttpRequest(); request.open('GET', url, true); request.responseType = 'arraybuffer';
