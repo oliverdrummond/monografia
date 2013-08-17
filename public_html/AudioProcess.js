@@ -19,6 +19,8 @@ var botaoLigarLiveInput = document.getElementById("bLigarLiveInput");
 var botaoDesligarLiveInput= document.getElementById("bDesligarLiveInput");
 var botaoIniciarGravacao = document.getElementById("bIniciarGravacao");
 var botaoPararGravacao = document.getElementById("bPararGravacao");
+oscillatorGainNode = context.createGainNode();
+oscillatorGainNode.connect(context.destination);
 
 //
 //OSCILADOR
@@ -35,7 +37,7 @@ botaoLigar.onclick = function(){
     oscillatorOne.type = 2;
     oscillatorOne.frequency.value = i;
     oscillatorOne.noteOn(0);
-    oscillatorOne.connect(context.destination);
+    oscillatorOne.connect(oscillatorGainNode);
 };
 
 //Desligar o oscilador
@@ -82,20 +84,25 @@ botaoDesligarDelay.onclick = function(){
     oscillatorOne.connect(context.destination);
 };
 
+//Volume
+document.getElementById('volumeOscilador').addEventListener('change', function () {
+        oscillatorGainNode.gain.value = this.value;
+});
+
+
 //
 //MICROFONE
 //
+liveInputGainNode = context.createGainNode();
+liveInputGainNode.connect(context.destination);
+
 //Ligar Microfone
 botaoLigarLiveInput.onclick = function(){
     botaoDesligarLiveInput.disable = false;
     botaoLigarLiveInput.disable = true;
     function gotStream(stream) {
     liveInput = context.createMediaStreamSource(stream);
-    delayNode = context.createDelayNode();
-    delayNode.delayTime.value = 30;
-    liveInput.connect(delayNode);
-    delayNode.connect(context.destination);
-    liveInput.connect( context.destination );
+    liveInput.connect(liveInputGainNode);
     var recorder = new Recorder(liveInput);
     };
 navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia;
@@ -120,6 +127,11 @@ botaoPararGravacao.onclick = function(){
     audio.src = window.URL.createObjectURL(s);
     });
 };
+
+//Volume
+document.getElementById('volumeLiveInput').addEventListener('change', function () {
+        liveInputGainNode.gain.value = this.value;
+});
 
 
 //ROTEAMENTO

@@ -2,24 +2,33 @@
     <body>
     <h1 id="blabla"> Aprendizado WebAudio API </h1>
     <table>
-        <tr>Oscilador</tr><br>
+        <tr><b>Oscilador</b></tr><br>
         <tr>
-        <button id="bLigar">Solta o som DJ!!!!</button>
-        <button id="bDesligar">Desligar o som!!!!</button>
-        <button id="bAumentarFreq">+ Semitom</button>
-        <button id="bDiminuirFreq">- Semitom</button>
-        <button id="bLigarDelay">Ligar Delay</button>
-        <button id="bDesligarDelay">Desligar Delay</button>
+            <button id="bLigar">Solta o som DJ!!!!</button>
+            <button id="bDesligar">Desligar o som!!!!</button>
+            <button id="bAumentarFreq">+ Semitom</button>
+            <button id="bDiminuirFreq">- Semitom</button>
+            <button id="bLigarDelay">Ligar Delay</button>
+            <button id="bDesligarDelay">Desligar Delay</button>
+        </tr>
+        <br>
+        <tr>
+            Volume <input id="volumeOscilador" type="range" min="0" max="1" step="0.1" value="0.5"/>
         </tr>
     </table>
+    <br><br>
     
     <table>
-        <tr>Microfone</tr><br>
+        <tr><b>Microfone</b></tr><br>
         <tr>
         <button id="bLigarLiveInput">Ligar Microfone</button>
         <button id="bDesligarLiveInput">Desligar Microfone</button>
         <button id="bIniciarGravacao">Iniciar Gravação</button>
         <button id="bPararGravacao">Parar Gravação</button>
+        </tr>
+        <br>
+        <tr>
+            Volume <input id="volumeLiveInput" type="range" min="0" max="1" step="0.1" value="0.5"/>
         </tr>
     </table>
     <script src="AudioProcess.js"></script>
