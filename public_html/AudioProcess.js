@@ -2,22 +2,33 @@ try {
         var contextClass = (window.AudioContext || window.webkitAudioContext || window.mozAudioContext || window.oAudioContext || window.msAudioContext);
         var context = new contextClass();
         if (contextClass) {
-        alert("context created, you are doing fine"); //test
         }
 }
 catch (e) {
-    alert('Sorry, your browser does not support the Web Audio API.');
+    alert('Infelizmente o seu navegador não é compatível com a Web Audio API, tente baixar o Google Chrome para poder utilizar nosso site');
 }
 
+//CRIAÇÃO DE BOTÕES
+var botaoLigar = document.getElementById("bLigar");
+var botaoDesligar = document.getElementById("bDesligar");
+var botaoLigarDelay = document.getElementById("bLigarDelay");
+var botaoDesligarDelay = document.getElementById("bDesligarDelay");
+var botaoAumentarFreq = document.getElementById("bAumentarFreq");
+var botaoDiminuirFreq = document.getElementById("bDiminuirFreq");
+var botaoLigarLiveInput = document.getElementById("bLigarLiveInput");
+var botaoDesligarLiveInput= document.getElementById("bDesligarLiveInput");
+
+//
+//OSCILADOR
+//
+
 var i = 440;
-//Criação do Nó do Oscilador
-oscillatorTwo = context.createOscillator();
-oscillatorTwo.type = 1;
-oscillatorTwo.frequency.value = i * 4;
 
 //Ligar o oscilador
-var botaoLigar = document.getElementById("bLigar");
 botaoLigar.onclick = function(){
+    botaoLigar.disabled = true;
+    botaoDesligar.disabled = false;
+    botaoLigarDelay.disabled = false;
     oscillatorOne = context.createOscillator();
     oscillatorOne.type = 2;
     oscillatorOne.frequency.value = i;
@@ -26,13 +37,15 @@ botaoLigar.onclick = function(){
 };
 
 //Desligar o oscilador
-var botaoDesligar = document.getElementById("bDesligar");
 botaoDesligar.onclick = function(){
-    oscillatorOne.noteOff(0);
+    botaoLigar.disabled = false;
+    botaoDesligar.disabled = true;
+    botaoLigarDelay.disabled = true;
+    botaoDesligarDelay.disabled = true;
+    oscillatorOne.noteOff(0);   
 };
 
 //Aumentar um semitom no oscilador
-var botaoAumentarFreq = document.getElementById("bAumentarFreq");
 botaoAumentarFreq.onclick = function(){
     var semitoneRatio = Math.pow(2, 1/12);
     i =  semitoneRatio * i;
@@ -40,7 +53,6 @@ botaoAumentarFreq.onclick = function(){
 };
 
 //Diminuir um semitom no oscilador
-var botaoDiminuirFreq = document.getElementById("bDiminuirFreq");
 botaoDiminuirFreq.onclick = function(){
     var semitoneRatio = Math.pow(2, 1/12);
     i =  i / semitoneRatio;
@@ -48,30 +60,51 @@ botaoDiminuirFreq.onclick = function(){
 };
 
 //Ligar Delay
-var botaoLigarDelay = document.getElementById("bLigarDelay");
+botaoLigarDelay.disabled = true;
 botaoLigarDelay.onclick = function(){
-    var delayNode = context.createDelayNode();
+    botaoLigarDelay.disabled = true;
+    botaoDesligarDelay.disabled = false;
+    delayNode = context.createDelayNode();
     delayNode.delayTime.value = 30;
     oscillatorOne.connect(delayNode);
     delayNode.connect(context.destination);
 };
 
 //Desligar Delay
-var botaoDesligarDelay = document.getElementById("bDesligarDelay");
-    botaoDesligarDelay.onclick = function(){
+botaoDesligarDelay.disabled = true;
+botaoDesligarDelay.onclick = function(){
+    botaoLigarDelay.disabled = false;
+    botaoDesligarDelay.disabled = true;
     oscillatorOne.disconnect(0); 
     delayNode.disconnect(0);
     oscillatorOne.connect(context.destination);
 };
 
-//Carregar um buffer
-//var request = new XMLHttpRequest(); request.open('GET', url, true); request.responseType = 'arraybuffer';
-//request.onload = function() {
-//    context.decodeAudioData(request.response, function(theBuffer) { buffer = theBuffer;
-//    }, onError);
-//};
-//request.send();
-//    
-//    function playSound(buffer) {
-//var source = context.createBufferSource(); source.buffer = buffer; source.connect(context.destination); source.start(0);
-//}
+
+
+//
+//MICROFONE
+//
+//Ligar Microfone
+botaoLigarLiveInput.onclick = function(){
+    botaoDesligarLiveInput.disable = false;
+    botaoLigarLiveInput.disable = true;
+    function gotStream(stream) {
+    liveInput = context.createMediaStreamSource( stream );
+    delayNode = context.createDelayNode();
+    delayNode.delayTime.value = 30;
+    liveInput.connect(delayNode);
+    delayNode.connect(context.destination);
+    liveInput.connect( context.destination );   
+    };
+navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia;
+navigator.getUserMedia( {audio:true}, gotStream );
+};
+
+//Desligar Microfone
+botaoDesligarLiveInput.onclick = function(){
+    botaoLigarLiveInput.disable = false;
+    botaoDesligarLiveInput.disable = true;
+    liveInput.disconnect(0);
+    delayNode.disconnect(0);
+};
