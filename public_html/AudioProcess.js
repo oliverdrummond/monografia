@@ -91,7 +91,7 @@ document.getElementById('volumeOscilador').addEventListener('change', function (
 
 
 //
-//MICROFONE
+//MICROFONE 
 //
 liveInputGainNode = context.createGainNode();
 liveInputGainNode.connect(context.destination);
