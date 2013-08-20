@@ -36,7 +36,7 @@ var i = 440;
 botaoIniciarGravacao.disabled = true;
 botaoPararGravacao.disabled = true;
 botaoDesligarLiveInput.disabled = true;
-botaoSelecionarTipoOnda.disabled = true;
+botaoDesligar.disabled = true;
 
 //Ligar o oscilador
 botaoLigar.onclick = function(){    
@@ -45,7 +45,7 @@ botaoLigar.onclick = function(){
     botaoLigarDelay.disabled = false;
     botaoSelecionarTipoOnda.disabled = false;
     oscillatorOne = context.createOscillator();
-    oscillatorOne.type = 0;
+    oscillatorOne.type = oscillatorOne.type = parseInt(botaoSelecionarTipoOnda.value);
     oscillatorOne.frequency.value = i;
     oscillatorOne.noteOn(0);
     oscillatorOne.connect(oscillatorGainNode);
@@ -57,7 +57,6 @@ botaoDesligar.onclick = function(){
     botaoDesligar.disabled = true;
     botaoLigarDelay.disabled = true;
     botaoDesligarDelay.disabled = true;
-    botaoSelecionarTipoOnda.disabled = true;
     oscillatorOne.noteOff(0);   
 };
 
@@ -81,7 +80,7 @@ botaoLigarDelay.onclick = function(){
     botaoLigarDelay.disabled = true;
     botaoDesligarDelay.disabled = false;
     delayNode = context.createDelayNode();
-    delayNode.delayTime.value = 30;
+    delayNode.delayTime.value = 3000;
     oscillatorOne.connect(delayNode);
     delayNode.connect(context.destination);
 };
@@ -151,10 +150,10 @@ botaoPararGravacao.onclick = function(){
     botaoIniciarGravacao.disabled = false;
     botaoPararGravacao.disabled = true;
     recorder.stop();
-    recorder.exportWAV(function(s) {
-        audio.src = window.URL.createObjectURL(s);
-        alert("sdsdas");
-        Recorder.forceDownload(blob, "output.wav");
+    recorder.exportWAV(function(wav) {
+      var url = window.webkitURL.createObjectURL(wav);
+      $("audio#recorded-audio").attr("src", url);
+      $("audio#recorded-audio").get()[0].load();
     });
 };
 
