@@ -36,6 +36,7 @@ var i = 440;
 botaoIniciarGravacao.disabled = true;
 botaoPararGravacao.disabled = true;
 botaoDesligarLiveInput.disabled = true;
+botaoSelecionarTipoOnda.disabled = true;
 
 //Ligar o oscilador
 botaoLigar.onclick = function(){    
