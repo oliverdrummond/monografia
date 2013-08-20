@@ -33,9 +33,12 @@ botaoSelecionarTipoOnda.onchange = function(){
 //
 
 var i = 440;
+botaoIniciarGravacao.disabled = true;
+botaoPararGravacao.disabled = true;
+botaoDesligarLiveInput.disabled = true;
 
 //Ligar o oscilador
-botaoLigar.onclick = function(){
+botaoLigar.onclick = function(){    
     botaoLigar.disabled = true;
     botaoDesligar.disabled = false;
     botaoLigarDelay.disabled = false;
@@ -105,8 +108,9 @@ liveInputGainNode.connect(context.destination);
 
 //Ligar Microfone
 botaoLigarLiveInput.onclick = function(){
-    botaoDesligarLiveInput.disable = false;
-    botaoLigarLiveInput.disable = true;
+    botaoDesligarLiveInput.disabled = false;
+    botaoLigarLiveInput.disabled = true;
+    botaoIniciarGravacao.disabled = false;
     function gotStream(stream) {
     liveInput = context.createMediaStreamSource(stream);
     liveInput.connect(liveInputGainNode);
@@ -118,19 +122,38 @@ navigator.getUserMedia( {audio:true}, gotStream );
 
 //Desligar Microfone
 botaoDesligarLiveInput.onclick = function(){
-    botaoLigarLiveInput.disable = false;
-    botaoDesligarLiveInput.disable = true;
+    botaoDesligarLiveInput.disabled = true;
+    botaoLigarLiveInput.disabled = false;
     liveInput.disconnect(0);
 };
 
 botaoIniciarGravacao.onclick = function(){
+    botaoIniciarGravacao.disabled = true;
+    botaoPararGravacao.disabled = false;
     recorder.record();
 };
 
+//var worker = new Worker('recorderWorker.js');
+//    worker.postMessage({
+//      command: 'init',
+//      config: {
+//        sampleRate: this.context.sampleRate
+//      }
+//  };
+//      
+//worker.onmessage = function(e){
+//      var blob = e.data;
+//      currCallback(blob);
+//    }
+
 botaoPararGravacao.onclick = function(){
+    botaoIniciarGravacao.disabled = false;
+    botaoPararGravacao.disabled = true;
     recorder.stop();
     recorder.exportWAV(function(s) {
         audio.src = window.URL.createObjectURL(s);
+        alert("sdsdas");
+        Recorder.forceDownload(blob, "output.wav");
     });
 };
 
