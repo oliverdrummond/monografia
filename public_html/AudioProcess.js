@@ -19,9 +19,15 @@ var botaoLigarLiveInput = document.getElementById("bLigarLiveInput");
 var botaoDesligarLiveInput= document.getElementById("bDesligarLiveInput");
 var botaoIniciarGravacao = document.getElementById("bIniciarGravacao");
 var botaoPararGravacao = document.getElementById("bPararGravacao");
+var botaoSelecionarTipoOnda = document.getElementById("bTipoOnda");
 oscillatorGainNode = context.createGainNode();
 oscillatorGainNode.connect(context.destination);
 
+var audio = document.querySelector('audio');
+
+botaoSelecionarTipoOnda.onchange = function(){
+    oscillatorOne.type = parseInt(botaoSelecionarTipoOnda.value);
+};
 //
 //OSCILADOR
 //
@@ -33,8 +39,9 @@ botaoLigar.onclick = function(){
     botaoLigar.disabled = true;
     botaoDesligar.disabled = false;
     botaoLigarDelay.disabled = false;
+    botaoSelecionarTipoOnda.disabled = false;
     oscillatorOne = context.createOscillator();
-    oscillatorOne.type = 2;
+    oscillatorOne.type = 0;
     oscillatorOne.frequency.value = i;
     oscillatorOne.noteOn(0);
     oscillatorOne.connect(oscillatorGainNode);
@@ -46,6 +53,7 @@ botaoDesligar.onclick = function(){
     botaoDesligar.disabled = true;
     botaoLigarDelay.disabled = true;
     botaoDesligarDelay.disabled = true;
+    botaoSelecionarTipoOnda.disabled = true;
     oscillatorOne.noteOff(0);   
 };
 
@@ -89,7 +97,6 @@ document.getElementById('volumeOscilador').addEventListener('change', function (
         oscillatorGainNode.gain.value = this.value;
 });
 
-
 //
 //MICROFONE 
 //
@@ -103,7 +110,7 @@ botaoLigarLiveInput.onclick = function(){
     function gotStream(stream) {
     liveInput = context.createMediaStreamSource(stream);
     liveInput.connect(liveInputGainNode);
-    var recorder = new Recorder(liveInput);
+    recorder = new Recorder(liveInput);
     };
 navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia;
 navigator.getUserMedia( {audio:true}, gotStream );
@@ -114,7 +121,6 @@ botaoDesligarLiveInput.onclick = function(){
     botaoLigarLiveInput.disable = false;
     botaoDesligarLiveInput.disable = true;
     liveInput.disconnect(0);
-    delayNode.disconnect(0);
 };
 
 botaoIniciarGravacao.onclick = function(){
@@ -124,7 +130,7 @@ botaoIniciarGravacao.onclick = function(){
 botaoPararGravacao.onclick = function(){
     recorder.stop();
     recorder.exportWAV(function(s) {
-    audio.src = window.URL.createObjectURL(s);
+        audio.src = window.URL.createObjectURL(s);
     });
 };
 
@@ -139,4 +145,4 @@ function insertNewNode(sourceNode, previousDestinationNode, newDestinationNode){
     sourceNode.disconnect(0);
     sourceNode.connect(newDestinationNode);
     newDestinationNode.connect(previousDestinationNode);
-}
+};
