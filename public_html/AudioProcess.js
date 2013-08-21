@@ -21,6 +21,11 @@ var botaoIniciarGravacao = document.getElementById("bIniciarGravacao");
 var botaoPararGravacao = document.getElementById("bPararGravacao");
 var botaoSelecionarTipoOnda = document.getElementById("bTipoOnda"); 
 var botaoSelecionarEfeitoAudio1 = document.getElementById("bEfeitoAudio1"); 
+var botaoSelecionarEfeitoAudio2 = document.getElementById("bEfeitoAudio2"); 
+var botaoSelecionarEfeitoAudio3 = document.getElementById("bEfeitoAudio3"); 
+var botaoSelecionarEfeitoAudio4 = document.getElementById("bEfeitoAudio4"); 
+
+//Criação do Volume do Oscilador
 oscillatorGainNode = context.createGainNode();
 oscillatorGainNode.connect(context.destination);
 
@@ -40,6 +45,10 @@ botaoIniciarGravacao.disabled = true;
 botaoPararGravacao.disabled = true;
 botaoDesligarLiveInput.disabled = true;
 botaoDesligar.disabled = true;
+botaoSelecionarEfeitoAudio1.disabled = true;
+botaoSelecionarEfeitoAudio2.disabled = true;
+botaoSelecionarEfeitoAudio3.disabled = true;
+botaoSelecionarEfeitoAudio4.disabled = true;
 
 //Ligar o oscilador
 botaoLigar.onclick = function(){    
@@ -114,6 +123,10 @@ botaoLigarLiveInput.onclick = function(){
     botaoDesligarLiveInput.disabled = false;
     botaoLigarLiveInput.disabled = true;
     botaoIniciarGravacao.disabled = false;
+    botaoSelecionarEfeitoAudio1.disabled = false;
+    botaoSelecionarEfeitoAudio2.disabled = false;
+    botaoSelecionarEfeitoAudio3.disabled = false;
+    botaoSelecionarEfeitoAudio4.disabled = false;
     function gotStream(stream) {
     liveInput = context.createMediaStreamSource(stream);
     liveInput.connect(liveInputGainNode);
@@ -165,31 +178,57 @@ document.getElementById('volumeLiveInput').addEventListener('change', function (
         liveInputGainNode.gain.value = this.value;
 });
 
-//Conectar novo efeito
+//Conectar novo efeito 1
 botaoSelecionarEfeitoAudio1.onchange = function(){
     switch(parseInt(botaoSelecionarEfeitoAudio1.value))
-{
-case 0:
-  alert("Escolheu a opção 0 - Sem Efeito");
-  liveInput.disconnect(0);
-  liveInput.connect(liveInputGainNode);
-  break;
-case 1:
-  alert("Escolheu a opção 1 - Delay");
-  delayNodeAudio1 = context.createDelayNode();
-  delayNodeAudio1.delayTime.value = 3000;
-  liveInput.disconnect(0);
-  liveInput.connect(delayNodeAudio1);
-  delayNodeAudio1.connect(liveInputGainNode);
-  break;
-case 2:
-  alert("Escolheu a opção 2 - Compressao");
-  break;
-case 3:
-  alert("Escolheu a opção 3");
-  break;
-}
-}
+    {
+    case 0:
+      alert("Escolheu a opção 0 - Sem Efeito");
+      liveInput.disconnect(0);
+      liveInput.connect(liveInputGainNode);
+      break;
+    case 1:
+      alert("Escolheu a opção 1 - Delay");
+      delayNodeAudio1 = context.createDelayNode();
+      delayNodeAudio1.delayTime.value = 3000;
+      liveInput.disconnect(0);
+      liveInput.connect(delayNodeAudio1);
+      delayNodeAudio1.connect(liveInputGainNode);
+      break;
+    case 2:
+      alert("Escolheu a opção 2 - Compressao");
+      break;
+    case 3:
+      alert("Escolheu a opção 3");
+      break;
+    }
+};
+
+//Conectar novo efeito 2
+botaoSelecionarEfeitoAudio1.onchange = function(){
+    switch(parseInt(botaoSelecionarEfeitoAudio1.value))
+    {
+    case 0:
+      alert("Escolheu a opção 0 - Sem Efeito");
+      liveInput.disconnect(0);
+      liveInput.connect(liveInputGainNode);
+      break;
+    case 1:
+      alert("Escolheu a opção 1 - Delay");
+      delayNodeAudio2 = context.createDelayNode();
+      delayNodeAudio2.delayTime.value = 3000;
+      liveInput.disconnect(0);//Tem de mudar para pegar o node anterior (talvez usar um nome genérico)
+      liveInput.connect(delayNodeAudio1);
+      delayNodeAudio1.connect(liveInputGainNode);
+      break;
+    case 2:
+      alert("Escolheu a opção 2 - Compressao");
+      break;
+    case 3:
+      alert("Escolheu a opção 3");
+      break;
+    }
+};
 
 
 //ROTEAMENTO
