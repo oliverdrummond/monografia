@@ -184,8 +184,6 @@ botaoSelecionarEfeitoAudio1.onchange = function(){
     {
     case 0:
       alert("Escolheu a opção 0 - Sem Efeito");
-      liveInput.disconnect(0);
-      liveInput.connect(liveInputGainNode);
       break;
     case 1:
       alert("Escolheu a opção 1 - Delay");
@@ -199,7 +197,12 @@ botaoSelecionarEfeitoAudio1.onchange = function(){
       alert("Escolheu a opção 2 - Compressao");
       break;
     case 3:
-      alert("Escolheu a opção 3");
+      alert("Escolheu a opção 3 - Telefone");
+      filterNodeAudio1 = context.createBiquadFilter();
+      filterNodeAudio1.type = 0;
+      filterNodeAudio1.frequency.value = 500;
+      liveInput.disconnect(0);
+      liveInput.connect(filterNodeAudio1);
       break;
     }
 };
