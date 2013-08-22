@@ -149,19 +149,6 @@ botaoIniciarGravacao.onclick = function(){
     recorder.record();
 };
 
-//var worker = new Worker('recorderWorker.js');
-//    worker.postMessage({
-//      command: 'init',
-//      config: {
-//        sampleRate: this.context.sampleRate
-//      }
-//  };
-//      
-//worker.onmessage = function(e){
-//      var blob = e.data;
-//      currCallback(blob);
-//    }
-
 botaoPararGravacao.onclick = function(){
     botaoIniciarGravacao.disabled = false;
     botaoPararGravacao.disabled = true;
@@ -173,66 +160,78 @@ botaoPararGravacao.onclick = function(){
     });
 };
 
-//Volume
+//VOLUME GERAL DO LIVE INPUT
 document.getElementById('volumeLiveInput').addEventListener('change', function () {
         liveInputGainNode.gain.value = this.value;
 });
 
-//Conectar novo efeito 1
+//CRIAR UM CONTROLE DE EQUALIZAÇÃO GERAL DO LIVE INPUT
+//SLIDER PARA GRAVE, MÉDIO, AGUDO COM VALOR PADRÃO - 0 E QUE POSSA VARIAR DE -20 A +20
+//TESTAR O MÉTODO getFrequencyResponse que teoricamente calcula a resposta de frequência
+
+//CONECTAR NOVO EFEITO - SLOT 1
 botaoSelecionarEfeitoAudio1.onchange = function(){
     switch(parseInt(botaoSelecionarEfeitoAudio1.value))
     {
     case 0:
-      alert("Escolheu a opção 0 - Sem Efeito");
+        liveInput.disconnect(0);
+      if (typeof pluginSlot2 === 'undefined') {
+          liveInput.connect(liveInputGainNode);
+      } else {
+          liveInput.connect(pluginSlot2);
+      }
       break;
     case 1:
-      alert("Escolheu a opção 1 - Delay");
-      delayNodeAudio1 = context.createDelayNode();
-      delayNodeAudio1.delayTime.value = 3000;
+      pluginSlot1 = context.createDelayNode();
+      pluginSlot1.delayTime.value = 3000;
       liveInput.disconnect(0);
-      liveInput.connect(delayNodeAudio1);
-      delayNodeAudio1.connect(liveInputGainNode);
+      liveInput.connect(pluginSlot1);
+      pluginSlot1.connect(liveInputGainNode);
       break;
     case 2:
-      alert("Escolheu a opção 2 - Compressao");
+      pluginSlot1 = context.createDynamicsCompressor;
+//      pluginSlot1
       break;
     case 3:
-      alert("Escolheu a opção 3 - Telefone");
-      filterNodeAudio1 = context.createBiquadFilter();
-      filterNodeAudio1.type = 0;
-      filterNodeAudio1.frequency.value = 500;
+      pluginSlot1 = context.createBiquadFilter();
+      pluginSlot1.type = "lowpass";
+      pluginSlot1.frequency.value = 2000;
       liveInput.disconnect(0);
-      liveInput.connect(filterNodeAudio1);
+      liveInput.connect(pluginSlot1);
+      pluginSlot1.connect(liveInputGainNode);
       break;
     }
 };
 
-//Conectar novo efeito 2
-botaoSelecionarEfeitoAudio1.onchange = function(){
-    switch(parseInt(botaoSelecionarEfeitoAudio1.value))
-    {
-    case 0:
-      alert("Escolheu a opção 0 - Sem Efeito");
-      liveInput.disconnect(0);
-      liveInput.connect(liveInputGainNode);
-      break;
-    case 1:
-      alert("Escolheu a opção 1 - Delay");
-      delayNodeAudio2 = context.createDelayNode();
-      delayNodeAudio2.delayTime.value = 3000;
-      liveInput.disconnect(0);//Tem de mudar para pegar o node anterior (talvez usar um nome genérico)
-      liveInput.connect(delayNodeAudio1);
-      delayNodeAudio1.connect(liveInputGainNode);
-      break;
-    case 2:
-      alert("Escolheu a opção 2 - Compressao");
-      break;
-    case 3:
-      alert("Escolheu a opção 3");
-      break;
-    }
+//CONECTAR NOVO EFEITO - SLOT 2
+//TODO Esse ainda está todo errado, terminar primeiro o SLOT 1 para depois fazer o 2
+botaoSelecionarEfeitoAudio2.onchange = function(){
+//    switch(parseInt(botaoSelecionarEfeitoAudio2.value))
+//    {
+//    case 0:
+//      if (typeof pluginSlot1 === 'undefined') {
+//          liveInput.disconnect(0);
+//          liveInput.connect(liveInputGainNode);
+//      } else {
+//          liveInput.disconnect(0);
+//          liveInput.connect(pluginSlot2);
+//      }
+//      break;
+//    case 1:
+//      pluginSlot2 = context.createDelayNode();
+//      pluginSlot2.delayTime.value = 3000;
+//      pluginSlot1.disconnect(0);
+//      liveInput.connect(pluginSlot2);
+//      pluginSlot2.connect(liveInputGainNode);
+//      break;
+//    case 2:
+//      alert("Escolheu a opção 2 - Compressao");
+//      break;
+//    case 3:
+//      alert("Escolheu a opção 3");
+//      break;
+//    }
 };
-
 
 //ROTEAMENTO
 function insertNewNode(sourceNode, previousDestinationNode, newDestinationNode){
