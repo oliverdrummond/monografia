@@ -23,7 +23,7 @@ var botaoSelecionarTipoOnda = document.getElementById("bTipoOnda");
 var botaoSelecionarEfeitoAudio1 = document.getElementById("bEfeitoAudio1"); 
 var botaoSelecionarEfeitoAudio2 = document.getElementById("bEfeitoAudio2"); 
 var botaoSelecionarEfeitoAudio3 = document.getElementById("bEfeitoAudio3"); 
-var botaoSelecionarEfeitoAudio4 = document.getElementById("bEfeitoAudio4"); 
+var botaoSelecionarEfeitoAudio4 = document.getElementById("bEfeitoAudio4");
 
 //Criação do Volume do Oscilador
 oscillatorGainNode = context.createGainNode();
@@ -169,6 +169,7 @@ document.getElementById('volumeLiveInput').addEventListener('change', function (
 //SLIDER PARA GRAVE, MÉDIO, AGUDO COM VALOR PADRÃO - 0 E QUE POSSA VARIAR DE -20 A +20
 //TESTAR O MÉTODO getFrequencyResponse que teoricamente calcula a resposta de frequência
 
+
 //CONECTAR NOVO EFEITO - SLOT 1
 botaoSelecionarEfeitoAudio1.onchange = function(){
     switch(parseInt(botaoSelecionarEfeitoAudio1.value))
@@ -184,23 +185,53 @@ botaoSelecionarEfeitoAudio1.onchange = function(){
     case 1:
       pluginSlot1 = context.createDelayNode();
       pluginSlot1.delayTime.value = 3000;
-      liveInput.disconnect(0);
-      liveInput.connect(pluginSlot1);
-      pluginSlot1.connect(liveInputGainNode);
       break;
     case 2:
-      pluginSlot1 = context.createDynamicsCompressor;
-//      pluginSlot1
+      pluginSlot1 = context.createDynamicsCompressor();
+      pluginSlot1.threshold = -50;
+      pluginSlot1.ratio = 12;
+      pluginSlot1.attack = 0.003;
+      //TODO Não funciona 
+      pluginSlot1.reduction.onchange = function(){
+        var gainReduction = pluginSlot1.reduction;
+        document.getElementById("meter").value = gainReduction.value;
+        alert("fdfd");
+      };
+      //TODO Até aqui
+      liveInput.disconnect(0);
       break;
     case 3:
       pluginSlot1 = context.createBiquadFilter();
       pluginSlot1.type = "lowpass";
       pluginSlot1.frequency.value = 2000;
       liveInput.disconnect(0);
-      liveInput.connect(pluginSlot1);
-      pluginSlot1.connect(liveInputGainNode);
       break;
+    case 4:
+      pluginSlot1 = context.createWaveShaper();
+//      pluginSlot1.curve = 1;
+//      pluginSlot1.oversample = 12;
+      liveInput.disconnect(0);
+      break;
+     case 5:
+         //TODO Não está funcionando, checar com calma o exemplo daqui http://chimera.labs.oreilly.com/books/1234000001552/ch02.html#s02_6
+      var DURATION = 2;
+      var FREQUENCY = 1;
+      var SCALE = 0.4;
+      var osc = context.createOscillator();
+      osc.frequency.value = FREQUENCY;
+      var gain = context.createGain();
+      gain.gain.value = SCALE;
+      osc.connect(gain);
+      gain.connect(liveInputGainNode);
+      // Start immediately, and stop in 2 seconds.
+      osc.start(0);
+      osc.stop(context.currentTime + DURATION);
+      liveInput.disconnect(0);
+      break; 
+     
     }
+//    liveInput.connect(pluginSlot1);
+//    pluginSlot1.connect(liveInputGainNode);
 };
 
 //CONECTAR NOVO EFEITO - SLOT 2
