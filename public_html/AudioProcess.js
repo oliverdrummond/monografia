@@ -31,14 +31,22 @@ oscillatorGainNode.connect(context.destination);
 
 var audio = document.querySelector('audio');
 
-
-
 botaoSelecionarTipoOnda.onchange = function(){
     oscillatorOne.type = parseInt(botaoSelecionarTipoOnda.value);
 };
 //
 //OSCILADOR
 //
+
+function log10(value) {
+  return Math.log(value) / Math.LN10;
+};
+
+function quantosSemitons(){
+    var semiTons = (12*((log10(oscillatorOne.frequency.value))/0.3010)) - 105.376;
+    semiTons = Math.round(semiTons);
+    alert("Semitons " + semiTons);
+};
 
 var i = 440;
 botaoIniciarGravacao.disabled = true;
@@ -77,6 +85,7 @@ botaoAumentarFreq.onclick = function(){
     var semitoneRatio = Math.pow(2, 1/12);
     i =  semitoneRatio * i;
     oscillatorOne.frequency.value = i;
+    quantosSemitons();
 };
 
 //Diminuir um semitom no oscilador
@@ -116,7 +125,44 @@ document.getElementById('volumeOscilador').addEventListener('change', function (
 //MICROFONE 
 //
 liveInputGainNode = context.createGainNode();
-liveInputGainNode.connect(context.destination);
+//VOLUME GERAL DO LIVE INPUT
+document.getElementById('volumeLiveInput').addEventListener('change', function () {
+        liveInputGainNode.gain.value = this.value;
+});
+
+//GRAVE GERAL DO LIVE INPUT
+liveInputGrave = context.createBiquadFilter();
+liveInputGrave.type = "lowshelf";
+liveInputGrave.frequency.value = 300;
+document.getElementById('graveLiveInput').addEventListener('change', function () {
+        liveInputGrave.gain.value = this.value;
+});
+
+//MÉDIO GERAL DO LIVE INPUT
+liveInputMedio = context.createBiquadFilter();
+liveInputMedio.type = "peaking";
+liveInputMedio.Q = 100;
+liveInputMedio.frequency.value = 700;
+document.getElementById('medioLiveInput').addEventListener('change', function () {
+        liveInputMedio.gain.value = this.value;
+});
+
+//AGUDO GERAL DO LIVE INPUT
+liveInputAgudo = context.createBiquadFilter();
+liveInputAgudo.type = "highshelf";
+liveInputAgudo.frequency.value = 3000;
+document.getElementById('agudoLiveInput').addEventListener('change', function () {
+        liveInputAgudo.gain.value = this.value;
+});
+
+//CONEXÕES DOS AUDIO NODES
+liveInputGainNode.connect(liveInputGrave);
+liveInputGrave.connect(liveInputMedio);
+liveInputMedio.connect(liveInputAgudo);
+liveInputAgudo.connect(context.destination);
+
+//TESTAR O MÉTODO getFrequencyResponse que teoricamente calcula a resposta de frequência
+
 
 //Ligar Microfone
 botaoLigarLiveInput.onclick = function(){
@@ -159,16 +205,6 @@ botaoPararGravacao.onclick = function(){
       $("audio#recorded-audio").get()[0].load();
     });
 };
-
-//VOLUME GERAL DO LIVE INPUT
-document.getElementById('volumeLiveInput').addEventListener('change', function () {
-        liveInputGainNode.gain.value = this.value;
-});
-
-//CRIAR UM CONTROLE DE EQUALIZAÇÃO GERAL DO LIVE INPUT
-//SLIDER PARA GRAVE, MÉDIO, AGUDO COM VALOR PADRÃO - 0 E QUE POSSA VARIAR DE -20 A +20
-//TESTAR O MÉTODO getFrequencyResponse que teoricamente calcula a resposta de frequência
-
 
 //CONECTAR NOVO EFEITO - SLOT 1
 botaoSelecionarEfeitoAudio1.onchange = function(){
@@ -230,8 +266,8 @@ botaoSelecionarEfeitoAudio1.onchange = function(){
       break; 
      
     }
-//    liveInput.connect(pluginSlot1);
-//    pluginSlot1.connect(liveInputGainNode);
+    liveInput.connect(pluginSlot1);
+    pluginSlot1.connect(liveInputGainNode);
 };
 
 //CONECTAR NOVO EFEITO - SLOT 2

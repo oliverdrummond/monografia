@@ -4,7 +4,7 @@
     <script type="text/javascript" src="jquery-2.0.3.js"></script>
     </head>
     <body>
-    <h1 id="blabla"> Aprendizado WebAudio API </h1>
+        <h1 id="blabla"> PocketStudio - Vers&atilde;o 0.2 </h1>
     <table>
         <tr><b>Oscilador</b></tr><br>
         <tr>
@@ -76,7 +76,16 @@
         </tr>
         <br>
         <tr>
-            Volume <input id="volumeLiveInput" type="range" min="0" max="1" step="0.1" value="0.5"/>
+            Volume <input id="volumeLiveInput" type="range" min="0" max="1" step="0.001" value="0.5"/>
+        </tr>
+        <tr>
+            Grave <input id="graveLiveInput" type="range" min="-50" max="50" step="0.1" value="0"/>
+        </tr>
+        <tr>
+            M&eacute;dio <input id="medioLiveInput" type="range" min="-50" max="50" step="0.1" value="0"/>
+        </tr>
+        <tr>
+            Agudo <input id="agudoLiveInput" type="range" min="-50" max="50" step="0.1" value="0"/>
         </tr>
         <tr>
         <meter id="meter" min="0" max="100"></meter>
