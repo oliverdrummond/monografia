@@ -48,6 +48,8 @@ function quantosSemitons(){
     alert("Semitons " + semiTons);
 };
 
+//ESCREVER UM IF QUE PEGUE O RESTO DA DIVISÃO POR 12
+
 var i = 440;
 botaoIniciarGravacao.disabled = true;
 botaoPararGravacao.disabled = true;
