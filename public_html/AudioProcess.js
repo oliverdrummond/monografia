@@ -42,11 +42,25 @@ function log10(value) {
   return Math.log(value) / Math.LN10;
 };
 
+var notes = {0: "A", 1: "B", 2: "C", 3: "D", 4: "E", 5: "F", 6: "G"};
+
 function quantosSemitons(){
-    var semiTons = (12*((log10(oscillatorOne.frequency.value))/0.3010)) - 105.376;
-    semiTons = Math.round(semiTons);
-    alert("Semitons " + semiTons);
+    var semitons = (12*((log10(oscillatorOne.frequency.value))/0.3010)) - 105.376;
+    semitons = Math.round(semitons);
+    if (semitons>12){
+        semitons = semitons % 12;
+    }
+    for (var i = 0; i<= 7 ; i++){
+        if (notes.i == semitons){
+            alert("A nota é " + notes.i);
+        } else {
+            alert("A nota não é " + notes.i);
+        }
+    }
 };
+
+
+
 
 //ESCREVER UM IF QUE PEGUE O RESTO DA DIVISÃO POR 12
 
@@ -91,7 +105,11 @@ botaoAumentarFreq.onclick = function(){
 };
 
 //Diminuir um semitom no oscilador
-botaoDiminuirFreq.onclick = function(){
+botaoDiminuirFreq.onclick = function(){var states = {
+    USER: 0,
+    MOD: 1,
+    ADMIN: 2
+};
     var semitoneRatio = Math.pow(2, 1/12);
     i =  i / semitoneRatio;
     oscillatorOne.frequency.value = i;
@@ -112,7 +130,11 @@ botaoLigarDelay.onclick = function(){
 botaoDesligarDelay.disabled = true;
 botaoDesligarDelay.onclick = function(){
     botaoLigarDelay.disabled = false;
-    botaoDesligarDelay.disabled = true;
+    botaoDesligarDelay.disabled = true;var states = {
+    USER: 0,
+    MOD: 1,
+    ADMIN: 2
+};
     oscillatorOne.disconnect(0); 
     delayNode.disconnect(0);
     oscillatorOne.connect(context.destination);
