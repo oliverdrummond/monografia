@@ -44,6 +44,7 @@ function log10(value) {
 
 var notes = {0: "A", 1: "B", 2: "C", 3: "D", 4: "E", 5: "F", 6: "G"};
 
+//ESCREVER UM IF QUE PEGUE O RESTO DA DIVISÃO POR 12
 function quantosSemitons(){
     var semitons = (12*((log10(oscillatorOne.frequency.value))/0.3010)) - 105.376;
     semitons = Math.round(semitons);
@@ -60,7 +61,6 @@ function quantosSemitons(){
     }
 };
 
-//ESCREVER UM IF QUE PEGUE O RESTO DA DIVISÃO POR 12
 
 var i = 440;
 botaoIniciarGravacao.disabled = true;
