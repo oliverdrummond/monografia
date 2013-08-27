@@ -42,10 +42,22 @@ function log10(value) {
   return Math.log(value) / Math.LN10;
 };
 
+var notes = {0: "A", 1: "B", 2: "C", 3: "D", 4: "E", 5: "F", 6: "G"};
+
 function quantosSemitons(){
-    var semiTons = (12*((log10(oscillatorOne.frequency.value))/0.3010)) - 105.376;
-    semiTons = Math.round(semiTons);
+    var semitons = (12*((log10(oscillatorOne.frequency.value))/0.3010)) - 105.376;
+    semitons = Math.round(semitons);
     alert("Semitons " + semiTons);
+    if (semitons>12){
+        semitons = semitons % 12;
+    }
+    for (var i = 0; i<= 7 ; i++){
+        if (notes.i == semitons){
+            alert("A nota é " + notes.i);
+        } else {
+            alert("A nota não é " + notes.i);
+        }
+    }
 };
 
 //ESCREVER UM IF QUE PEGUE O RESTO DA DIVISÃO POR 12
@@ -176,12 +188,11 @@ botaoLigarLiveInput.onclick = function(){
     botaoSelecionarEfeitoAudio3.disabled = false;
     botaoSelecionarEfeitoAudio4.disabled = false;
     function gotStream(stream) {
-    liveInput = context.createMediaStreamSource(stream);
-    liveInput.connect(liveInputGainNode);
-    recorder = new Recorder(liveInput);
+        liveInput = context.createMediaStreamSource(stream);
+        liveInput.connect(liveInputGainNode);
     };
-navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia;
-navigator.getUserMedia( {audio:true}, gotStream );
+    navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia;
+    navigator.getUserMedia( {audio:true}, gotStream );
 };
 
 //Desligar Microfone
@@ -194,18 +205,15 @@ botaoDesligarLiveInput.onclick = function(){
 botaoIniciarGravacao.onclick = function(){
     botaoIniciarGravacao.disabled = true;
     botaoPararGravacao.disabled = false;
-    recorder.record();
+    gravador = Gravador();//Tem de ser global mesmo (sem o var)
+    gravador.record();
 };
 
 botaoPararGravacao.onclick = function(){
     botaoIniciarGravacao.disabled = false;
     botaoPararGravacao.disabled = true;
-    recorder.stop();
-    recorder.exportWAV(function(wav) {
-      var url = window.webkitURL.createObjectURL(wav);
-      $("audio#recorded-audio").attr("src", url);
-      $("audio#recorded-audio").get()[0].load();
-    });
+    gravador.stop();
+    gravador.createDownloadLink();
 };
 
 //CONECTAR NOVO EFEITO - SLOT 1
@@ -308,3 +316,40 @@ function insertNewNode(sourceNode, previousDestinationNode, newDestinationNode){
     sourceNode.connect(newDestinationNode);
     newDestinationNode.connect(previousDestinationNode);
 };
+
+
+var Gravador = function(){
+    
+    //context
+    //navigator.getUserMedia
+    //window.URL = window.URL || window.webkitURL;
+
+    var recorder = new Recorder(liveInput);
+    
+    return {
+        record: function() { 
+            recorder.record();
+        },
+        stop: function() { 
+            recorder.stop();
+        },
+        createDownloadLink: function() {
+            recorder.exportWAV(function(blob) {
+                var url = URL.createObjectURL(blob);
+                var li = document.createElement('li');
+                var hf = document.createElement('a');
+
+                //TODO separar isso daqui
+                audio.src = url;
+                hf.href = url;
+                hf.download = 'Arquivo1.wav';
+                hf.innerHTML = hf.download;
+                li.appendChild(hf);
+                
+                $('#linkPlaceholder').append(li);
+            });
+        }
+    };
+};
+
+

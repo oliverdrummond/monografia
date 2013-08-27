@@ -1,7 +1,5 @@
 <html>
     <head>
-    <script type="text/javascript" src="recorder.js"></script>
-    <script type="text/javascript" src="jquery-2.0.3.js"></script>
     </head>
     <body>
         <h1 id="blabla"> PocketStudio - Vers&atilde;o 0.2 </h1>
@@ -88,9 +86,14 @@
             Agudo <input id="agudoLiveInput" type="range" min="-50" max="50" step="0.1" value="0"/>
         </tr>
         <tr>
-        <meter id="meter" min="0" max="100"></meter>
+            <meter id="meter" min="0" max="100"></meter>
+        </tr>
+        <tr id="linkPlaceholder">
+            Aqui aparece o link para baixar o audio
         </tr>
     </table>
+    <script type="text/javascript" src="recorder.js"></script>
+    <script type="text/javascript" src="jquery-2.0.3.js"></script>
     <script src="AudioProcess.js"></script>
     </body>
 </html>
