@@ -50,12 +50,12 @@ function quantosSemitons() {
         semitons = 12 + semitons;
     }
     for (var i = 0; i<= 11 ; i++) {
-        if (i == semitons) {
+        if (i === semitons) {
             alert("A nota e " + NOTES[i]);
             break;
         } 
     }
-};
+}
 
 var i = 440;
 botaoIniciarGravacao.disabled = true;
@@ -74,7 +74,7 @@ botaoLigar.onclick = function () {
     botaoLigarDelay.disabled = false;
     botaoSelecionarTipoOnda.disabled = false;
     oscillatorOne = context.createOscillator();
-    oscillatorOne.type = oscillatorOne.type = parseInt(botaoSelecionarTipoOnda.value);
+    oscillatorOne.type = oscillatorOne.type = parseInt(botaoSelecionarTipoOnda.value, 10);
     oscillatorOne.frequency.value = i;
     oscillatorOne.noteOn(0);
     oscillatorOne.connect(oscillatorGainNode);
@@ -186,7 +186,7 @@ botaoLigarLiveInput.onclick = function () {
     function gotStream(stream) {
         liveInput = context.createMediaStreamSource(stream);
         liveInput.connect(liveInputGainNode);
-    };
+    }
     navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia;
     navigator.getUserMedia( {audio:true}, gotStream );
 };
@@ -216,7 +216,7 @@ botaoPararGravacao.onclick = function () {
 
 //CONECTAR NOVO EFEITO - SLOT 1
 botaoSelecionarEfeitoAudio1.onchange = function () {
-    switch(parseInt(botaoSelecionarEfeitoAudio1.value))
+    switch(parseInt(botaoSelecionarEfeitoAudio1.value, 10))
     {
     case 0:
         liveInput.disconnect(0);
@@ -313,7 +313,7 @@ function insertNewNode(sourceNode, previousDestinationNode, newDestinationNode){
     sourceNode.disconnect(0);
     sourceNode.connect(newDestinationNode);
     newDestinationNode.connect(previousDestinationNode);
-};
+}
 
 
 var Gravador = function () {
@@ -349,5 +349,3 @@ var Gravador = function () {
         }
     };
 };
-
-
