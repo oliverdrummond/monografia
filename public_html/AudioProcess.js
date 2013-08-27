@@ -203,6 +203,7 @@ botaoIniciarGravacao.onclick = function () {
     botaoPararGravacao.disabled = false;
     gravador = Gravador();//Tem de ser global mesmo (sem o var)
     gravador.record();
+    document.body.style.backgroundColor="#FF0000";
 };
 
 botaoPararGravacao.onclick = function () {
@@ -210,6 +211,7 @@ botaoPararGravacao.onclick = function () {
     botaoPararGravacao.disabled = true;
     gravador.stop();
     gravador.createDownloadLink();
+    document.body.style.backgroundColor="#FFFFFF";
 };
 
 //CONECTAR NOVO EFEITO - SLOT 1
