@@ -1,10 +1,7 @@
 try {
-        var contextClass = (window.AudioContext || window.webkitAudioContext || window.mozAudioContext || window.oAudioContext || window.msAudioContext);
-        var context = new contextClass();
-        if (contextClass) {
-        }
-}
-catch (e) {
+    var contextClass = (window.AudioContext || window.webkitAudioContext || window.mozAudioContext || window.oAudioContext || window.msAudioContext);
+    var context = new contextClass();
+} catch (e) {
     alert('Infelizmente o seu navegador não é compatível com a Web Audio API, tente baixar o Google Chrome para poder utilizar nosso site');
 }
 
@@ -16,13 +13,13 @@ var botaoDesligarDelay = document.getElementById("bDesligarDelay");
 var botaoAumentarFreq = document.getElementById("bAumentarFreq");
 var botaoDiminuirFreq = document.getElementById("bDiminuirFreq");
 var botaoLigarLiveInput = document.getElementById("bLigarLiveInput");
-var botaoDesligarLiveInput= document.getElementById("bDesligarLiveInput");
+var botaoDesligarLiveInput = document.getElementById("bDesligarLiveInput");
 var botaoIniciarGravacao = document.getElementById("bIniciarGravacao");
 var botaoPararGravacao = document.getElementById("bPararGravacao");
-var botaoSelecionarTipoOnda = document.getElementById("bTipoOnda"); 
-var botaoSelecionarEfeitoAudio1 = document.getElementById("bEfeitoAudio1"); 
-var botaoSelecionarEfeitoAudio2 = document.getElementById("bEfeitoAudio2"); 
-var botaoSelecionarEfeitoAudio3 = document.getElementById("bEfeitoAudio3"); 
+var botaoSelecionarTipoOnda = document.getElementById("bTipoOnda");
+var botaoSelecionarEfeitoAudio1 = document.getElementById("bEfeitoAudio1");
+var botaoSelecionarEfeitoAudio2 = document.getElementById("bEfeitoAudio2");
+var botaoSelecionarEfeitoAudio3 = document.getElementById("bEfeitoAudio3");
 var botaoSelecionarEfeitoAudio4 = document.getElementById("bEfeitoAudio4");
 
 //Criação do Volume do Oscilador
@@ -31,36 +28,34 @@ oscillatorGainNode.connect(context.destination);
 
 var audio = document.querySelector('audio');
 
-botaoSelecionarTipoOnda.onchange = function(){
-    oscillatorOne.type = parseInt(botaoSelecionarTipoOnda.value);
+botaoSelecionarTipoOnda.onchange = function () {
+    oscillatorOne.type = parseInt(botaoSelecionarTipoOnda.value, 10);
 };
 //
 //OSCILADOR
 //
 
 function log10(value) {
-  return Math.log(value) / Math.LN10;
-};
-
-var notes = {0: "A", 1: "B", 2: "C", 3: "D", 4: "E", 5: "F", 6: "G"};
+    return Math.log(value) / Math.LN10;
+}
 
 //ESCREVER UM IF QUE PEGUE O RESTO DA DIVISÃO POR 12
-function quantosSemitons(){
-    var semitons = (12*((log10(oscillatorOne.frequency.value))/0.3010)) - 105.376;
+function quantosSemitons() {
+    var NOTES = {0: "A", 1: "A#", 2: "B", 3: "C", 4: "C#", 5: "D", 6: "D#", 7: "E", 8: "F", 9: "F#", 10: "G", 11: "G#"},
+        semitons = (12 * ((log10(oscillatorOne.frequency.value)) / 0.3010)) - 105.376;
     semitons = Math.round(semitons);
-    alert("Semitons " + semiTons);
-    if (semitons>12){
+    if (semitons > 12) {
         semitons = semitons % 12;
+    } else if (semitons < 0) {
+        semitons = 12 + semitons;
     }
-    for (var i = 0; i<= 7 ; i++){
-        if (notes.i == semitons){
-            alert("A nota é " + notes.i);
-        } else {
-            alert("A nota não é " + notes.i);
-        }
+    for (var i = 0; i<= 11 ; i++) {
+        if (i == semitons) {
+            alert("A nota e " + NOTES[i]);
+            break;
+        } 
     }
 };
-
 
 var i = 440;
 botaoIniciarGravacao.disabled = true;
@@ -73,7 +68,7 @@ botaoSelecionarEfeitoAudio3.disabled = true;
 botaoSelecionarEfeitoAudio4.disabled = true;
 
 //Ligar o oscilador
-botaoLigar.onclick = function(){    
+botaoLigar.onclick = function () {    
     botaoLigar.disabled = true;
     botaoDesligar.disabled = false;
     botaoLigarDelay.disabled = false;
@@ -86,7 +81,7 @@ botaoLigar.onclick = function(){
 };
 
 //Desligar o oscilador
-botaoDesligar.onclick = function(){
+botaoDesligar.onclick = function () {
     botaoLigar.disabled = false;
     botaoDesligar.disabled = true;
     botaoLigarDelay.disabled = true;
@@ -95,7 +90,7 @@ botaoDesligar.onclick = function(){
 };
 
 //Aumentar um semitom no oscilador
-botaoAumentarFreq.onclick = function(){
+botaoAumentarFreq.onclick = function () {
     var semitoneRatio = Math.pow(2, 1/12);
     i =  semitoneRatio * i;
     oscillatorOne.frequency.value = i;
@@ -103,15 +98,16 @@ botaoAumentarFreq.onclick = function(){
 };
 
 //Diminuir um semitom no oscilador
-botaoDiminuirFreq.onclick = function(){
+botaoDiminuirFreq.onclick = function () {
     var semitoneRatio = Math.pow(2, 1/12);
     i =  i / semitoneRatio;
     oscillatorOne.frequency.value = i;
+    quantosSemitons();
 };
 
 //Ligar Delay
 botaoLigarDelay.disabled = true;
-botaoLigarDelay.onclick = function(){
+botaoLigarDelay.onclick = function () {
     botaoLigarDelay.disabled = true;
     botaoDesligarDelay.disabled = false;
     delayNode = context.createDelayNode();
@@ -122,7 +118,7 @@ botaoLigarDelay.onclick = function(){
 
 //Desligar Delay
 botaoDesligarDelay.disabled = true;
-botaoDesligarDelay.onclick = function(){
+botaoDesligarDelay.onclick = function () {
     botaoLigarDelay.disabled = false;
     botaoDesligarDelay.disabled = true;
     oscillatorOne.disconnect(0); 
@@ -179,7 +175,7 @@ liveInputAgudo.connect(context.destination);
 
 
 //Ligar Microfone
-botaoLigarLiveInput.onclick = function(){
+botaoLigarLiveInput.onclick = function () {
     botaoDesligarLiveInput.disabled = false;
     botaoLigarLiveInput.disabled = true;
     botaoIniciarGravacao.disabled = false;
@@ -196,20 +192,20 @@ botaoLigarLiveInput.onclick = function(){
 };
 
 //Desligar Microfone
-botaoDesligarLiveInput.onclick = function(){
+botaoDesligarLiveInput.onclick = function () {
     botaoDesligarLiveInput.disabled = true;
     botaoLigarLiveInput.disabled = false;
     liveInput.disconnect(0);
 };
 
-botaoIniciarGravacao.onclick = function(){
+botaoIniciarGravacao.onclick = function () {
     botaoIniciarGravacao.disabled = true;
     botaoPararGravacao.disabled = false;
     gravador = Gravador();//Tem de ser global mesmo (sem o var)
     gravador.record();
 };
 
-botaoPararGravacao.onclick = function(){
+botaoPararGravacao.onclick = function () {
     botaoIniciarGravacao.disabled = false;
     botaoPararGravacao.disabled = true;
     gravador.stop();
@@ -217,7 +213,7 @@ botaoPararGravacao.onclick = function(){
 };
 
 //CONECTAR NOVO EFEITO - SLOT 1
-botaoSelecionarEfeitoAudio1.onchange = function(){
+botaoSelecionarEfeitoAudio1.onchange = function () {
     switch(parseInt(botaoSelecionarEfeitoAudio1.value))
     {
     case 0:
@@ -238,7 +234,7 @@ botaoSelecionarEfeitoAudio1.onchange = function(){
       pluginSlot1.ratio = 12;
       pluginSlot1.attack = 0.003;
       //TODO Não funciona 
-      pluginSlot1.reduction.onchange = function(){
+      pluginSlot1.reduction.onchange = function () {
         var gainReduction = pluginSlot1.reduction;
         document.getElementById("meter").value = gainReduction.value;
         alert("fdfd");
@@ -282,7 +278,7 @@ botaoSelecionarEfeitoAudio1.onchange = function(){
 
 //CONECTAR NOVO EFEITO - SLOT 2
 //TODO Esse ainda está todo errado, terminar primeiro o SLOT 1 para depois fazer o 2
-botaoSelecionarEfeitoAudio2.onchange = function(){
+botaoSelecionarEfeitoAudio2.onchange = function () {
 //    switch(parseInt(botaoSelecionarEfeitoAudio2.value))
 //    {
 //    case 0:
@@ -318,7 +314,7 @@ function insertNewNode(sourceNode, previousDestinationNode, newDestinationNode){
 };
 
 
-var Gravador = function(){
+var Gravador = function () {
     
     //context
     //navigator.getUserMedia
