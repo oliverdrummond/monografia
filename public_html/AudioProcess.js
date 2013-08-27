@@ -1,3 +1,4 @@
+"use strict";
 try {
     var contextClass = (window.AudioContext || window.webkitAudioContext || window.mozAudioContext || window.oAudioContext || window.msAudioContext);
     var context = new contextClass();
@@ -23,7 +24,7 @@ var botaoSelecionarEfeitoAudio3 = document.getElementById("bEfeitoAudio3");
 var botaoSelecionarEfeitoAudio4 = document.getElementById("bEfeitoAudio4");
 
 //Criação do Volume do Oscilador
-oscillatorGainNode = context.createGainNode();
+var oscillatorGainNode = context.createGainNode();
 oscillatorGainNode.connect(context.destination);
 
 var audio = document.querySelector('audio');
@@ -68,7 +69,8 @@ botaoSelecionarEfeitoAudio3.disabled = true;
 botaoSelecionarEfeitoAudio4.disabled = true;
 
 //Ligar o oscilador
-botaoLigar.onclick = function () {    
+var oscillatorOne;
+botaoLigar.onclick = function () {
     botaoLigar.disabled = true;
     botaoDesligar.disabled = false;
     botaoLigarDelay.disabled = false;
@@ -128,41 +130,41 @@ botaoDesligarDelay.onclick = function () {
 
 //Volume
 document.getElementById('volumeOscilador').addEventListener('change', function () {
-        oscillatorGainNode.gain.value = this.value;
+    oscillatorGainNode.gain.value = this.value;
 });
 
 //
 //MICROFONE 
 //
-liveInputGainNode = context.createGainNode();
+var liveInputGainNode = context.createGainNode();
 //VOLUME GERAL DO LIVE INPUT
 document.getElementById('volumeLiveInput').addEventListener('change', function () {
-        liveInputGainNode.gain.value = this.value;
+    liveInputGainNode.gain.value = this.value;
 });
 
 //GRAVE GERAL DO LIVE INPUT
-liveInputGrave = context.createBiquadFilter();
+var liveInputGrave = context.createBiquadFilter();
 liveInputGrave.type = "lowshelf";
 liveInputGrave.frequency.value = 300;
 document.getElementById('graveLiveInput').addEventListener('change', function () {
-        liveInputGrave.gain.value = this.value;
+    liveInputGrave.gain.value = this.value;
 });
 
 //MÉDIO GERAL DO LIVE INPUT
-liveInputMedio = context.createBiquadFilter();
+var liveInputMedio = context.createBiquadFilter();
 liveInputMedio.type = "peaking";
 liveInputMedio.Q = 100;
 liveInputMedio.frequency.value = 700;
 document.getElementById('medioLiveInput').addEventListener('change', function () {
-        liveInputMedio.gain.value = this.value;
+    liveInputMedio.gain.value = this.value;
 });
 
 //AGUDO GERAL DO LIVE INPUT
-liveInputAgudo = context.createBiquadFilter();
+var liveInputAgudo = context.createBiquadFilter();
 liveInputAgudo.type = "highshelf";
 liveInputAgudo.frequency.value = 3000;
 document.getElementById('agudoLiveInput').addEventListener('change', function () {
-        liveInputAgudo.gain.value = this.value;
+    liveInputAgudo.gain.value = this.value;
 });
 
 //CONEXÕES DOS AUDIO NODES
@@ -184,7 +186,7 @@ botaoLigarLiveInput.onclick = function () {
     botaoSelecionarEfeitoAudio3.disabled = false;
     botaoSelecionarEfeitoAudio4.disabled = false;
     function gotStream(stream) {
-        liveInput = context.createMediaStreamSource(stream);
+        var liveInput = context.createMediaStreamSource(stream);
         liveInput.connect(liveInputGainNode);
     }
     navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia;
@@ -308,7 +310,7 @@ botaoSelecionarEfeitoAudio2.onchange = function () {
 //    }
 };
 
-//ROTEAMENTO
+//ROTEAMENTO - NÃO SEI SE AINDA VOU USAR
 function insertNewNode(sourceNode, previousDestinationNode, newDestinationNode){
     sourceNode.disconnect(0);
     sourceNode.connect(newDestinationNode);
@@ -325,10 +327,10 @@ var Gravador = function () {
     var recorder = new Recorder(liveInputAgudo);//SE QUISER COM EFEITOS USA ESSE INPUT, SE QUISER SEM, USA liveinput só
     
     return {
-        record: function() { 
+        record: function() {
             recorder.record();
         },
-        stop: function() { 
+        stop: function() {
             recorder.stop();
         },
         createDownloadLink: function() {
