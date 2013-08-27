@@ -320,7 +320,7 @@ var Gravador = function () {
     //navigator.getUserMedia
     //window.URL = window.URL || window.webkitURL;
 
-    var recorder = new Recorder(liveInput);
+    var recorder = new Recorder(liveInputAgudo);//SE QUISER COM EFEITOS USA ESSE INPUT, SE QUISER SEM, USA liveinput só
     
     return {
         record: function() { 
