@@ -23,6 +23,8 @@ var botaoSelecionarEfeitoAudio1 = document.getElementById("bEfeitoAudio1");
 var botaoSelecionarEfeitoAudio2 = document.getElementById("bEfeitoAudio2");
 var botaoSelecionarEfeitoAudio3 = document.getElementById("bEfeitoAudio3");
 var botaoSelecionarEfeitoAudio4 = document.getElementById("bEfeitoAudio4");
+var campoNotaOscilador = document.getElementById("dispNotaOscilador");
+var dispFrequenciaOscilador = document.getElementById("dispFrequenciaOscilador");
 
 //Criação do Volume do Oscilador
 var oscillatorGainNode = context.createGainNode();
@@ -38,6 +40,7 @@ botaoSelecionarTipoOnda.onchange = function () {
 //
 
 var frequencia = 440;
+dispFrequenciaOscilador.value = frequencia;
 botaoSelecionarTipoOnda.disabled = true;
 botaoAumentarFreq.disabled = true;
 botaoDiminuirFreq.disabled = true;
@@ -81,6 +84,7 @@ botaoAumentarFreq.onclick = function () {
     var semitoneRatio = Math.pow(2, 1 / 12);
     frequencia =  semitoneRatio * frequencia;
     oscillatorOne.frequency.value = frequencia;
+    dispFrequenciaOscilador.value = frequencia;
     quantosSemitons();
 };
 
@@ -89,6 +93,7 @@ botaoDiminuirFreq.onclick = function () {
     var semitoneRatio = Math.pow(2, 1 / 12);
     frequencia =  frequencia / semitoneRatio;
     oscillatorOne.frequency.value = frequencia;
+    dispFrequenciaOscilador.value = frequencia;
     quantosSemitons();
 };
 
@@ -192,7 +197,8 @@ botaoIniciarGravacao.onclick = function () {
     botaoPararGravacao.disabled = false;
     gravador = Gravador();//Tem de ser global mesmo (sem o var)
     gravador.record();
-    document.body.style.backgroundColor = "#FF0000";
+    document.getElementById("dispGravando").style.backgroundColor = "#FF0000";
+//    document.body.style.backgroundColor = "#FF0000";
 };
 
 botaoPararGravacao.onclick = function () {
@@ -200,7 +206,8 @@ botaoPararGravacao.onclick = function () {
     botaoPararGravacao.disabled = true;
     gravador.stop();
     gravador.createDownloadLink();
-    document.body.style.backgroundColor = "#FFFFFF";
+    document.getElementById("dispGravando").style.backgroundColor = "#FFFFFF";
+//    document.body.style.backgroundColor = "#FFFFFF";
 };
 
 //CONECTAR NOVO EFEITO - SLOT 1
@@ -302,7 +309,7 @@ function insertNewNode(sourceNode, previousDestinationNode, newDestinationNode){
 
 function quantosSemitons() {
     var NOTES = {0: "A", 1: "A#", 2: "B", 3: "C", 4: "C#", 5: "D", 6: "D#", 7: "E", 8: "F", 9: "F#", 10: "G", 11: "G#"},
-        semitons = (12 * ((log10(oscillatorOne.frequency.value)) / 0.3010)) - 105.376;
+    semitons = (12 * ((log10(oscillatorOne.frequency.value)) / 0.3010)) - 105.376;
     semitons = Math.round(semitons);
     if (semitons > 12) {
         semitons = semitons % 12;
@@ -311,7 +318,7 @@ function quantosSemitons() {
     }
     for (var i = 0; i<= 11 ; i++) {
         if (i === semitons) {
-            alert("A nota e " + NOTES[i]);
+            campoNotaOscilador.value = NOTES[i];
             break;
         } 
     }
