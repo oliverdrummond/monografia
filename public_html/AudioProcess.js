@@ -1,4 +1,5 @@
-"use strict";
+//"use strict";
+/*global window, alert, document*/
 try {
     var contextClass = (window.AudioContext || window.webkitAudioContext || window.mozAudioContext || window.oAudioContext || window.msAudioContext);
     var context = new contextClass();
@@ -36,29 +37,10 @@ botaoSelecionarTipoOnda.onchange = function () {
 //OSCILADOR
 //
 
-function log10(value) {
-    return Math.log(value) / Math.LN10;
-}
-
-//ESCREVER UM IF QUE PEGUE O RESTO DA DIVISÃO POR 12
-function quantosSemitons() {
-    var NOTES = {0: "A", 1: "A#", 2: "B", 3: "C", 4: "C#", 5: "D", 6: "D#", 7: "E", 8: "F", 9: "F#", 10: "G", 11: "G#"},
-        semitons = (12 * ((log10(oscillatorOne.frequency.value)) / 0.3010)) - 105.376;
-    semitons = Math.round(semitons);
-    if (semitons > 12) {
-        semitons = semitons % 12;
-    } else if (semitons < 0) {
-        semitons = 12 + semitons;
-    }
-    for (var i = 0; i<= 11 ; i++) {
-        if (i === semitons) {
-            alert("A nota e " + NOTES[i]);
-            break;
-        } 
-    }
-}
-
-var i = 440;
+var frequencia = 440;
+botaoSelecionarTipoOnda.disabled = true;
+botaoAumentarFreq.disabled = true;
+botaoDiminuirFreq.disabled = true;
 botaoIniciarGravacao.disabled = true;
 botaoPararGravacao.disabled = true;
 botaoDesligarLiveInput.disabled = true;
@@ -68,6 +50,7 @@ botaoSelecionarEfeitoAudio2.disabled = true;
 botaoSelecionarEfeitoAudio3.disabled = true;
 botaoSelecionarEfeitoAudio4.disabled = true;
 
+
 //Ligar o oscilador
 var oscillatorOne;
 botaoLigar.onclick = function () {
@@ -75,9 +58,11 @@ botaoLigar.onclick = function () {
     botaoDesligar.disabled = false;
     botaoLigarDelay.disabled = false;
     botaoSelecionarTipoOnda.disabled = false;
+    botaoAumentarFreq.disabled = false;
+    botaoDiminuirFreq.disabled = false;
     oscillatorOne = context.createOscillator();
-    oscillatorOne.type = oscillatorOne.type = parseInt(botaoSelecionarTipoOnda.value, 10);
-    oscillatorOne.frequency.value = i;
+    oscillatorOne.type = parseInt(botaoSelecionarTipoOnda.value, 10);
+    oscillatorOne.frequency.value = frequencia;
     oscillatorOne.noteOn(0);
     oscillatorOne.connect(oscillatorGainNode);
 };
@@ -88,22 +73,22 @@ botaoDesligar.onclick = function () {
     botaoDesligar.disabled = true;
     botaoLigarDelay.disabled = true;
     botaoDesligarDelay.disabled = true;
-    oscillatorOne.noteOff(0);   
+    oscillatorOne.noteOff(0);  
 };
 
 //Aumentar um semitom no oscilador
 botaoAumentarFreq.onclick = function () {
-    var semitoneRatio = Math.pow(2, 1/12);
-    i =  semitoneRatio * i;
-    oscillatorOne.frequency.value = i;
+    var semitoneRatio = Math.pow(2, 1 / 12);
+    frequencia =  semitoneRatio * frequencia;
+    oscillatorOne.frequency.value = frequencia;
     quantosSemitons();
 };
 
 //Diminuir um semitom no oscilador
 botaoDiminuirFreq.onclick = function () {
-    var semitoneRatio = Math.pow(2, 1/12);
-    i =  i / semitoneRatio;
-    oscillatorOne.frequency.value = i;
+    var semitoneRatio = Math.pow(2, 1 / 12);
+    frequencia =  frequencia / semitoneRatio;
+    oscillatorOne.frequency.value = frequencia;
     quantosSemitons();
 };
 
@@ -123,7 +108,7 @@ botaoDesligarDelay.disabled = true;
 botaoDesligarDelay.onclick = function () {
     botaoLigarDelay.disabled = false;
     botaoDesligarDelay.disabled = true;
-    oscillatorOne.disconnect(0); 
+    oscillatorOne.disconnect(0);
     delayNode.disconnect(0);
     oscillatorOne.connect(context.destination);
 };
@@ -167,6 +152,9 @@ document.getElementById('agudoLiveInput').addEventListener('change', function ()
     liveInputAgudo.gain.value = this.value;
 });
 
+//ANALYZER NODE
+//DEIXEI TUDO NO VISUALIZER SAMPLE.JS
+
 //CONEXÕES DOS AUDIO NODES
 liveInputGainNode.connect(liveInputGrave);
 liveInputGrave.connect(liveInputMedio);
@@ -174,7 +162,6 @@ liveInputMedio.connect(liveInputAgudo);
 liveInputAgudo.connect(context.destination);
 
 //TESTAR O MÉTODO getFrequencyResponse que teoricamente calcula a resposta de frequência
-
 
 //Ligar Microfone
 botaoLigarLiveInput.onclick = function () {
@@ -190,7 +177,7 @@ botaoLigarLiveInput.onclick = function () {
         liveInput.connect(liveInputGainNode);
     }
     navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia;
-    navigator.getUserMedia( {audio:true}, gotStream );
+    navigator.getUserMedia({audio: true}, gotStream);
 };
 
 //Desligar Microfone
@@ -205,7 +192,7 @@ botaoIniciarGravacao.onclick = function () {
     botaoPararGravacao.disabled = false;
     gravador = Gravador();//Tem de ser global mesmo (sem o var)
     gravador.record();
-    document.body.style.backgroundColor="#FF0000";
+    document.body.style.backgroundColor = "#FF0000";
 };
 
 botaoPararGravacao.onclick = function () {
@@ -213,68 +200,64 @@ botaoPararGravacao.onclick = function () {
     botaoPararGravacao.disabled = true;
     gravador.stop();
     gravador.createDownloadLink();
-    document.body.style.backgroundColor="#FFFFFF";
+    document.body.style.backgroundColor = "#FFFFFF";
 };
 
 //CONECTAR NOVO EFEITO - SLOT 1
 botaoSelecionarEfeitoAudio1.onchange = function () {
-    switch(parseInt(botaoSelecionarEfeitoAudio1.value, 10))
-    {
+    switch (parseInt(botaoSelecionarEfeitoAudio1.value, 10)) {
     case 0:
         liveInput.disconnect(0);
-      if (typeof pluginSlot2 === 'undefined') {
-          liveInput.connect(liveInputGainNode);
-      } else {
-          liveInput.connect(pluginSlot2);
-      }
-      break;
+        if (typeof pluginSlot2 === 'undefined') {
+            liveInput.connect(liveInputGainNode);
+        } else {
+            liveInput.connect(pluginSlot2);
+        }
+        break;
     case 1:
-      pluginSlot1 = context.createDelayNode();
-      pluginSlot1.delayTime.value = 3000;
-      break;
+        pluginSlot1 = context.createDelayNode();
+        pluginSlot1.delayTime.value = 3000;
+        break;
     case 2:
-      pluginSlot1 = context.createDynamicsCompressor();
-      pluginSlot1.threshold = -50;
-      pluginSlot1.ratio = 12;
-      pluginSlot1.attack = 0.003;
-      //TODO Não funciona 
-      pluginSlot1.reduction.onchange = function () {
-        var gainReduction = pluginSlot1.reduction;
-        document.getElementById("meter").value = gainReduction.value;
-        alert("fdfd");
-      };
-      //TODO Até aqui
-      liveInput.disconnect(0);
-      break;
+        pluginSlot1 = context.createDynamicsCompressor();
+        pluginSlot1.threshold = -50;
+        pluginSlot1.ratio = 12;
+        pluginSlot1.attack = 0.003;
+        //TODO Não funciona 
+        pluginSlot1.reduction.onchange = function () {
+          var gainReduction = pluginSlot1.reduction;
+          document.getElementById("meter").value = gainReduction.value;
+          alert("fdfd");
+        };
+        //TODO Até aqui
+        liveInput.disconnect(0);
+        break;
     case 3:
-      pluginSlot1 = context.createBiquadFilter();
-      pluginSlot1.type = "lowpass";
-      pluginSlot1.frequency.value = 2000;
-      liveInput.disconnect(0);
-      break;
+        pluginSlot1 = context.createBiquadFilter();
+        pluginSlot1.type = "lowpass";
+        pluginSlot1.frequency.value = 2000;
+        liveInput.disconnect(0);
+        break;
     case 4:
-      pluginSlot1 = context.createWaveShaper();
-//      pluginSlot1.curve = 1;
-//      pluginSlot1.oversample = 12;
-      liveInput.disconnect(0);
-      break;
-     case 5:
-         //TODO Não está funcionando, checar com calma o exemplo daqui http://chimera.labs.oreilly.com/books/1234000001552/ch02.html#s02_6
-      var DURATION = 2;
-      var FREQUENCY = 1;
-      var SCALE = 0.4;
-      var osc = context.createOscillator();
-      osc.frequency.value = FREQUENCY;
-      var gain = context.createGain();
-      gain.gain.value = SCALE;
-      osc.connect(gain);
-      gain.connect(liveInputGainNode);
-      // Start immediately, and stop in 2 seconds.
-      osc.start(0);
-      osc.stop(context.currentTime + DURATION);
-      liveInput.disconnect(0);
-      break; 
-     
+        pluginSlot1 = context.createWaveShaper();
+//            pluginSlot1.curve = 1;
+//            pluginSlot1.oversample = 12;
+        liveInput.disconnect(0);
+        break;
+    case 5:
+        //TODO Não está funcionando, checar com calma o exemplo daqui http://chimera.labs.oreilly.com/books/1234000001552/ch02.html#s02_6
+        var DURATION = 2, FREQUENCY = 1, SCALE = 0.4;
+        var osc = context.createOscillator();
+        osc.frequency.value = FREQUENCY;
+        var gain = context.createGain();
+        gain.gain.value = SCALE;
+        osc.connect(gain);
+        gain.connect(liveInputGainNode);
+        // Start immediately, and stop in 2 seconds.
+        osc.start(0);
+        osc.stop(context.currentTime + DURATION);
+        liveInput.disconnect(0);
+        break;
     }
     liveInput.connect(pluginSlot1);
     pluginSlot1.connect(liveInputGainNode);
@@ -317,37 +300,23 @@ function insertNewNode(sourceNode, previousDestinationNode, newDestinationNode){
     newDestinationNode.connect(previousDestinationNode);
 }
 
+function quantosSemitons() {
+    var NOTES = {0: "A", 1: "A#", 2: "B", 3: "C", 4: "C#", 5: "D", 6: "D#", 7: "E", 8: "F", 9: "F#", 10: "G", 11: "G#"},
+        semitons = (12 * ((log10(oscillatorOne.frequency.value)) / 0.3010)) - 105.376;
+    semitons = Math.round(semitons);
+    if (semitons > 12) {
+        semitons = semitons % 12;
+    } else if (semitons < 0) {
+        semitons = 12 + semitons;
+    }
+    for (var i = 0; i<= 11 ; i++) {
+        if (i === semitons) {
+            alert("A nota e " + NOTES[i]);
+            break;
+        } 
+    }
+}
 
-var Gravador = function () {
-    
-    //context
-    //navigator.getUserMedia
-    //window.URL = window.URL || window.webkitURL;
-
-    var recorder = new Recorder(liveInputAgudo);//SE QUISER COM EFEITOS USA ESSE INPUT, SE QUISER SEM, USA liveinput só
-    
-    return {
-        record: function() {
-            recorder.record();
-        },
-        stop: function() {
-            recorder.stop();
-        },
-        createDownloadLink: function() {
-            recorder.exportWAV(function(blob) {
-                var url = URL.createObjectURL(blob);
-                var li = document.createElement('li');
-                var hf = document.createElement('a');
-
-                //TODO separar isso daqui
-                audio.src = url;
-                hf.href = url;
-                hf.download = 'Arquivo1.wav';
-                hf.innerHTML = hf.download;
-                li.appendChild(hf);
-                
-                $('#linkPlaceholder').append(li);
-            });
-        }
-    };
-};
+function log10(value) {
+    return Math.log(value) / Math.LN10;
+}
