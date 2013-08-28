@@ -16,8 +16,11 @@
                 </select>
             <td><button id="bAumentarFreq">+ Semitom</button></td>
             <td><button id="bDiminuirFreq">- Semitom</button></td>
+            <td><input id="dispFrequenciaOscilador" type="text" size="10" readonly=""</td>
+            <td><input id="dispNotaOscilador" type="text" value="A" size="1" readonly=""</td>
             <td><button id="bLigarDelay">Ligar Delay</button></td>
             <td><button id="bDesligarDelay">Desligar Delay</button></td>
+            
         </tr>
         <br>
         <tr>
@@ -33,6 +36,7 @@
             <td><button id="bDesligarLiveInput">Desligar Microfone</button></td>
             <td><button id="bIniciarGravacao">Iniciar Grava&ccedil;&atilde;o</button></td>
             <td><button id="bPararGravacao">Parar Grava&ccedil;&atilde;o</button></td>
+            <td><input id="dispGravando" type="text" STYLE="background-color: #FFFFFF;" size="1" maxlength="30"></td>
         </tr>
         <tr>
             <td><select id="bEfeitoAudio1">
@@ -95,6 +99,6 @@
     <script type="text/javascript" src="jquery-2.0.3.js"></script>
     <script src="Gravador.js"></script>
     <script src="VisualizerSample(Analisador).js"></script>
-    <script src="AudioProcess_betaj.s"></script>
+    <script src="AudioProcess_beta.js"></script>
     </body>
 </html>
