@@ -157,6 +157,12 @@ document.getElementById('agudoLiveInput').addEventListener('change', function ()
     liveInputAgudo.gain.value = this.value;
 });
 
+//PANNER DO LIVE INPUT
+var liveInputPannerNode = context.createPanner();
+document.getElementById('panLiveInput').addEventListener('change', function () {
+    liveInputPannerNode.setPosition(this.value, 0, 0);
+});
+
 //ANALYZER NODE
 //DEIXEI TUDO NO VISUALIZER SAMPLE.JS
 
@@ -164,7 +170,8 @@ document.getElementById('agudoLiveInput').addEventListener('change', function ()
 liveInputGainNode.connect(liveInputGrave);
 liveInputGrave.connect(liveInputMedio);
 liveInputMedio.connect(liveInputAgudo);
-liveInputAgudo.connect(context.destination);
+liveInputAgudo.connect(liveInputPannerNode);
+liveInputPannerNode.connect(context.destination);
 
 //TESTAR O MÉTODO getFrequencyResponse que teoricamente calcula a resposta de frequência
 
@@ -247,8 +254,8 @@ botaoSelecionarEfeitoAudio1.onchange = function () {
         break;
     case 4:
         pluginSlot1 = context.createWaveShaper();
-//            pluginSlot1.curve = 1;
-//            pluginSlot1.oversample = 12;
+        pluginSlot1.curve = this.createWSCurve(ND.dist, this.nSamples);;
+        pluginSlot1.oversample = "4x";
         liveInput.disconnect(0);
         break;
     case 5:
@@ -326,4 +333,17 @@ function quantosSemitons() {
 
 function log10(value) {
     return Math.log(value) / Math.LN10;
+}
+
+function createCurve(amount, n_samples) {
+    if ((amount >= 0) && (amount < 1)) {
+        ND.dist = amount;
+        var k = 2 * ND.dist / (1 - ND.dist);
+        for (var i = 0; i < n_samples; i+=1) {
+            // LINEAR INTERPOLATION: x := (c - a) * (z - y) / (b - a) + y
+            // a = 0, b = 2048, z = 1, y = -1, c = i
+            var x = (i - 0) * (1 - (-1)) / (n_samples - 0) + (-1);
+            this.wsCurve[i] = (1 + k) * x / (1+ k * Math.abs(x));
+        }
+    }
 }
