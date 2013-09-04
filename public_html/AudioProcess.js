@@ -25,6 +25,7 @@ var botaoSelecionarEfeitoAudio3 = document.getElementById("bEfeitoAudio3");
 var botaoSelecionarEfeitoAudio4 = document.getElementById("bEfeitoAudio4");
 var campoNotaOscilador = document.getElementById("dispNotaOscilador");
 var dispFrequenciaOscilador = document.getElementById("dispFrequenciaOscilador");
+var dispPanPositionLiveInput = document.getElementById("dispPanPositionLiveInput");
 
 //Criação do Volume do Oscilador
 var oscillatorGainNode = context.createGain();
@@ -52,6 +53,7 @@ botaoSelecionarEfeitoAudio1.disabled = true;
 botaoSelecionarEfeitoAudio2.disabled = true;
 botaoSelecionarEfeitoAudio3.disabled = true;
 botaoSelecionarEfeitoAudio4.disabled = true;
+dispPanPositionLiveInput.value = 0;
 
 
 //Ligar o oscilador
@@ -161,6 +163,7 @@ document.getElementById('agudoLiveInput').addEventListener('change', function ()
 var liveInputPannerNode = context.createPanner();
 document.getElementById('panLiveInput').addEventListener('change', function () {
     liveInputPannerNode.setPosition(this.value, 0, 0);
+    dispPanPositionLiveInput.value = this.value;
 //    context.listener.setPosition(this.value, 0, 0);
 });
 
