@@ -242,9 +242,9 @@ botaoSelecionarEfeitoAudio1.onchange = function () {
         break;
     case 2:
         pluginSlot1 = context.createDynamicsCompressor();
-        pluginSlot1.threshold = -50;
-        pluginSlot1.ratio = 12;
-        pluginSlot1.attack = 0.003;
+        pluginSlot1.threshold.value = -20;
+        pluginSlot1.ratio.value = 12;
+        pluginSlot1.attack.value = 0.003;
         //TODO Não funciona 
         pluginSlot1.reduction.onchange = function () {
           var gainReduction = pluginSlot1.reduction;
