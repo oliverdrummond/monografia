@@ -27,7 +27,7 @@ var campoNotaOscilador = document.getElementById("dispNotaOscilador");
 var dispFrequenciaOscilador = document.getElementById("dispFrequenciaOscilador");
 
 //Criação do Volume do Oscilador
-var oscillatorGainNode = context.createGainNode();
+var oscillatorGainNode = context.createGain();
 oscillatorGainNode.connect(context.destination);
 
 var audio = document.querySelector('audio');
@@ -126,7 +126,7 @@ document.getElementById('volumeOscilador').addEventListener('change', function (
 //
 //MICROFONE 
 //
-var liveInputGainNode = context.createGainNode();
+var liveInputGainNode = context.createGain();
 //VOLUME GERAL DO LIVE INPUT
 document.getElementById('volumeLiveInput').addEventListener('change', function () {
     liveInputGainNode.gain.value = this.value;
@@ -161,6 +161,7 @@ document.getElementById('agudoLiveInput').addEventListener('change', function ()
 var liveInputPannerNode = context.createPanner();
 document.getElementById('panLiveInput').addEventListener('change', function () {
     liveInputPannerNode.setPosition(this.value, 0, 0);
+//    context.listener.setPosition(this.value, 0, 0);
 });
 
 //ANALYZER NODE
@@ -188,7 +189,11 @@ botaoLigarLiveInput.onclick = function () {
         liveInput = context.createMediaStreamSource(stream);
         liveInput.connect(liveInputGainNode);
     }
-    navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia;
+    
+    navigator.getUserMedia = navigator.getUserMedia ||
+                       navigator.webkitGetUserMedia ||
+                       navigator.mozGetUserMedia ||
+                       navigator.msGetUserMedia;
     navigator.getUserMedia({audio: true}, gotStream);
 };
 
@@ -240,7 +245,7 @@ botaoSelecionarEfeitoAudio1.onchange = function () {
         //TODO Não funciona 
         pluginSlot1.reduction.onchange = function () {
           var gainReduction = pluginSlot1.reduction;
-          document.getElementById("meter").value = gainReduction.value;
+            document.getElementById("meter").value = gainReduction.value;
           alert("fdfd");
         };
         //TODO Até aqui
