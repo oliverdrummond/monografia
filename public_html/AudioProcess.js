@@ -163,6 +163,7 @@ document.getElementById('agudoLiveInput').addEventListener('change', function ()
 var panLeft = context.createGain();
 var panRight = context.createGain();
 var merger = context.createChannelMerger(2);
+var splitter = context.createChannelSplitter(2);
 panLeft.connect(merger, 0, 0);
 panRight.connect(merger, 0, 1);
 merger.connect(context.destination);
@@ -181,8 +182,9 @@ document.getElementById('panLiveInput').addEventListener('change', function () {
 liveInputGainNode.connect(liveInputGrave);
 liveInputGrave.connect(liveInputMedio);
 liveInputMedio.connect(liveInputAgudo);
-liveInputAgudo.connect(panLeft);
-liveInputAgudo.connect(panRight);
+liveInputAgudo.connect(splitter);
+splitter.connect(panRight,0);
+splitter.connect(panLeft,1);
 panLeft.connect(merger, 0, 0);
 panRight.connect(merger, 0, 1);
 merger.connect(context.destination);
