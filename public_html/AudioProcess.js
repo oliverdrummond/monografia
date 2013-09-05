@@ -160,11 +160,18 @@ document.getElementById('agudoLiveInput').addEventListener('change', function ()
 });
 
 //PANNER DO LIVE INPUT
-var liveInputPannerNode = context.createPanner();
+var panLeft = context.createGain();
+var panRight = context.createGain();
+var merger = context.createChannelMerger(2);
+panLeft.connect(merger, 0, 0);
+panRight.connect(merger, 0, 1);
+merger.connect(context.destination);
+
 document.getElementById('panLiveInput').addEventListener('change', function () {
-    liveInputPannerNode.setPosition(this.value, 0, 0);
-    dispPanPositionLiveInput.value = this.value;
-//    context.listener.setPosition(this.value, 0, 0);
+  var val = this.value;
+  dispPanPositionLiveInput.value = val;
+  panLeft.gain.value = ( val * -0.5 ) + 0.5;
+  panRight.gain.value = ( val * 0.5 ) + 0.5;
 });
 
 //ANALYZER NODE
@@ -174,8 +181,11 @@ document.getElementById('panLiveInput').addEventListener('change', function () {
 liveInputGainNode.connect(liveInputGrave);
 liveInputGrave.connect(liveInputMedio);
 liveInputMedio.connect(liveInputAgudo);
-liveInputAgudo.connect(liveInputPannerNode);
-liveInputPannerNode.connect(context.destination);
+liveInputAgudo.connect(panLeft);
+liveInputAgudo.connect(panRight);
+panLeft.connect(merger, 0, 0);
+panRight.connect(merger, 0, 1);
+merger.connect(context.destination);
 
 //TESTAR O MÉTODO getFrequencyResponse que teoricamente calcula a resposta de frequência
 
