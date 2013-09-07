@@ -128,8 +128,9 @@ document.getElementById('volumeOscilador').addEventListener('change', function (
 //
 //MICROFONE 
 //
-var liveInputGainNode = context.createGain();
+
 //VOLUME GERAL DO LIVE INPUT
+var liveInputGainNode = context.createGain();
 document.getElementById('volumeLiveInput').addEventListener('change', function () {
     liveInputGainNode.gain.value = this.value;
 });
@@ -160,20 +161,13 @@ document.getElementById('agudoLiveInput').addEventListener('change', function ()
 });
 
 //PANNER DO LIVE INPUT
-var panLeft = context.createGain();
-var panRight = context.createGain();
-var merger = context.createChannelMerger(2);
-var splitter = context.createChannelSplitter(2);
-panLeft.connect(merger, 0, 0);
-panRight.connect(merger, 0, 1);
-merger.connect(context.destination);
-
+var panner = context.createPanner();
 document.getElementById('panLiveInput').addEventListener('change', function () {
-  var val = this.value;
-  dispPanPositionLiveInput.value = val;
-  panLeft.gain.value = ( val * -0.5 ) + 0.5;
-  panRight.gain.value = ( val * 0.5 ) + 0.5;
+  var range = this.value;
+  pan(range);
+  dispPanPositionLiveInput.value = range;
 });
+
 
 //ANALYZER NODE
 //DEIXEI TUDO NO VISUALIZER SAMPLE.JS
@@ -182,12 +176,8 @@ document.getElementById('panLiveInput').addEventListener('change', function () {
 liveInputGainNode.connect(liveInputGrave);
 liveInputGrave.connect(liveInputMedio);
 liveInputMedio.connect(liveInputAgudo);
-liveInputAgudo.connect(splitter);
-splitter.connect(panRight,0);
-splitter.connect(panLeft,1);
-panLeft.connect(merger, 0, 0);
-panRight.connect(merger, 0, 1);
-merger.connect(context.destination);
+liveInputAgudo.connect(panner);
+panner.connect(context.destination);
 
 //TESTAR O MÉTODO getFrequencyResponse que teoricamente calcula a resposta de frequência
 
@@ -203,8 +193,7 @@ botaoLigarLiveInput.onclick = function () {
     function gotStream(stream) {
         liveInput = context.createMediaStreamSource(stream);
         liveInput.connect(liveInputGainNode);
-    }
-    
+    }   
     navigator.getUserMedia = navigator.getUserMedia ||
                        navigator.webkitGetUserMedia ||
                        navigator.mozGetUserMedia ||
@@ -234,7 +223,6 @@ botaoPararGravacao.onclick = function () {
     gravador.stop();
     gravador.createDownloadLink();
     document.getElementById("dispGravando").style.backgroundColor = "#FFFFFF";
-//    document.body.style.backgroundColor = "#FFFFFF";
 };
 
 //CONECTAR NOVO EFEITO - SLOT 1
@@ -254,7 +242,7 @@ botaoSelecionarEfeitoAudio1.onchange = function () {
         break;
     case 2:
         pluginSlot1 = context.createDynamicsCompressor();
-        pluginSlot1.threshold.value = -20;
+        pluginSlot1.threshold.value = -80;
         pluginSlot1.ratio.value = 12;
         pluginSlot1.attack.value = 0.003;
         //TODO Não funciona 
@@ -353,6 +341,17 @@ function quantosSemitons() {
 
 function log10(value) {
     return Math.log(value) / Math.LN10;
+}
+
+function pan(range) {
+  var xDeg = parseInt(range);
+  var zDeg = xDeg + 90;
+  if (zDeg > 90) {
+    zDeg = 180 - zDeg;
+  }
+  var x = Math.sin(xDeg * (Math.PI / 180));
+  var z = Math.sin(zDeg * (Math.PI / 180));
+  panner.setPosition(x, 0, z);
 }
 
 function createCurve(amount, n_samples) {
