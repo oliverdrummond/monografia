@@ -242,15 +242,30 @@ botaoSelecionarEfeitoAudio1.onchange = function () {
         break;
     case 2:
         pluginSlot1 = context.createDynamicsCompressor();
-        pluginSlot1.threshold.value = -80;
+        pluginSlot1.threshold.value = -50;
         pluginSlot1.ratio.value = 12;
         pluginSlot1.attack.value = 0.003;
-        //TODO Não funciona 
-        pluginSlot1.reduction.onchange = function () {
-          var gainReduction = pluginSlot1.reduction;
-            document.getElementById("meter").value = gainReduction.value;
-          alert("fdfd");
-        };
+        //TESTANDO
+        var bar = document.querySelector('.bar');
+        draw();
+        function draw() {
+            var reduction = pluginSlot1.reduction.value;
+            var scaled = scale(reduction, -192, 0, 0, 100);
+            if (( -1 * reduction ) < 10){
+                bar.style.background =  "green";
+            } else if (( -1 * reduction ) >= 10 && ( -1 * reduction ) < 20){
+                bar.style.background =  "yellow";
+            } else {
+                bar.style.background =  "red";
+            }
+            bar.style.width = ( -1 * reduction ) + '%';
+            webkitRequestAnimationFrame(draw);
+        }
+
+        function scale( val, f0, f1, t0, t1 ) {
+            return (val - f0) * (t1 - t0) / (f1 - f0) + t0;
+        }
+        
         //TODO Até aqui
         liveInput.disconnect(0);
         break;
@@ -284,43 +299,6 @@ botaoSelecionarEfeitoAudio1.onchange = function () {
     liveInput.connect(pluginSlot1);
     pluginSlot1.connect(liveInputGainNode);
 };
-
-//CONECTAR NOVO EFEITO - SLOT 2
-//TODO Esse ainda está todo errado, terminar primeiro o SLOT 1 para depois fazer o 2
-botaoSelecionarEfeitoAudio2.onchange = function () {
-//    switch(parseInt(botaoSelecionarEfeitoAudio2.value))
-//    {
-//    case 0:
-//      if (typeof pluginSlot1 === 'undefined') {
-//          liveInput.disconnect(0);
-//          liveInput.connect(liveInputGainNode);
-//      } else {
-//          liveInput.disconnect(0);
-//          liveInput.connect(pluginSlot2);
-//      }
-//      break;
-//    case 1:
-//      pluginSlot2 = context.createDelayNode();
-//      pluginSlot2.delayTime.value = 3000;
-//      pluginSlot1.disconnect(0);
-//      liveInput.connect(pluginSlot2);
-//      pluginSlot2.connect(liveInputGainNode);
-//      break;
-//    case 2:
-//      alert("Escolheu a opção 2 - Compressao");
-//      break;
-//    case 3:
-//      alert("Escolheu a opção 3");
-//      break;
-//    }
-};
-
-//ROTEAMENTO - NÃO SEI SE AINDA VOU USAR
-function insertNewNode(sourceNode, previousDestinationNode, newDestinationNode){
-    sourceNode.disconnect(0);
-    sourceNode.connect(newDestinationNode);
-    newDestinationNode.connect(previousDestinationNode);
-}
 
 function quantosSemitons() {
     var NOTES = {0: "A", 1: "A#", 2: "B", 3: "C", 4: "C#", 5: "D", 6: "D#", 7: "E", 8: "F", 9: "F#", 10: "G", 11: "G#"},

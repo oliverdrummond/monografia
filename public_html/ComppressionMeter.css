@@ -1,0 +1,15 @@
+.meter {
+  height: 20px;
+  width: 200px;
+  position: relative;
+  border: 1px solid #ccc;
+}
+
+.bar {
+  width: 0%;
+  height: 100%;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  background: green;
+}
