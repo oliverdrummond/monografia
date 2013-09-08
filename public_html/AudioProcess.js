@@ -245,7 +245,6 @@ botaoSelecionarEfeitoAudio1.onchange = function () {
         pluginSlot1.threshold.value = -50;
         pluginSlot1.ratio.value = 12;
         pluginSlot1.attack.value = 0.003;
-        //TESTANDO
         var bar = document.querySelector('.bar');
         draw();
         function draw() {
@@ -265,8 +264,6 @@ botaoSelecionarEfeitoAudio1.onchange = function () {
         function scale( val, f0, f1, t0, t1 ) {
             return (val - f0) * (t1 - t0) / (f1 - f0) + t0;
         }
-        
-        //TODO Até aqui
         liveInput.disconnect(0);
         break;
     case 3:
