@@ -12,4 +12,5 @@
   top: 0px;
   right: 0px;
   background: green;
+  -webkit-transition: all ease-out 0.250s;
 }

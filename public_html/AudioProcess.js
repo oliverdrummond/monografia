@@ -228,7 +228,7 @@ botaoPararGravacao.onclick = function () {
 //CONECTAR NOVO EFEITO - SLOT 1
 botaoSelecionarEfeitoAudio1.onchange = function () {
     switch (parseInt(botaoSelecionarEfeitoAudio1.value, 10)) {
-    case 0:
+    case 0://SEM EFEITO
         liveInput.disconnect(0);
         if (typeof pluginSlot2 === 'undefined') {
             liveInput.connect(liveInputGainNode);
@@ -236,13 +236,13 @@ botaoSelecionarEfeitoAudio1.onchange = function () {
             liveInput.connect(pluginSlot2);
         }
         break;
-    case 1:
+    case 1://DELAY
         pluginSlot1 = context.createDelayNode();
         pluginSlot1.delayTime.value = 3000;
         break;
-    case 2:
+    case 2://COMPRESSOR
         pluginSlot1 = context.createDynamicsCompressor();
-        pluginSlot1.threshold.value = -50;
+        pluginSlot1.threshold.value = -100;
         pluginSlot1.ratio.value = 12;
         pluginSlot1.attack.value = 0.003;
         var bar = document.querySelector('.bar');
@@ -266,35 +266,34 @@ botaoSelecionarEfeitoAudio1.onchange = function () {
         }
         liveInput.disconnect(0);
         break;
-    case 3:
+    case 3://TELEFONE
         pluginSlot1 = context.createBiquadFilter();
         pluginSlot1.type = "lowpass";
         pluginSlot1.frequency.value = 2000;
         liveInput.disconnect(0);
         break;
-    case 4:
+    case 4://DISTORÇÃO
         pluginSlot1 = context.createWaveShaper();
         pluginSlot1.curve = this.createWSCurve(ND.dist, this.nSamples);;
         pluginSlot1.oversample = "4x";
         liveInput.disconnect(0);
         break;
-    case 5:
-        //TODO Não está funcionando, checar com calma o exemplo daqui http://chimera.labs.oreilly.com/books/1234000001552/ch02.html#s02_6
-        var DURATION = 2, FREQUENCY = 1, SCALE = 0.4;
+    case 5://TREMOLO
+        var FREQUENCY = 15;
+        var SCALE = 1;
         var osc = context.createOscillator();
         osc.frequency.value = FREQUENCY;
-        var gain = context.createGain();
-        gain.gain.value = SCALE;
-        osc.connect(gain);
-        gain.connect(liveInputGainNode);
-        // Start immediately, and stop in 2 seconds.
+        var pluginSlot1 = context.createGain();
+        pluginSlot1.gain.value = SCALE;
+        osc.connect(pluginSlot1);
+        pluginSlot1.connect(liveInputGainNode.gain);
         osc.start(0);
-        osc.stop(context.currentTime + DURATION);
-        liveInput.disconnect(0);
-        break;
     }
-    liveInput.connect(pluginSlot1);
-    pluginSlot1.connect(liveInputGainNode);
+    if (parseInt(botaoSelecionarEfeitoAudio1.value, 10) != 5){
+        liveInput.connect(pluginSlot1);
+        pluginSlot1.connect(liveInputGainNode);
+        window.alert("Não é 5!");
+    }
 };
 
 function quantosSemitons() {
