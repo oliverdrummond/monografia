@@ -224,6 +224,11 @@ botaoPararGravacao.onclick = function () {
     document.getElementById("dispGravando").style.backgroundColor = "#FFFFFF";
 };
 
+var osc = context.createOscillator();
+document.getElementById('vibratoFrequency').addEventListener('change', function () {
+            osc.frequency.value = this.value;
+        });
+
 //CONECTAR NOVO EFEITO - SLOT 1
 botaoSelecionarEfeitoAudio1.onchange = function () {
     switch (parseInt(botaoSelecionarEfeitoAudio1.value, 10)) {
@@ -243,7 +248,7 @@ botaoSelecionarEfeitoAudio1.onchange = function () {
         pluginSlot1 = context.createDynamicsCompressor();
         pluginSlot1.threshold.value = -40;
         pluginSlot1.ratio.value = 12;
-        pluginSlot1.attack.value = 0.003;
+        pluginSlot1.attack.vosc.frequency.value = FREQUENCY;alue = 0.003;
         var bar = document.querySelector('.bar');
         draw();
         function draw() {
@@ -264,7 +269,7 @@ botaoSelecionarEfeitoAudio1.onchange = function () {
             return (val - f0) * (t1 - t0) / (f1 - f0) + t0;
         }
         liveInput.disconnect(0);
-        break;
+        break;vibratoFrequency
     case 3://TELEFONE
         pluginSlot1 = context.createBiquadFilter();
         pluginSlot1.type = "lowpass";
@@ -278,13 +283,15 @@ botaoSelecionarEfeitoAudio1.onchange = function () {
         liveInput.disconnect(0);
         break;
     case 5://VIBRATO
-//        var FREQUENCY;
-//        document.getElementById('vibratoFrequency').addEventListener('change', function () {
-//            FREQUENCY = this.value;
-//        });
+        document.getElementById('vibratoFrequency').style.display = 'inline';
+        document.getElementById('vibratoFrequencyTitle').style.display = 'inline';
+        document.getElementById('vibratoRange').style.display = 'inline';
+        document.getElementById('vibratoRangeTitle').style.display = 'inline';
+        document.getElementById('vibratoRange').addEventListener('change', function () {
+            pluginSlot1.gain.value = this.value;
+        });
         var FREQUENCY = 5;
         var SCALE = 0.8;
-        var osc = context.createOscillator();
         osc.frequency.value = FREQUENCY;
         var pluginSlot1 = context.createGain();
         pluginSlot1.gain.value = SCALE;

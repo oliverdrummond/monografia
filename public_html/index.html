@@ -2,12 +2,12 @@
     <head>
         <meta charset="UTF-8">
         <link rel="stylesheet" type="text/css" href="ComppressionMeter.css">
-        <title>PocketStudio - Versão 0.3</title>
+        <title>PocketStudio - Versão 0.4</title>
     </head>
     <body>
-        <h1 id="blabla"> PocketStudio - Versão 0.3 </h1>
+        <h1> PocketStudio - Versão 0.4 </h1>
     <table>
-        <tr><b>Oscilador</b></tr><br>
+        <tr><h2>Oscilador</h2></tr><br>
         <tr>
             <td><button id="bLigar">Ligar o oscilador</button></td>
             <td><button id="bDesligar">Desligar o oscilador</button></td>
@@ -33,14 +33,14 @@
     <br><br>
     
     <table>
-        <tr><b>Microfone</b></tr><br>
+        <tr><h2>Microfone</h2></tr><br>
         <tr>
             <td><button id="bLigarLiveInput">Ligar Microfone</button></td>
             <td><button id="bDesligarLiveInput">Desligar Microfone</button></td>
             <td><button id="bIniciarGravacao">Iniciar Gravação</button></td>
             <td><button id="bPararGravacao">Parar Gravação</button></td>
             <td><input id="dispGravando" type="text" STYLE="background-color: #FFFFFF;" size="1" maxlength="30"></td>
-        </tr>
+        </tr></b>
         <tr>
             <td><select id="bEfeitoAudio1">
                     <option value="0"> --- </option>
@@ -92,7 +92,7 @@
         <tr>
             Agudo <input id="agudoLiveInput" type="range" min="-50" max="50" step="0.1" value="0"/>
         </tr>
-        <tr> <br> 
+        <tr><br> 
         Nível de Compressão <div class="meter" >
                 <div class="bar"></div>
             </div> 
@@ -102,7 +102,9 @@
             <input id="dispPanPositionLiveInput" type="text" size="10" readonly=""</td>
         </tr>
         <tr>
-            Vibrato Hz <input id="vibratoFrequency" type="range" min="0" max="20" step="0.5" value="5"/>
+        <div id="vibratoFrequencyTitle" style="display:none;">Vibrato Hz</div> <input style="display:none;" id="vibratoFrequency" type="range" min="1" max="20" step="1" value="5"/>
+        <div id="vibratoRangeTitle" style="display:none;">Vibrato Range</div> <input style="display:none;" id="vibratoRange" type="range" min="0" max="1" step="0.1" value="0.6"/>
+
         </tr>
         <tr id="linkPlaceholder">
         </tr>
