@@ -214,7 +214,6 @@ botaoIniciarGravacao.onclick = function () {
     gravador = Gravador();//Tem de ser global mesmo (sem o var)
     gravador.record();
     document.getElementById("dispGravando").style.backgroundColor = "#FF0000";
-//    document.body.style.backgroundColor = "#FF0000";
 };
 
 botaoPararGravacao.onclick = function () {
@@ -242,7 +241,7 @@ botaoSelecionarEfeitoAudio1.onchange = function () {
         break;
     case 2://COMPRESSOR
         pluginSlot1 = context.createDynamicsCompressor();
-        pluginSlot1.threshold.value = -100;
+        pluginSlot1.threshold.value = -40;
         pluginSlot1.ratio.value = 12;
         pluginSlot1.attack.value = 0.003;
         var bar = document.querySelector('.bar');
@@ -278,9 +277,13 @@ botaoSelecionarEfeitoAudio1.onchange = function () {
         pluginSlot1.oversample = "4x";
         liveInput.disconnect(0);
         break;
-    case 5://TREMOLO
-        var FREQUENCY = 15;
-        var SCALE = 1;
+    case 5://VIBRATO
+//        var FREQUENCY;
+//        document.getElementById('vibratoFrequency').addEventListener('change', function () {
+//            FREQUENCY = this.value;
+//        });
+        var FREQUENCY = 5;
+        var SCALE = 0.8;
         var osc = context.createOscillator();
         osc.frequency.value = FREQUENCY;
         var pluginSlot1 = context.createGain();
@@ -292,7 +295,6 @@ botaoSelecionarEfeitoAudio1.onchange = function () {
     if (parseInt(botaoSelecionarEfeitoAudio1.value, 10) != 5){
         liveInput.connect(pluginSlot1);
         pluginSlot1.connect(liveInputGainNode);
-        window.alert("Não é 5!");
     }
 };
 
