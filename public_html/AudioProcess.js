@@ -23,12 +23,19 @@ var botaoSelecionarEfeitoAudio1 = document.getElementById("bEfeitoAudio1");
 var botaoSelecionarEfeitoAudio2 = document.getElementById("bEfeitoAudio2");
 var botaoSelecionarEfeitoAudio3 = document.getElementById("bEfeitoAudio3");
 var botaoSelecionarEfeitoAudio4 = document.getElementById("bEfeitoAudio4");
+
+//CRIAÇÃO DOS DISPLAYS
 var campoNotaOscilador = document.getElementById("dispNotaOscilador");
 var dispFrequenciaOscilador = document.getElementById("dispFrequenciaOscilador");
 var dispPanPositionLiveInput = document.getElementById("dispPanPositionLiveInput");
 var dispDelayTime = document.getElementById("dispDelayTime");
 var dispVibratoFrequency = document.getElementById("dispVibratoFrequency");
 var dispVibratoRange = document.getElementById("dispVibratoRange");
+var dispCompressorThreshold = document.getElementById('dispcompressorThreshold');
+var dispCompressorKnee = document.getElementById('dispcompressorKnee');
+var dispCompressorRatio = document.getElementById('dispcompressorRatio');
+var dispCompressorAttack = document.getElementById('dispcompressorAttack');
+var dispCompressorRelease = document.getElementById('dispcompressorRelease');
 
 //Criação do Volume do Oscilador
 var oscillatorGainNode = context.createGain();
@@ -260,9 +267,26 @@ botaoSelecionarEfeitoAudio1.onchange = function () {
     case 2://COMPRESSOR
         document.getElementById('compressor').style.display = 'inline';
         pluginSlot1 = context.createDynamicsCompressor();
-        pluginSlot1.threshold.value = -40;
-        pluginSlot1.ratio.value = 12;
-        pluginSlot1.attack.value = 0.003;
+        document.getElementById('compressorThreshold').addEventListener('change', function () {
+            pluginSlot1.threshold.value = this.value;
+            dispCompressorThreshold.value = pluginSlot1.threshold.value;
+        });
+        document.getElementById('compressorKnee').addEventListener('change', function () {
+            pluginSlot1.knee.value = this.value;
+            dispCompressorKnee.value = pluginSlot1.knee.value;
+        });
+        document.getElementById('compressorRatio').addEventListener('change', function () {
+            pluginSlot1.ratio.value = this.value;
+            dispCompressorRatio.value = pluginSlot1.ratio.value;
+        });
+        document.getElementById('compressorAttack').addEventListener('change', function () {
+            pluginSlot1.attack.value = this.value;
+            dispCompressorAttack.value = pluginSlot1.attack.value;
+        });
+        document.getElementById('compressorRelease').addEventListener('change', function () {
+            pluginSlot1.release.value = this.value;
+            dispCompressorRelease.value = this.value;
+        });
         var bar = document.querySelector('.bar');
         draw();
         function draw() {
