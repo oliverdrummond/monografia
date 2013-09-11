@@ -242,7 +242,7 @@ botaoSelecionarEfeitoAudio1.onchange = function () {
         break;
     case 1://DELAY
         pluginSlot1 = context.createDelayNode();
-        pluginSlot1.delayTime.value = 3000;
+//        pluginSlot1.delayTime.value = 30;
         document.getElementById('delay').style.display = 'inline';
         document.getElementById('delayTime').addEventListener('change', function () {
             pluginSlot1.delayTime.value = this.value;
@@ -252,6 +252,7 @@ botaoSelecionarEfeitoAudio1.onchange = function () {
 //        });
         break;
     case 2://COMPRESSOR
+        document.getElementById('compressor').style.display = 'inline';
         pluginSlot1 = context.createDynamicsCompressor();
         pluginSlot1.threshold.value = -40;
         pluginSlot1.ratio.value = 12;
