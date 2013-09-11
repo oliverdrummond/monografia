@@ -26,6 +26,9 @@ var botaoSelecionarEfeitoAudio4 = document.getElementById("bEfeitoAudio4");
 var campoNotaOscilador = document.getElementById("dispNotaOscilador");
 var dispFrequenciaOscilador = document.getElementById("dispFrequenciaOscilador");
 var dispPanPositionLiveInput = document.getElementById("dispPanPositionLiveInput");
+var dispDelayTime = document.getElementById("dispDelayTime");
+var dispVibratoFrequency = document.getElementById("dispVibratoFrequency");
+var dispVibratoRange = document.getElementById("dispVibratoRange");
 
 //Criação do Volume do Oscilador
 var oscillatorGainNode = context.createGain();
@@ -54,6 +57,7 @@ botaoSelecionarEfeitoAudio2.disabled = true;
 botaoSelecionarEfeitoAudio3.disabled = true;
 botaoSelecionarEfeitoAudio4.disabled = true;
 dispPanPositionLiveInput.value = 0;
+dispDelayTime.value = 0;
 
 
 //Ligar o oscilador
@@ -227,10 +231,12 @@ botaoPararGravacao.onclick = function () {
 var osc = context.createOscillator();
 document.getElementById('vibratoFrequency').addEventListener('change', function () {
             osc.frequency.value = this.value;
+            dispVibratoFrequency.value = osc.frequency.value;
         });
 
 //CONECTAR NOVO EFEITO - SLOT 1
 botaoSelecionarEfeitoAudio1.onchange = function () {
+    hideAllParameters();
     switch (parseInt(botaoSelecionarEfeitoAudio1.value, 10)) {
     case 0://SEM EFEITO
         liveInput.disconnect(0);
@@ -246,6 +252,7 @@ botaoSelecionarEfeitoAudio1.onchange = function () {
         document.getElementById('delay').style.display = 'inline';
         document.getElementById('delayTime').addEventListener('change', function () {
             pluginSlot1.delayTime.value = this.value;
+            dispDelayTime.value = pluginSlot1.delayTime.value;
         });
 //        document.getElementById('delayFeedback').addEventListener('change', function () {
 //            pluginSlot1.delayTime.value = this.value;
@@ -294,6 +301,7 @@ botaoSelecionarEfeitoAudio1.onchange = function () {
         document.getElementById('vibrato').style.display = 'inline';
         document.getElementById('vibratoRange').addEventListener('change', function () {
             pluginSlot1.gain.value = this.value;
+            dispVibratoRange.value = pluginSlot1.gain.value;
         });
         var FREQUENCY = 5;
         var SCALE = 0.8;
@@ -315,7 +323,7 @@ function quantosSemitons() {
     semitons = (12 * ((log10(oscillatorOne.frequency.value)) / 0.3010)) - 105.376;
     semitons = Math.round(semitons);
     if (semitons > 12) {
-        semitons = semitons % 12;
+        semitons = semidocument.getElementById('delay').style.display = 'inline';tons % 12;
     } else if (semitons < 0) {
         semitons = 12 + semitons;
     }
@@ -353,4 +361,10 @@ function createCurve(amount, n_samples) {
             this.wsCurve[i] = (1 + k) * x / (1+ k * Math.abs(x));
         }
     }
+}
+
+function hideAllParameters () {
+    document.getElementById('compressor').style.display = 'none';
+    document.getElementById('delay').style.display = 'none';
+    document.getElementById('vibrato').style.display = 'none';
 }

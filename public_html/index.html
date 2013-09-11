@@ -69,15 +69,18 @@
                 </div>
                 <div id="delay" style="display:none;">
                     Delay Time
-                    <input id="delayTime" type="range" min="0.1" max="10" step="0.1" value="4"/>
+                    <input id="delayTime" type="range" min="0.1" max="10" step="0.1" value="3"/>
+                    <input id="dispDelayTime" type="text" size="10" readonly="" value="3"</td>
                     Feedback
                     <input id="delayFeedback" type="range" min="0" max="1" step="0.01" value="0.6"/> 
                 </div>
                 <div id="vibrato" style="display:none;">
                     Vibrato Hz 
-                    <input id="vibratoFrequency" type="range" min="1" max="20" step="1" value="5"/>
+                    <input id="vibratoFrequency" type="range" min="1" max="30" step="0.5" value="5"/>
+                    <input id="dispVibratoFrequency" type="text" size="10" readonly="" value="5"</td>
                     Vibrato Range
-                    <input id="vibratoRange" type="range" min="0" max="1" step="0.1" value="0.6"/> 
+                    <input id="vibratoRange" type="range" min="0" max="1" step="0.01" value="0.6"/>
+                    <input id="dispVibratoRange" type="text" size="10" readonly="" value="0.6"</td>
                 </div>
             </td>
         </tr>
@@ -126,8 +129,10 @@
         <tr><br> 
         </tr><br>
         <tr>
-            Pan <input id="panLiveInput" type="range" min="-90" max="90" step="0.001" value="0"/>
-            <input id="dispPanPositionLiveInput" type="text" size="10" readonly=""</td>
+            <div>
+                Pan <input id="panLiveInput" type="range" min="-90" max="90" step="0.001" value="0"/>
+                <input id="dispPanPositionLiveInput" type="text" size="10" readonly=""</td>
+            </div>
         </tr>
         <tr id="linkPlaceholder">
         </tr>
