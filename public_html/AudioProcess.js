@@ -247,8 +247,7 @@ botaoSelecionarEfeitoAudio1.onchange = function () {
         }
         break;
     case 1://DELAY
-        pluginSlot1 = context.createDelayNode();
-//        pluginSlot1.delayTime.value = 30;
+        pluginSlot1 = context.createDelayNode(12.0);
         document.getElementById('delay').style.display = 'inline';
         document.getElementById('delayTime').addEventListener('change', function () {
             pluginSlot1.delayTime.value = this.value;
