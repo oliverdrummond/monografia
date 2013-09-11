@@ -243,12 +243,19 @@ botaoSelecionarEfeitoAudio1.onchange = function () {
     case 1://DELAY
         pluginSlot1 = context.createDelayNode();
         pluginSlot1.delayTime.value = 3000;
+        document.getElementById('delay').style.display = 'inline';
+        document.getElementById('delayTime').addEventListener('change', function () {
+            pluginSlot1.delayTime.value = this.value;
+        });
+//        document.getElementById('delayFeedback').addEventListener('change', function () {
+//            pluginSlot1.delayTime.value = this.value;
+//        });
         break;
     case 2://COMPRESSOR
         pluginSlot1 = context.createDynamicsCompressor();
         pluginSlot1.threshold.value = -40;
         pluginSlot1.ratio.value = 12;
-        pluginSlot1.attack.vosc.frequency.value = FREQUENCY;alue = 0.003;
+        pluginSlot1.attack.value = 0.003;
         var bar = document.querySelector('.bar');
         draw();
         function draw() {
@@ -269,7 +276,7 @@ botaoSelecionarEfeitoAudio1.onchange = function () {
             return (val - f0) * (t1 - t0) / (f1 - f0) + t0;
         }
         liveInput.disconnect(0);
-        break;vibratoFrequency
+        break;
     case 3://TELEFONE
         pluginSlot1 = context.createBiquadFilter();
         pluginSlot1.type = "lowpass";
@@ -283,10 +290,7 @@ botaoSelecionarEfeitoAudio1.onchange = function () {
         liveInput.disconnect(0);
         break;
     case 5://VIBRATO
-        document.getElementById('vibratoFrequency').style.display = 'inline';
-        document.getElementById('vibratoFrequencyTitle').style.display = 'inline';
-        document.getElementById('vibratoRange').style.display = 'inline';
-        document.getElementById('vibratoRangeTitle').style.display = 'inline';
+        document.getElementById('vibrato').style.display = 'inline';
         document.getElementById('vibratoRange').addEventListener('change', function () {
             pluginSlot1.gain.value = this.value;
         });
