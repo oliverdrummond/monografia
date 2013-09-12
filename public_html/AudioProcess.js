@@ -96,9 +96,9 @@ botaoDesligar.onclick = function () {
 botaoAumentarFreq.onclick = function () {
     var semitoneRatio = Math.pow(2, 1 / 12);
     frequencia =  semitoneRatio * frequencia;
-    oscillatorOne.frequency.value = frequencia;
-//    oscillatorOne.frequency.linearRampToValueAtTime(frequencia, context.currentTime + 2);
-    dispFrequenciaOscilador.value = frequencia;
+//    oscillatorOne.frequency.value = frequencia;
+    oscillatorOne.frequency.linearRampToValueAtTime(frequencia, context.currentTime + 1);
+    dispFrequenciaOscilador.value = frequencia.toString().substring(0,7);
     quantosSemitons();
 };
 
@@ -106,8 +106,9 @@ botaoAumentarFreq.onclick = function () {
 botaoDiminuirFreq.onclick = function () {
     var semitoneRatio = Math.pow(2, 1 / 12);
     frequencia =  frequencia / semitoneRatio;
-    oscillatorOne.frequency.value = frequencia;
-    dispFrequenciaOscilador.value = frequencia;
+//    oscillatorOne.frequency.value = frequencia;
+    oscillatorOne.frequency.linearRampToValueAtTime(frequencia, context.currentTime + 1);
+    dispFrequenciaOscilador.value = frequencia.toString().substring(0,7);
     quantosSemitons();
 };
 
@@ -260,22 +261,22 @@ botaoSelecionarEfeitoAudio1.onchange = function () {
         document.getElementById('delay').style.display = 'inline';
         document.getElementById('delayTime').addEventListener('change', function () {
             pluginSlot1.delayTime.value = this.value;
-            dispDelayTime.value = pluginSlot1.delayTime.value;
+            dispDelayTime.value = pluginSlot1.delayTime.value.toString().substring(0,5) + " s";
         });
-        feedback = context.createGain();
-        feedback.gain.value = 0.5;
+//        feedback = context.createGain();
+//        feedback.gain.value = 0.5;
 //        document.getElementById('delayFeedback').addEventListener('change', function () {
 //            pluginSlot1.delayTime.value = this.value;
 //        });
-        pluginSlot1.connect(feedback);
-        feedback.connect(pluginSlot1);
+//        pluginSlot1.connect(feedback);
+//        feedback.connect(pluginSlot1);
         break;
     case 2://COMPRESSOR
         document.getElementById('compressor').style.display = 'inline';
         pluginSlot1 = context.createDynamicsCompressor();
         document.getElementById('compressorThreshold').addEventListener('change', function () {
             pluginSlot1.threshold.value = this.value;
-            dispCompressorThreshold.value = pluginSlot1.threshold.value;
+            dispCompressorThreshold.value = pluginSlot1.threshold.value.toString().substring(0,5) + " dB";
         });
         document.getElementById('compressorKnee').addEventListener('change', function () {
             pluginSlot1.knee.value = this.value;
@@ -287,11 +288,11 @@ botaoSelecionarEfeitoAudio1.onchange = function () {
         });
         document.getElementById('compressorAttack').addEventListener('change', function () {
             pluginSlot1.attack.value = this.value;
-            dispCompressorAttack.value = pluginSlot1.attack.value;
+            dispCompressorAttack.value = pluginSlot1.attack.value.toString().substring(0,5) + " ms";
         });
         document.getElementById('compressorRelease').addEventListener('change', function () {
             pluginSlot1.release.value = this.value;
-            dispCompressorRelease.value = this.value;
+            dispCompressorRelease.value = pluginSlot1.release.value.toString().substring(0,5) + " ms";
         });
         var bar = document.querySelector('.bar');
         draw();
@@ -352,7 +353,7 @@ function quantosSemitons() {
     semitons = (12 * ((log10(oscillatorOne.frequency.value)) / 0.3010)) - 105.376;
     semitons = Math.round(semitons);
     if (semitons > 12) {
-        semitons = semidocument.getElementById('delay').style.display = 'inline';tons % 12;
+        semitons = semitons % 12;
     } else if (semitons < 0) {
         semitons = 12 + semitons;
     }
