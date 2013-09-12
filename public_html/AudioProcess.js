@@ -79,7 +79,7 @@ botaoLigar.onclick = function () {
     oscillatorOne = context.createOscillator();
     oscillatorOne.type = parseInt(botaoSelecionarTipoOnda.value, 10);
     oscillatorOne.frequency.value = frequencia;
-    oscillatorOne.noteOn(0);
+    oscillatorOne.start(0);
     oscillatorOne.connect(oscillatorGainNode);
 };
 
@@ -89,7 +89,7 @@ botaoDesligar.onclick = function () {
     botaoDesligar.disabled = true;
     botaoLigarDelay.disabled = true;
     botaoDesligarDelay.disabled = true;
-    oscillatorOne.noteOff(0);  
+    oscillatorOne.stop(0);
 };
 
 //Aumentar um semitom no oscilador
@@ -97,6 +97,7 @@ botaoAumentarFreq.onclick = function () {
     var semitoneRatio = Math.pow(2, 1 / 12);
     frequencia =  semitoneRatio * frequencia;
     oscillatorOne.frequency.value = frequencia;
+//    oscillatorOne.frequency.linearRampToValueAtTime(frequencia, context.currentTime + 2);
     dispFrequenciaOscilador.value = frequencia;
     quantosSemitons();
 };
@@ -140,6 +141,7 @@ document.getElementById('volumeOscilador').addEventListener('change', function (
 //MICROFONE 
 //
 
+var liveInput = 0;
 //VOLUME GERAL DO LIVE INPUT
 var liveInputGainNode = context.createGain();
 document.getElementById('volumeLiveInput').addEventListener('change', function () {
@@ -254,15 +256,19 @@ botaoSelecionarEfeitoAudio1.onchange = function () {
         }
         break;
     case 1://DELAY
-        pluginSlot1 = context.createDelayNode(12.0);
+        pluginSlot1 = context.createDelay(12.0);
         document.getElementById('delay').style.display = 'inline';
         document.getElementById('delayTime').addEventListener('change', function () {
             pluginSlot1.delayTime.value = this.value;
             dispDelayTime.value = pluginSlot1.delayTime.value;
         });
+        feedback = context.createGain();
+        feedback.gain.value = 0.5;
 //        document.getElementById('delayFeedback').addEventListener('change', function () {
 //            pluginSlot1.delayTime.value = this.value;
 //        });
+        pluginSlot1.connect(feedback);
+        feedback.connect(pluginSlot1);
         break;
     case 2://COMPRESSOR
         document.getElementById('compressor').style.display = 'inline';
