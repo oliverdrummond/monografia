@@ -240,7 +240,7 @@ botaoPararGravacao.onclick = function () {
 var osc = context.createOscillator();
 document.getElementById('vibratoFrequency').addEventListener('change', function () {
             osc.frequency.value = this.value;
-            dispVibratoFrequency.value = osc.frequency.value;
+            dispVibratoFrequency.value = osc.frequency.value + " Hz";
         });
 
 //CONECTAR NOVO EFEITO - SLOT 1
