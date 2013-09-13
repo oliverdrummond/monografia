@@ -10,6 +10,7 @@ try {
 //CRIAÇÃO DE BOTÕES
 var botaoLigar = document.getElementById("bLigar");
 var botaoDesligar = document.getElementById("bDesligar");
+var botaoTocarSemSustain = document.getElementById("bTocarSemSustain");
 var botaoLigarDelay = document.getElementById("bLigarDelay");
 var botaoDesligarDelay = document.getElementById("bDesligarDelay");
 var botaoAumentarFreq = document.getElementById("bAumentarFreq");
@@ -71,6 +72,7 @@ dispDelayTime.value = 0;
 var oscillatorOne;
 botaoLigar.onclick = function () {
     botaoLigar.disabled = true;
+    botaoTocarSemSustain.disabled = true;
     botaoDesligar.disabled = false;
     botaoLigarDelay.disabled = false;
     botaoSelecionarTipoOnda.disabled = false;
@@ -86,11 +88,28 @@ botaoLigar.onclick = function () {
 //Desligar o oscilador
 botaoDesligar.onclick = function () {
     botaoLigar.disabled = false;
+    botaoTocarSemSustain.disabled = false;
     botaoDesligar.disabled = true;
     botaoLigarDelay.disabled = true;
     botaoDesligarDelay.disabled = true;
+//    oscillatorGainNode.gain.value.linearRampToValueAtTime(0, context.currentTime + 0.5);
+    oscillatorGainNode.gain.value = 0;
     oscillatorOne.stop(0);
 };
+
+botaoTocarSemSustain.onmousedown = function () {
+    oscillatorOne = context.createOscillator();
+    oscillatorOne.type = parseInt(botaoSelecionarTipoOnda.value, 10);
+    oscillatorOne.frequency.value = frequencia;
+    oscillatorOne.start(0);
+    oscillatorOne.connect(oscillatorGainNode);
+}
+
+botaoTocarSemSustain.onmouseup = function () {
+    oscillatorOne.stop(0);
+}
+
+
 
 //Aumentar um semitom no oscilador
 botaoAumentarFreq.onclick = function () {
@@ -270,6 +289,46 @@ botaoSelecionarEfeitoAudio1.onchange = function () {
 //        });
         pluginSlot1.connect(feedback);
         feedback.connect(pluginSlot1);
+        //TESTES
+//        FeedbackDelayNode(context, 2, 0.5);
+//        
+//        function FeedbackDelayNode(context, delay, feedback){
+//            this.delayTime.value = delay;
+//            this.gainNode = context.createGainNode();
+//            this.gainNode.gain.value = feedback;
+//            this.connect(this.gainNode);
+//            this.gainNode.connect(this);
+//        }
+//
+//        function FeedbackDelayFactory(context, delayTime, feedback){
+//            var delay = context.createDelayNode(delayTime + 1);
+//            FeedbackDelayNode.call(delay, context, delayTime, feedback);
+//            return delay;
+//        }
+//
+//        AudioContext.prototype.createFeedbackDelay = function(delay, feedback){
+//            return FeedbackDelayFactory(this, delay, feedback);
+//        };
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        //ATÉ AQUI
         break;
     case 2://COMPRESSOR
         document.getElementById('compressor').style.display = 'inline';

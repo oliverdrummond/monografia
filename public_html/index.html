@@ -7,29 +7,32 @@
     </head>
     <body>
         <h1> PocketStudio - Versão 0.4 </h1>
-    <table>
-        <tr><h2>Oscilador</h2></tr><br>
-        <tr>
-            <td><button id="bLigar">Ligar o oscilador</button></td>
-            <td><button id="bDesligar">Desligar o oscilador</button></td>
-            <td><select id="bTipoOnda">
-                    <option value="0"> Onda Senóide </option>
-                    <option value="1"> Onda Quadrada </option>
-                    <option value="2"> Onda Dente de Serra </option>
-                    <option value="3"> Onda Triangular </option>
-                </select>
-            <td><button id="bAumentarFreq">+ Semitom</button></td>
-            <td><button id="bDiminuirFreq">- Semitom</button></td>
-            <td><input id="dispFrequenciaOscilador" type="text" size="10" readonly=""</td>
-            <td><input id="dispNotaOscilador" type="text" value="A" size="1" readonly=""</td>
-            <td><button id="bLigarDelay">Ligar Delay</button></td>
-            <td><button id="bDesligarDelay">Desligar Delay</button></td>
-        </tr>
-        <br>
-        <tr>
-            Volume <input id="volumeOscilador" type="range" min="0" max="1" step="0.01" value="0.5"/>
-        </tr>
-    </table>
+    <div id="Oscilador">
+        <table>    
+            <tr><h2>Oscilador</h2></tr><br>
+            <tr>
+                <td><button id="bLigar">Ligar o oscilador</button></td>
+                <td><button id="bDesligar">Desligar o oscilador</button></td>
+                <td><button id="bTocarSemSustain">Tocar uma nota</button></td>
+                <td><select id="bTipoOnda">
+                        <option value="0"> Onda Senóide </option>
+                        <option value="1"> Onda Quadrada </option>
+                        <option value="2"> Onda Dente de Serra </option>
+                        <option value="3"> Onda Triangular </option>
+                    </select>
+                <td><button id="bAumentarFreq">+ Semitom</button></td>
+                <td><button id="bDiminuirFreq">- Semitom</button></td>
+                <td><input id="dispFrequenciaOscilador" type="text" size="10" readonly=""</td>
+                <td><input id="dispNotaOscilador" type="text" value="A" size="1" readonly=""</td>
+                <td><button id="bLigarDelay">Ligar Delay</button></td>
+                <td><button id="bDesligarDelay">Desligar Delay</button></td>
+            </tr>
+            <br>
+            <tr>
+                Volume <input id="volumeOscilador" type="range" min="0" max="1" step="0.01" value="0.5"/>
+            </tr>
+        </table>
+    </div>
     <br><br>
     
     <table>
