@@ -263,13 +263,13 @@ botaoSelecionarEfeitoAudio1.onchange = function () {
             pluginSlot1.delayTime.value = this.value;
             dispDelayTime.value = pluginSlot1.delayTime.value.toString().substring(0,5) + " s";
         });
-//        feedback = context.createGain();
-//        feedback.gain.value = 0.5;
+        feedback = context.createGain();
+        feedback.gain.value = 0.5;
 //        document.getElementById('delayFeedback').addEventListener('change', function () {
 //            pluginSlot1.delayTime.value = this.value;
 //        });
-//        pluginSlot1.connect(feedback);
-//        feedback.connect(pluginSlot1);
+        pluginSlot1.connect(feedback);
+        feedback.connect(pluginSlot1);
         break;
     case 2://COMPRESSOR
         document.getElementById('compressor').style.display = 'inline';
@@ -323,7 +323,7 @@ botaoSelecionarEfeitoAudio1.onchange = function () {
         break;
     case 4://DISTORÇÃO
         pluginSlot1 = context.createWaveShaper();
-        pluginSlot1.curve = this.createWSCurve(ND.dist, this.nSamples);;
+        pluginSlot1.curve = this.createWSCurve(ND.dist, this.nSamples);
         pluginSlot1.oversample = "4x";
         liveInput.disconnect(0);
         break;
@@ -370,7 +370,7 @@ function log10(value) {
 }
 
 function pan(range) {
-  var xDeg = parseInt(range);
+  var xDeg = parseInt(range,10);
   var zDeg = xDeg + 90;
   if (zDeg > 90) {
     zDeg = 180 - zDeg;
