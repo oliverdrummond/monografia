@@ -37,6 +37,8 @@ var dispCompressorKnee = document.getElementById('dispcompressorKnee');
 var dispCompressorRatio = document.getElementById('dispcompressorRatio');
 var dispCompressorAttack = document.getElementById('dispcompressorAttack');
 var dispCompressorRelease = document.getElementById('dispcompressorRelease');
+var dispBitCrusherBits = document.getElementById('dispBitCrusherBits');
+var dispBitCrusherFrequency = document.getElementById('dispBitCrusherFrequency');
 
 //Criação do Volume do Oscilador
 var oscillatorGainNode = context.createGain();
@@ -287,8 +289,8 @@ botaoSelecionarEfeitoAudio1.onchange = function () {
 //        document.getElementById('delayFeedback').addEventListener('change', function () {
 //            pluginSlot1.delayTime.value = this.value;
 //        });
-        pluginSlot1.connect(feedback);
-        feedback.connect(pluginSlot1);
+//        pluginSlot1.connect(feedback);
+//        feedback.connect(pluginSlot1);
         //TESTES
 //        FeedbackDelayNode(context, 2, 0.5);
 //        
@@ -400,6 +402,25 @@ botaoSelecionarEfeitoAudio1.onchange = function () {
         osc.connect(pluginSlot1);
         pluginSlot1.connect(liveInputGainNode.gain);
         osc.start(0);
+        break;
+    case 6://BIT CRUSHER
+        document.getElementById('bitCrusher').style.display = 'inline';
+        window.BUFFERSIZE = 4096;
+        window.BITS = 4;
+        window.NORM_FREQUENCY = 0.1;
+        pluginSlot1 = createbitCrusher(window.BITS, window.NORM_FREQUENCY);
+        
+        document.getElementById('bitCrusherBits').addEventListener('change', function () {
+            pluginSlot1.disconnect(0);
+            liveInput.disconnect(0);
+            window.BITS = this.value;
+            pluginSlot1 = createbitCrusher(BITS, NORM_FREQUENCY);
+            liveInput.connect(pluginSlot1);
+            pluginSlot1.connect(liveInputGainNode);
+            dispBitCrusherBits.value = pluginSlot1.bits + " bits";
+        });
+        liveInput.disconnect(0);
+        break
     }
     if (parseInt(botaoSelecionarEfeitoAudio1.value, 10) != 5){
         liveInput.connect(pluginSlot1);
@@ -457,3 +478,27 @@ function hideAllParameters () {
     document.getElementById('delay').style.display = 'none';
     document.getElementById('vibrato').style.display = 'none';
 }
+
+function createbitCrusher(bits, normfreq) {
+    var scriptProcessor = context.createScriptProcessor(window.BUFFERSIZE, 1, 1);
+    scriptProcessor.bits = bits ;
+    scriptProcessor.normfreq = normfreq;
+    var step = Math.pow(1/2, scriptProcessor.bits);
+    var phaser = 0;
+    var last = 0;
+
+    scriptProcessor.onaudioprocess = function(liveInputGainNode) {
+        var input = liveInputGainNode.inputBuffer.getChannelData(0);
+        var output = liveInputGainNode.outputBuffer.getChannelData(0);
+        for (var i = 0; i < window.BUFFERSIZE; i++) {
+            phaser += scriptProcessor.normfreq;
+            if (phaser >= 1.0) {
+                phaser -= 1.0;
+                last = step * Math.floor(input[i] / step + 0.5);
+            }
+            output[i] = last;
+        }
+    };
+
+    return scriptProcessor;
+};
