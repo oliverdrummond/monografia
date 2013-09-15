@@ -39,6 +39,7 @@ var dispCompressorAttack = document.getElementById('dispcompressorAttack');
 var dispCompressorRelease = document.getElementById('dispcompressorRelease');
 var dispBitCrusherBits = document.getElementById('dispBitCrusherBits');
 var dispBitCrusherFrequency = document.getElementById('dispBitCrusherFrequency');
+var dispDelayLevel = document.getElementById('dispDelayLevel');
 
 //Criação do Volume do Oscilador
 var oscillatorGainNode = context.createGain();
@@ -278,59 +279,32 @@ botaoSelecionarEfeitoAudio1.onchange = function () {
         }
         break;
     case 1://DELAY
-        pluginSlot1 = context.createDelay(12.0);
+        delay = context.createDelay(12.0);
+        feedback = context.createGain();
+        pluginSlot1 = context.createGainNode();
+        
+        delay.delayTime.value = 0.5;
+        feedback.gain.value = 0.5;
+        pluginSlot1.gain.value = 0.5;
+        
+        liveInput.connect(delay);
+        
         document.getElementById('delay').style.display = 'inline';
         document.getElementById('delayTime').addEventListener('change', function () {
-            pluginSlot1.delayTime.value = this.value;
-            dispDelayTime.value = pluginSlot1.delayTime.value.toString().substring(0,5) + " s";
+            delay.delayTime.value = this.value;
+            dispDelayTime.value = delay.delayTime.value.toString().substring(0,5) + " s";
         });
-        feedback = context.createGain();
-        feedback.gain.value = 0.5;
-//        document.getElementById('delayFeedback').addEventListener('change', function () {
-//            pluginSlot1.delayTime.value = this.value;
-//        });
-//        pluginSlot1.connect(feedback);
-//        feedback.connect(pluginSlot1);
-        //TESTES
-//        FeedbackDelayNode(context, 2, 0.5);
-//        
-//        function FeedbackDelayNode(context, delay, feedback){
-//            this.delayTime.value = delay;
-//            this.gainNode = context.createGainNode();
-//            this.gainNode.gain.value = feedback;
-//            this.connect(this.gainNode);
-//            this.gainNode.connect(this);
-//        }
-//
-//        function FeedbackDelayFactory(context, delayTime, feedback){
-//            var delay = context.createDelayNode(delayTime + 1);
-//            FeedbackDelayNode.call(delay, context, delayTime, feedback);
-//            return delay;
-//        }
-//
-//        AudioContext.prototype.createFeedbackDelay = function(delay, feedback){
-//            return FeedbackDelayFactory(this, delay, feedback);
-//        };
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        //ATÉ AQUI
+        document.getElementById('delayLevel').addEventListener('change', function () {
+            pluginSlot1.gain.value = this.value;
+            dispDelayLevel.value = pluginSlot1.gain.value.toString().substring(0,5);
+        });
+        document.getElementById('delayFeedback').addEventListener('change', function () {
+            delay.delayTime.value = this.value;
+        });
+//        feedback.connect(delay);
+//        delay.connect(feedback);
+        delay.connect(pluginSlot1);
+        pluginSlot1.connect(liveInputGainNode);
         break;
     case 2://COMPRESSOR
         document.getElementById('compressor').style.display = 'inline';
@@ -422,7 +396,7 @@ botaoSelecionarEfeitoAudio1.onchange = function () {
         liveInput.disconnect(0);
         break
     }
-    if (parseInt(botaoSelecionarEfeitoAudio1.value, 10) != 5){
+    if (parseInt(botaoSelecionarEfeitoAudio1.value, 10) != 5 && parseInt(botaoSelecionarEfeitoAudio1.value, 10) != 1){
         liveInput.connect(pluginSlot1);
         pluginSlot1.connect(liveInputGainNode);
     }
