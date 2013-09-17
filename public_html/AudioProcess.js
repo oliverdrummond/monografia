@@ -305,6 +305,54 @@ botaoSelecionarEfeitoAudio1.onchange = function () {
 //        delay.connect(feedback);
         delay.connect(pluginSlot1);
         pluginSlot1.connect(liveInputGainNode);
+        
+            
+            
+//        var SlapbackDelayNode = function(){
+//            //create the nodes we’ll use
+//            this.input = context.createGainNode();
+//            var output = context.createGainNode(),
+//                delay = context.createDelayNode(),
+//                feedback = context.createGainNode(),
+//                wetLevel = context.createGainNode();
+//
+//            //set some decent values
+//            delay.delayTime.value = 0.95; //150 ms delay
+//            feedback.gain.value = 1.5;
+//            wetLevel.gain.value = 1.5;
+//
+//            liveInput.connect(delay);
+//            liveInput.connect(output);
+//            //set up the routing
+//            this.input.connect(delay);
+//            this.input.connect(output);
+//            delay.connect(feedback);
+//            delay.connect(wetLevel);
+//            feedback.connect(delay);
+//            wetLevel.connect(output);
+//                window.alert("blablabla");
+//
+//            this.connect = function(target){
+//               output.connect(target);
+//            };
+//        };
+//        
+//            SlapbackDelayNode();
+//        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         break;
     case 2://COMPRESSOR
         document.getElementById('compressor').style.display = 'inline';
@@ -399,6 +447,7 @@ botaoSelecionarEfeitoAudio1.onchange = function () {
     if (parseInt(botaoSelecionarEfeitoAudio1.value, 10) != 5 && parseInt(botaoSelecionarEfeitoAudio1.value, 10) != 1){
         liveInput.connect(pluginSlot1);
         pluginSlot1.connect(liveInputGainNode);
+        window.alert("Entrei no IF!!");
     }
 };
 
