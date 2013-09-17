@@ -40,6 +40,7 @@ var dispCompressorRelease = document.getElementById('dispcompressorRelease');
 var dispBitCrusherBits = document.getElementById('dispBitCrusherBits');
 var dispBitCrusherFrequency = document.getElementById('dispBitCrusherFrequency');
 var dispDelayLevel = document.getElementById('dispDelayLevel');
+var dispDelayFeedback = document.getElementById('dispDelayFeedback');
 
 //Criação do Volume do Oscilador
 var oscillatorGainNode = context.createGain();
@@ -106,12 +107,11 @@ botaoTocarSemSustain.onmousedown = function () {
     oscillatorOne.frequency.value = frequencia;
     oscillatorOne.start(0);
     oscillatorOne.connect(oscillatorGainNode);
-}
+};
 
 botaoTocarSemSustain.onmouseup = function () {
     oscillatorOne.stop(0);
-}
-
+};
 
 
 //Aumentar um semitom no oscilador
@@ -299,61 +299,14 @@ botaoSelecionarEfeitoAudio1.onchange = function () {
             dispDelayLevel.value = pluginSlot1.gain.value.toString().substring(0,5);
         });
         document.getElementById('delayFeedback').addEventListener('change', function () {
-            delay.delayTime.value = this.value;
+            feedback.gain.value = this.value;
+            dispDelayFeedback.value = feedback.gain.value.toString().substring(0,5);
         });
         feedback.connect(delay);
         delay.connect(feedback);
         delay.connect(pluginSlot1);
 //        pluginSlot1.connect(liveInputGainNode);//ASSIM DÁ CRASH
         pluginSlot1.connect(context.destination);//ASSIM FUNCIONA
-        
-            
-            
-//        var SlapbackDelayNode = function(){
-//            //create the nodes we’ll use
-//            this.input = context.createGainNode();
-//            var output = context.createGainNode(),
-//                delay = context.createDelayNode(),
-//                feedback = context.createGainNode(),
-//                wetLevel = context.createGainNode();
-//
-//            //set some decent values
-//            delay.delayTime.value = 0.95; //150 ms delay
-//            feedback.gain.value = 1.5;
-//            wetLevel.gain.value = 1.5;
-//
-//            liveInput.connect(delay);
-//            liveInput.connect(output);
-//            //set up the routing
-//            this.input.connect(delay);
-//            this.input.connect(output);
-//            delay.connect(feedback);
-//            delay.connect(wetLevel);
-//            feedback.connect(delay);
-//            wetLevel.connect(output);
-//                window.alert("blablabla");
-//
-//            this.connect = function(target){
-//               output.connect(target);
-//            };
-//        };
-//        
-//            SlapbackDelayNode();
-//        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
         break;
     case 2://COMPRESSOR
         document.getElementById('compressor').style.display = 'inline';
