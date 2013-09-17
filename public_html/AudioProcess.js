@@ -301,10 +301,11 @@ botaoSelecionarEfeitoAudio1.onchange = function () {
         document.getElementById('delayFeedback').addEventListener('change', function () {
             delay.delayTime.value = this.value;
         });
-//        feedback.connect(delay);
-//        delay.connect(feedback);
+        feedback.connect(delay);
+        delay.connect(feedback);
         delay.connect(pluginSlot1);
-        pluginSlot1.connect(liveInputGainNode);
+//        pluginSlot1.connect(liveInputGainNode);//ASSIM DÁ CRASH
+        pluginSlot1.connect(context.destination);//ASSIM FUNCIONA
         
             
             
