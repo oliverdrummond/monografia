@@ -41,6 +41,8 @@ var dispBitCrusherBits = document.getElementById('dispBitCrusherBits');
 var dispBitCrusherFrequency = document.getElementById('dispBitCrusherFrequency');
 var dispDelayLevel = document.getElementById('dispDelayLevel');
 var dispDelayFeedback = document.getElementById('dispDelayFeedback');
+var dispReverbMix = document.getElementById('dispReverbMix');
+
 
 //Criação do Volume do Oscilador
 var oscillatorGainNode = context.createGain();
@@ -397,11 +399,26 @@ botaoSelecionarEfeitoAudio1.onchange = function () {
         });
         liveInput.disconnect(0);
         break
+    case 7://REVERB
+        reverbLevel = context.createGain();
+        reverbLevel.gain.value = 0.5;
+        document.getElementById('reverb').style.display = 'inline';
+        document.getElementById('reverbMix').addEventListener('change', function () {
+            reverbLevel.gain.value = this.value;
+            dispReverbMix.value = (reverbLevel.gain.value * 100).toString().substring(0,5) + "%";
+        });
+        pluginSlot1 = context.createConvolver();
+        createReverb("cathedral.wav");
+        document.getElementById('reverbType').addEventListener('change', function () {
+            pluginSlot1.disconnect(0);
+            liveInput.disconnect(0);
+            createReverb(this.value);
+        });
+        break
     }
-    if (parseInt(botaoSelecionarEfeitoAudio1.value, 10) != 5 && parseInt(botaoSelecionarEfeitoAudio1.value, 10) != 1){
+    if (parseInt(botaoSelecionarEfeitoAudio1.value, 10) != 5 && parseInt(botaoSelecionarEfeitoAudio1.value, 10) != 1 && parseInt(botaoSelecionarEfeitoAudio1.value, 10) != 7){
         liveInput.connect(pluginSlot1);
         pluginSlot1.connect(liveInputGainNode);
-        window.alert("Entrei no IF!!");
     }
 };
 
@@ -476,6 +493,19 @@ function createbitCrusher(bits, normfreq) {
             output[i] = last;
         }
     };
-
     return scriptProcessor;
 };
+
+function createReverb(type) {
+    var pluginSlot1 = context.createConvolver();
+    var request = new XMLHttpRequest();
+    request.open("GET", "impulses/" + type, true);
+    request.responseType = "arraybuffer";
+    request.onload = function () {
+      pluginSlot1.buffer = context.createBuffer(request.response, false);
+    }
+    request.send();
+    liveInput.connect(pluginSlot1);
+    pluginSlot1.connect(reverbLevel);
+    reverbLevel.connect(liveInputGainNode);
+}
