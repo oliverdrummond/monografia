@@ -14,3 +14,8 @@
   background: green;
   -webkit-transition: all ease-out 0.250s;
 }
+
+
+body {
+    background-image: -webkit-radial-gradient(right top, circle farthest-corner, #95ADBF 0%, #070A0A 200%);
+}
