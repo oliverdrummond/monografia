@@ -15,7 +15,10 @@
   -webkit-transition: all ease-out 0.250s;
 }
 
-
 body {
-    background-image: -webkit-radial-gradient(right top, circle farthest-corner, #95ADBF 0%, #070A0A 200%);
+    background-image: -webkit-linear-gradient(top left, #FFFFFF 0%, #085E2E 100%);
+}
+
+button {
+    /*background: url("images/record.png");*/     
 }
