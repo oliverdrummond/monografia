@@ -12,7 +12,6 @@ var Gravador = function () {
                 var url = URL.createObjectURL(blob);
                 var li = document.createElement('li');
                 var hf = document.createElement('a');
-                //TODO separar isso daqui
                 audio.src = url;
                 hf.href = url;
                 hf.download = 'Arquivo1.wav';
