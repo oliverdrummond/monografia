@@ -178,6 +178,19 @@ function checkKey(e) {
 
 document.onkeydown = checkKey;
 
+function checkKeyUp(e) {
+    e = e || window.event;
+    if (e.keyCode == '37') {
+        oscillatorOne.stop(0);
+    }else if (e.keyCode == '38') {
+        oscillatorTwo.stop(0);
+    }else if (e.keyCode == '39') {
+        oscillatorThree.start(0);
+    }
+}
+
+document.onkeyup = checkKeyUp;
+
 //Ligar Delay
 botaoLigarDelay.disabled = true;
 botaoLigarDelay.onclick = function () {
