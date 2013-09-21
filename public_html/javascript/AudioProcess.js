@@ -152,6 +152,32 @@ botaoDiminuirFreq.onclick = function () {
     quantosSemitons();
 };
 
+
+function checkKey(e) {
+    e = e || window.event;
+    if (e.keyCode == '37') {
+        oscillatorOne = context.createOscillator();
+        oscillatorOne.type = parseInt(botaoSelecionarTipoOnda.value, 10);
+        oscillatorOne.frequency.value = frequencia;
+        oscillatorOne.start(0);
+        oscillatorOne.connect(oscillatorGainNode);
+    }else if (e.keyCode == '38') {
+        oscillatorTwo = context.createOscillator();
+        oscillatorTwo.type = parseInt(botaoSelecionarTipoOnda.value, 10);
+        oscillatorTwo.frequency.value = frequencia * (Math.pow(2, 4 / 12));;
+        oscillatorTwo.start(0);
+        oscillatorTwo.connect(oscillatorGainNode);
+    }else if (e.keyCode == '39') {
+        oscillatorThree = context.createOscillator();
+        oscillatorThree.type = parseInt(botaoSelecionarTipoOnda.value, 10);
+        oscillatorThree.frequency.value = frequencia * (Math.pow(2, 7 / 12));
+        oscillatorThree.start(0);
+        oscillatorThree.connect(oscillatorGainNode);
+    }
+}
+
+document.onkeydown = checkKey;
+
 //Ligar Delay
 botaoLigarDelay.disabled = true;
 botaoLigarDelay.onclick = function () {
