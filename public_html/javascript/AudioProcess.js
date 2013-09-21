@@ -76,6 +76,9 @@ dispDelayTime.value = 0;
 
 //Ligar o oscilador
 var oscillatorOne;
+var oscillatorTwo;
+var oscillatorThree;
+
 botaoLigar.onclick = function () {
     botaoLigar.disabled = true;
     botaoTocarSemSustain.disabled = true;
@@ -103,16 +106,29 @@ botaoDesligar.onclick = function () {
     oscillatorOne.stop(0);
 };
 
+//TOCAR UMA ÚNICA NOTA
 botaoTocarSemSustain.onmousedown = function () {
     oscillatorOne = context.createOscillator();
+    oscillatorTwo = context.createOscillator();
+    oscillatorThree = context.createOscillator();
     oscillatorOne.type = parseInt(botaoSelecionarTipoOnda.value, 10);
+    oscillatorTwo.type = parseInt(botaoSelecionarTipoOnda.value, 10);
+    oscillatorThree.type = parseInt(botaoSelecionarTipoOnda.value, 10);
     oscillatorOne.frequency.value = frequencia;
+    oscillatorTwo.frequency.value = frequencia * (Math.pow(2, 4 / 12));
+    oscillatorThree.frequency.value = frequencia * (Math.pow(2, 7 / 12));
     oscillatorOne.start(0);
+    oscillatorTwo.start(0);
+    oscillatorThree.start(0);
     oscillatorOne.connect(oscillatorGainNode);
+    oscillatorTwo.connect(oscillatorGainNode);
+    oscillatorThree.connect(oscillatorGainNode);
 };
 
 botaoTocarSemSustain.onmouseup = function () {
     oscillatorOne.stop(0);
+    oscillatorTwo.stop(0);
+    oscillatorThree.stop(0);
 };
 
 
