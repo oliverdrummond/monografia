@@ -507,19 +507,22 @@ function setupCanvas() {
     webkitRequestAnimationFrame(update); 
 } 
 
-var samples =128;
+var samples =1024;
 
 function update() { 
     webkitRequestAnimationFrame(update); 
     if(!setupCanvas) return; 
     gfx.clearRect(0,0,800,600); 
-    gfx.fillStyle = 'gray'; 
+    gfx.fillStyle = 'black'; 
     gfx.fillRect(0,0,800,600); 
      
     var data = new Uint8Array(samples); 
-    analyser.getByteFrequencyData(frequencyDomain); 
-    gfx.fillStyle = 'red'; 
+    analyser.getByteFrequencyData(data); 
+    
     for(var i=0; i<data.length; i++) { 
+        var hue = i/analyser.frequencyBinCount * 360;
+        gfx.fillStyle = 'hsl(' + hue + ', 100%, 50%)';
+//        gfx.fillStyle = 'red'; 
         gfx.fillRect(100+i*4,100+256-data[i]*2,3,100); 
     } 
      
