@@ -505,7 +505,7 @@ botaoAbrirAnalizer.onclick = function () {
             },10);
         }
         var drawInCanvas; 
-        var HEIGHT = 800;
+        var HEIGHT = 600;
         var WIDTH = 600;
 
         setupCanvas();
