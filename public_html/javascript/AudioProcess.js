@@ -477,15 +477,11 @@ botaoSelecionarEfeitoAudio1.onchange = function () {
 //ANALYZER NODE
 var analyser = context.createAnalyser();
 var frequencyDomain;
-analyser.fftSize = 2048;
+analyser.fftSize = 512;
 analyser.minDecibels = -140;
 analyser.maxDecibels = 0;
 analyser.smoothingTimeConstant = 0.8;
 liveInputGainNode.connect(analyser);
-console.log("Criado analyser");
-console.log("FFT Size - " + analyser.fftSize);
-console.log("Max Decibels - " + analyser.maxDecibels);
-console.log("Smoothing TimeConstant - " + analyser.smoothingTimeConstant);
 process();
 function process(){
     setInterval(function(){
@@ -499,32 +495,56 @@ function process(){
 
 
 
-var gfx; 
+var drawInCanvas; 
+var HEIGHT = 800;
+var WIDTH = 600;
+
 setupCanvas();
+
 function setupCanvas() { 
-    var canvas = document.getElementById('canvas'); 
-    gfx = canvas.getContext('2d'); 
+    var canvas = document.getElementById('canvas');
+    canvas.width = WIDTH;
+    canvas.height = HEIGHT;
+    drawInCanvas = canvas.getContext('2d'); 
     webkitRequestAnimationFrame(update); 
 } 
 
 var samples = analyser.fftSize;
+var freqs = new Uint8Array(analyser.frequencyBinCount);
 
 function update() { 
     webkitRequestAnimationFrame(update); 
     if(!setupCanvas) return; 
-    gfx.clearRect(0,0,1800,600); 
-    gfx.fillStyle = 'black'; 
-    gfx.fillRect(0,0,1800,600); 
+    drawInCanvas.clearRect(0,0,1800,600); 
+    drawInCanvas.fillStyle = 'black'; 
+    drawInCanvas.fillRect(0,0,1800,600); 
      
-    var data = new Uint8Array(samples); 
+    var data = new Uint8Array(samples);     
+//    var data = new Uint8Array(analyser.frequencyBinCount);
     analyser.getByteFrequencyData(data); 
     
     for(var i=0; i<data.length; i++) { 
+        //ESSE FUNCIONA
+//        var hue = i/analyser.frequencyBinCount * 360;
+//        drawInCanvas.fillStyle = 'hsl(' + hue + ', 100%, 50%)';
+////        drawInCanvas.fillRect(100+i*4,100+256-data[i]*2,3,200);
+//        drawInCanvas.fillRect(i*4,100+256-data[i]*2,3,200);
+        
+        //ESSE ESTÁ COM ERRO NO FREQS, MAS SE DEIXAR O HEIGHT CONFIGURADO NA MÀO NO FILLRECT, ELE FUNCIONA
+        var value = freqs[i];
+        var percent = value / 256;
+        var height = HEIGHT * percent;
+        var offset = HEIGHT - height - 1;
+        var barWidth = WIDTH/analyser.frequencyBinCount;
         var hue = i/analyser.frequencyBinCount * 360;
-        console.log(hue);
-        gfx.fillStyle = 'hsl(' + hue + ', 100%, 50%)';
-//        gfx.fillRect(100+i*4,100+256-data[i]*2,3,200);
-        gfx.fillRect(i*4,100+256-data[i]*2,3,200);
+        drawInCanvas.fillStyle = 'hsl(' + hue + ', 100%, 50%)';
+//        drawInCanvas.fillRect(i * barWidth, offset, barWidth, height);
+//        drawInCanvas.fillRect(i*barWidth,100+256-data[i]*2,barWidth,height);//Não Funciona
+        drawInCanvas.fillRect(i*barWidth,100+256-data[i]*2,barWidth,200);//Funciona
+
+        
+        
+        
     } 
      
 } 
