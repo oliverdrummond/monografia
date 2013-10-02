@@ -261,10 +261,6 @@ document.getElementById('panLiveInput').addEventListener('change', function () {
   dispPanPositionLiveInput.value = range;
 });
 
-
-//ANALYZER NODE
-//DEIXEI TUDO NO VISUALIZER SAMPLE.JS
-
 //CONEXÕES DOS AUDIO NODES
 liveInputGainNode.connect(liveInputGrave);
 liveInputGrave.connect(liveInputMedio);
@@ -476,6 +472,78 @@ botaoSelecionarEfeitoAudio1.onchange = function () {
         pluginSlot1.connect(liveInputGainNode);
     }
 };
+
+
+//ANALYZER NODE
+var analyser = context.createAnalyser();
+var frequencyDomain;
+analyser.fftSize = 2048;
+analyser.minDecibels = -140;
+analyser.maxDecibels = 0;
+analyser.smoothingTimeConstant = 0;
+liveInputGainNode.connect(analyser);
+console.log("Criado analyser");
+console.log("FFT Size - " + analyser.fftSize);
+console.log("Max Decibels - " + analyser.maxDecibels);
+console.log("Smoothing TimeConstant - " + analyser.smoothingTimeConstant);
+process();
+function process(){
+    setInterval(function(){
+        frequencyDomain = new Float32Array(analyser.frequencyBinCount);
+        analyser.getFloatFrequencyData(frequencyDomain);
+//        console.log("Dados sendo mostrados");
+//        console.log("0 - " + frequencyDomain[0] + frequencyDomain.length + frequencyDomain[frequencyDomain.length-1]);
+//        console.log("Index de 440 é "+ getFrequencyValue(440));
+    },10);
+}
+
+
+
+var gfx; 
+setupCanvas();
+function setupCanvas() { 
+    var canvas = document.getElementById('canvas'); 
+    gfx = canvas.getContext('2d'); 
+    webkitRequestAnimationFrame(update); 
+} 
+
+var samples =128;
+
+function update() { 
+    webkitRequestAnimationFrame(update); 
+    if(!setupCanvas) return; 
+    gfx.clearRect(0,0,800,600); 
+    gfx.fillStyle = 'gray'; 
+    gfx.fillRect(0,0,800,600); 
+     
+    var data = new Uint8Array(samples); 
+    analyser.getByteFrequencyData(frequencyDomain); 
+    gfx.fillStyle = 'red'; 
+    for(var i=0; i<data.length; i++) { 
+        gfx.fillRect(100+i*4,100+256-data[i]*2,3,100); 
+    } 
+     
+} 
+
+
+
+
+//ANIMAÇÃO DO ANALYZER NODE
+
+//var freqDomain = new Uint8Array(analyser.frequencyBinCount);
+//analyser.getByteFrequencyData(freqDomain);
+//for (var i = 0; i < analyser.frequencyBinCount; i++) {
+//  var value = freqDomain[i];
+//  var percent = value / 256;
+//  var height = HEIGHT * percent;
+//  var offset = HEIGHT - height - 1;
+//  var barWidth = WIDTH/analyser.frequencyBinCount;
+//  var hue = i/analyser.frequencyBinCount * 360;
+//  drawContext.fillStyle = 'hsl(' + hue + ', 100%, 50%)';
+//  drawContext.fillRect(i * barWidth, offset, barWidth, height);
+//}
+
+//ANALIZER NODE ATÉ AQUI
 
 function quantosSemitons() {
     var NOTES = {0: "A", 1: "A#", 2: "B", 3: "C", 4: "C#", 5: "D", 6: "D#", 7: "E", 8: "F", 9: "F#", 10: "G", 11: "G#"},
