@@ -480,7 +480,7 @@ var frequencyDomain;
 analyser.fftSize = 2048;
 analyser.minDecibels = -140;
 analyser.maxDecibels = 0;
-analyser.smoothingTimeConstant = 0;
+analyser.smoothingTimeConstant = 0.8;
 liveInputGainNode.connect(analyser);
 console.log("Criado analyser");
 console.log("FFT Size - " + analyser.fftSize);
@@ -507,23 +507,24 @@ function setupCanvas() {
     webkitRequestAnimationFrame(update); 
 } 
 
-var samples =1024;
+var samples = analyser.fftSize;
 
 function update() { 
     webkitRequestAnimationFrame(update); 
     if(!setupCanvas) return; 
-    gfx.clearRect(0,0,800,600); 
+    gfx.clearRect(0,0,1800,600); 
     gfx.fillStyle = 'black'; 
-    gfx.fillRect(0,0,800,600); 
+    gfx.fillRect(0,0,1800,600); 
      
     var data = new Uint8Array(samples); 
     analyser.getByteFrequencyData(data); 
     
     for(var i=0; i<data.length; i++) { 
         var hue = i/analyser.frequencyBinCount * 360;
+        console.log(hue);
         gfx.fillStyle = 'hsl(' + hue + ', 100%, 50%)';
-//        gfx.fillStyle = 'red'; 
-        gfx.fillRect(100+i*4,100+256-data[i]*2,3,100); 
+//        gfx.fillRect(100+i*4,100+256-data[i]*2,3,200);
+        gfx.fillRect(i*4,100+256-data[i]*2,3,200);
     } 
      
 } 
