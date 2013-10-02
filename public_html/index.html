@@ -56,6 +56,12 @@
                 <button id="bPararGravacao">Parar Gravação</button>
             </td>
             <td>
+                <button id="bAbrirAnalizer">Abrir Analisador de Espectro</button>
+            </td>
+            <td>
+                <button id="bFecharAnalizer" style="display:none;">Fechar Analisador de Espectro</button>
+            </td>
+            <td>
                 <input id="dispGravando" type="text" STYLE="background-color: #FFFFFF;" size="1" maxlength="30">
             </td>
         </tr>
@@ -183,7 +189,7 @@
                 <input id="dispPanPositionLiveInput" type="text" size="10" readonly=""/>
             </div>
         </tr>
-        <div> <canvas id="canvas" width="1800px" height="600px"></canvas></div>
+        <div> <canvas id="canvas" width="1800px" height="600px" style="display:none;"></canvas></div>
         <tr id="linkPlaceholder">
         </tr>
     </table>

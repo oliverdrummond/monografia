@@ -24,6 +24,8 @@ var botaoSelecionarEfeitoAudio1 = document.getElementById("bEfeitoAudio1");
 var botaoSelecionarEfeitoAudio2 = document.getElementById("bEfeitoAudio2");
 var botaoSelecionarEfeitoAudio3 = document.getElementById("bEfeitoAudio3");
 var botaoSelecionarEfeitoAudio4 = document.getElementById("bEfeitoAudio4");
+var botaoAbrirAnalizer = document.getElementById("bAbrirAnalizer");
+var botaoFecharAnalizer = document.getElementById("bFecharAnalizer");
 
 //CRIAÇÃO DOS DISPLAYS
 var campoNotaOscilador = document.getElementById("dispNotaOscilador");
@@ -475,99 +477,99 @@ botaoSelecionarEfeitoAudio1.onchange = function () {
 
 
 //ANALYZER NODE
-var analyser = context.createAnalyser();
-var frequencyDomain;
-analyser.fftSize = 512;
-analyser.minDecibels = -140;
-analyser.maxDecibels = 0;
-analyser.smoothingTimeConstant = 0.8;
-liveInputGainNode.connect(analyser);
-process();
-function process(){
-    setInterval(function(){
-        frequencyDomain = new Float32Array(analyser.frequencyBinCount);
-        analyser.getFloatFrequencyData(frequencyDomain);
-//        console.log("Dados sendo mostrados");
-//        console.log("0 - " + frequencyDomain[0] + frequencyDomain.length + frequencyDomain[frequencyDomain.length-1]);
-//        console.log("Index de 440 é "+ getFrequencyValue(440));
-    },10);
+botaoFecharAnalizer.onclick = function () {
+    document.getElementById('canvas').style.display = 'none';
+    document.getElementById('bAbrirAnalizer').style.display = 'inline';
+    document.getElementById('bFecharAnalizer').style.display = 'none';
+};
+
+botaoAbrirAnalizer.onclick = function () {
+    document.getElementById('canvas').style.display = 'inline';
+    document.getElementById('bAbrirAnalizer').style.display = 'none';
+    document.getElementById('bFecharAnalizer').style.display = 'inline';
+    var analyser = context.createAnalyser();
+        var frequencyDomain;
+        analyser.fftSize = 512;
+        analyser.minDecibels = -140;
+        analyser.maxDecibels = 0;
+        analyser.smoothingTimeConstant = 0.8;
+        liveInputGainNode.connect(analyser);
+        process();
+        function process(){
+            setInterval(function(){
+                frequencyDomain = new Float32Array(analyser.frequencyBinCount);
+                analyser.getFloatFrequencyData(frequencyDomain);
+        //        console.log("Dados sendo mostrados");
+        //        console.log("0 - " + frequencyDomain[0] + frequencyDomain.length + frequencyDomain[frequencyDomain.length-1]);
+        //        console.log("Index de 440 é "+ getFrequencyValue(440));
+            },10);
+        }
+        var drawInCanvas; 
+        var HEIGHT = 800;
+        var WIDTH = 600;
+
+        setupCanvas();
+
+        function setupCanvas() { 
+            var canvas = document.getElementById('canvas');
+            canvas.width = WIDTH;
+            canvas.height = HEIGHT;
+            drawInCanvas = canvas.getContext('2d'); 
+            webkitRequestAnimationFrame(update); 
+        } 
+
+        var samples = analyser.fftSize;
+        var freqs = new Uint8Array(analyser.frequencyBinCount);
+
+        function update() { 
+            webkitRequestAnimationFrame(update); 
+            if(!setupCanvas) return; 
+            drawInCanvas.clearRect(0,0,1800,600); 
+            drawInCanvas.fillStyle = 'black'; 
+            drawInCanvas.fillRect(0,0,1800,600); 
+
+            var data = new Uint8Array(samples);     
+        //    var data = new Uint8Array(analyser.frequencyBinCount);
+            analyser.getByteFrequencyData(data); 
+
+            for(var i=0; i<data.length; i++) { 
+                //ESSE FUNCIONA
+        //        var hue = i/analyser.frequencyBinCount * 360;
+        //        drawInCanvas.fillStyle = 'hsl(' + hue + ', 100%, 50%)';
+        ////        drawInCanvas.fillRect(100+i*4,100+256-data[i]*2,3,200);
+        //        drawInCanvas.fillRect(i*4,100+256-data[i]*2,3,200);
+
+                //ESSE ESTÁ COM ERRO NO FREQS, MAS SE DEIXAR O HEIGHT CONFIGURADO NA MÀO NO FILLRECT, ELE FUNCIONA
+                var value = freqs[i];
+                var percent = value / 256;
+                var height = HEIGHT * percent;
+                var offset = HEIGHT - height - 1;
+                var barWidth = WIDTH/analyser.frequencyBinCount;
+                var hue = i/analyser.frequencyBinCount * 360;
+                drawInCanvas.fillStyle = 'hsl(' + hue + ', 100%, 50%)';
+        //        drawInCanvas.fillRect(i * barWidth, offset, barWidth, height);
+        //        drawInCanvas.fillRect(i*barWidth,100+256-data[i]*2,barWidth,height);//Não Funciona
+                drawInCanvas.fillRect(i*barWidth,100+256-data[i]*2,barWidth,200);//Funciona
+            } 
+        } 
+
+        //ANIMAÇÃO DO ANALYZER NODE
+
+        //var freqDomain = new Uint8Array(analyser.frequencyBinCount);
+        //analyser.getByteFrequencyData(freqDomain);
+        //for (var i = 0; i < analyser.frequencyBinCount; i++) {
+        //  var value = freqDomain[i];
+        //  var percent = value / 256;
+        //  var height = HEIGHT * percent;
+        //  var offset = HEIGHT - height - 1;
+        //  var barWidth = WIDTH/analyser.frequencyBinCount;
+        //  var hue = i/analyser.frequencyBinCount * 360;
+        //  drawContext.fillStyle = 'hsl(' + hue + ', 100%, 50%)';
+        //  drawContext.fillRect(i * barWidth, offset, barWidth, height);
+        //}
+
+        //ANALIZER NODE ATÉ AQUI
 }
-
-
-
-var drawInCanvas; 
-var HEIGHT = 800;
-var WIDTH = 600;
-
-setupCanvas();
-
-function setupCanvas() { 
-    var canvas = document.getElementById('canvas');
-    canvas.width = WIDTH;
-    canvas.height = HEIGHT;
-    drawInCanvas = canvas.getContext('2d'); 
-    webkitRequestAnimationFrame(update); 
-} 
-
-var samples = analyser.fftSize;
-var freqs = new Uint8Array(analyser.frequencyBinCount);
-
-function update() { 
-    webkitRequestAnimationFrame(update); 
-    if(!setupCanvas) return; 
-    drawInCanvas.clearRect(0,0,1800,600); 
-    drawInCanvas.fillStyle = 'black'; 
-    drawInCanvas.fillRect(0,0,1800,600); 
-     
-    var data = new Uint8Array(samples);     
-//    var data = new Uint8Array(analyser.frequencyBinCount);
-    analyser.getByteFrequencyData(data); 
-    
-    for(var i=0; i<data.length; i++) { 
-        //ESSE FUNCIONA
-//        var hue = i/analyser.frequencyBinCount * 360;
-//        drawInCanvas.fillStyle = 'hsl(' + hue + ', 100%, 50%)';
-////        drawInCanvas.fillRect(100+i*4,100+256-data[i]*2,3,200);
-//        drawInCanvas.fillRect(i*4,100+256-data[i]*2,3,200);
-        
-        //ESSE ESTÁ COM ERRO NO FREQS, MAS SE DEIXAR O HEIGHT CONFIGURADO NA MÀO NO FILLRECT, ELE FUNCIONA
-        var value = freqs[i];
-        var percent = value / 256;
-        var height = HEIGHT * percent;
-        var offset = HEIGHT - height - 1;
-        var barWidth = WIDTH/analyser.frequencyBinCount;
-        var hue = i/analyser.frequencyBinCount * 360;
-        drawInCanvas.fillStyle = 'hsl(' + hue + ', 100%, 50%)';
-//        drawInCanvas.fillRect(i * barWidth, offset, barWidth, height);
-//        drawInCanvas.fillRect(i*barWidth,100+256-data[i]*2,barWidth,height);//Não Funciona
-        drawInCanvas.fillRect(i*barWidth,100+256-data[i]*2,barWidth,200);//Funciona
-
-        
-        
-        
-    } 
-     
-} 
-
-
-
-
-//ANIMAÇÃO DO ANALYZER NODE
-
-//var freqDomain = new Uint8Array(analyser.frequencyBinCount);
-//analyser.getByteFrequencyData(freqDomain);
-//for (var i = 0; i < analyser.frequencyBinCount; i++) {
-//  var value = freqDomain[i];
-//  var percent = value / 256;
-//  var height = HEIGHT * percent;
-//  var offset = HEIGHT - height - 1;
-//  var barWidth = WIDTH/analyser.frequencyBinCount;
-//  var hue = i/analyser.frequencyBinCount * 360;
-//  drawContext.fillStyle = 'hsl(' + hue + ', 100%, 50%)';
-//  drawContext.fillRect(i * barWidth, offset, barWidth, height);
-//}
-
-//ANALIZER NODE ATÉ AQUI
 
 function quantosSemitons() {
     var NOTES = {0: "A", 1: "A#", 2: "B", 3: "C", 4: "C#", 5: "D", 6: "D#", 7: "E", 8: "F", 9: "F#", 10: "G", 11: "G#"},
