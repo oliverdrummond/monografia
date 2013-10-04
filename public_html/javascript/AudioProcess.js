@@ -69,9 +69,6 @@ botaoPararGravacao.disabled = true;
 botaoDesligarLiveInput.disabled = true;
 botaoDesligar.disabled = true;
 botaoSelecionarEfeitoAudio1.disabled = true;
-botaoSelecionarEfeitoAudio2.disabled = true;
-botaoSelecionarEfeitoAudio3.disabled = true;
-botaoSelecionarEfeitoAudio4.disabled = true;
 dispPanPositionLiveInput.value = 0;
 dispDelayTime.value = 0;
 
@@ -278,9 +275,6 @@ botaoLigarLiveInput.onclick = function () {
     botaoLigarLiveInput.disabled = true;
     botaoIniciarGravacao.disabled = false;
     botaoSelecionarEfeitoAudio1.disabled = false;
-    botaoSelecionarEfeitoAudio2.disabled = false;
-    botaoSelecionarEfeitoAudio3.disabled = false;
-    botaoSelecionarEfeitoAudio4.disabled = false;
     function gotStream(stream) {
         liveInput = context.createMediaStreamSource(stream);
         liveInput.connect(liveInputGainNode);
@@ -414,10 +408,10 @@ botaoSelecionarEfeitoAudio1.onchange = function () {
         liveInput.disconnect(0);
         break;
     case 4://DISTORÇÃO
-        pluginSlot1 = context.createWaveShaper();
-        pluginSlot1.curve = this.createWSCurve(ND.dist, this.nSamples);
-        pluginSlot1.oversample = "4x";
-        liveInput.disconnect(0);
+//        pluginSlot1 = context.createWaveShaper();
+//        pluginSlot1.curve = this.createWSCurve(ND.dist, this.nSamples);
+//        pluginSlot1.oversample = "4x";
+//        liveInput.disconnect(0);
         break;
     case 5://VIBRATO
         document.getElementById('vibrato').style.display = 'inline';
@@ -481,94 +475,97 @@ botaoFecharAnalizer.onclick = function () {
     document.getElementById('canvas').style.display = 'none';
     document.getElementById('bAbrirAnalizer').style.display = 'inline';
     document.getElementById('bFecharAnalizer').style.display = 'none';
+    analyser.disconnect(0);
 };
+
+var analyser;
 
 botaoAbrirAnalizer.onclick = function () {
     document.getElementById('canvas').style.display = 'inline';
     document.getElementById('bAbrirAnalizer').style.display = 'none';
     document.getElementById('bFecharAnalizer').style.display = 'inline';
-    var analyser = context.createAnalyser();
-        var frequencyDomain;
-        analyser.fftSize = 512;
-        analyser.minDecibels = -140;
-        analyser.maxDecibels = 0;
-        analyser.smoothingTimeConstant = 0.8;
-        liveInputGainNode.connect(analyser);
-        process();
-        function process(){
-            setInterval(function(){
-                frequencyDomain = new Float32Array(analyser.frequencyBinCount);
-                analyser.getFloatFrequencyData(frequencyDomain);
-        //        console.log("Dados sendo mostrados");
-        //        console.log("0 - " + frequencyDomain[0] + frequencyDomain.length + frequencyDomain[frequencyDomain.length-1]);
-        //        console.log("Index de 440 é "+ getFrequencyValue(440));
-            },10);
-        }
-        var drawInCanvas; 
-        var HEIGHT = 600;
-        var WIDTH = 600;
+    analyser = context.createAnalyser();
+    var frequencyDomain;
+    analyser.fftSize = 512;
+    analyser.minDecibels = -140;
+    analyser.maxDecibels = 0;
+    analyser.smoothingTimeConstant = 0.8;
+    liveInputGainNode.connect(analyser);
+    process();
+    function process(){
+        setInterval(function(){
+            frequencyDomain = new Float32Array(analyser.frequencyBinCount);
+            analyser.getFloatFrequencyData(frequencyDomain);
+    //        console.log("Dados sendo mostrados");
+    //        console.log("0 - " + frequencyDomain[0] + frequencyDomain.length + frequencyDomain[frequencyDomain.length-1]);
+    //        console.log("Index de 440 é "+ getFrequencyValue(440));
+        },10);
+    }
+    var drawInCanvas; 
+    var HEIGHT = 600;
+    var WIDTH = 600;
 
-        setupCanvas();
+    setupCanvas();
 
-        function setupCanvas() { 
-            var canvas = document.getElementById('canvas');
-            canvas.width = WIDTH;
-            canvas.height = HEIGHT;
-            drawInCanvas = canvas.getContext('2d'); 
-            webkitRequestAnimationFrame(update); 
+    function setupCanvas() { 
+        var canvas = document.getElementById('canvas');
+        canvas.width = WIDTH;
+        canvas.height = HEIGHT;
+        drawInCanvas = canvas.getContext('2d'); 
+        webkitRequestAnimationFrame(update); 
+    } 
+
+    var samples = analyser.fftSize;
+    var freqs = new Uint8Array(analyser.frequencyBinCount);
+
+    function update() { 
+        webkitRequestAnimationFrame(update); 
+        if(!setupCanvas) return; 
+        drawInCanvas.clearRect(0,0,1800,600); 
+        drawInCanvas.fillStyle = 'black'; 
+        drawInCanvas.fillRect(0,0,1800,600); 
+
+        var data = new Uint8Array(samples);     
+    //    var data = new Uint8Array(analyser.frequencyBinCount);
+        analyser.getByteFrequencyData(data); 
+
+        for(var i=0; i<data.length; i++) { 
+            //ESSE FUNCIONA
+    //        var hue = i/analyser.frequencyBinCount * 360;
+    //        drawInCanvas.fillStyle = 'hsl(' + hue + ', 100%, 50%)';
+    ////        drawInCanvas.fillRect(100+i*4,100+256-data[i]*2,3,200);
+    //        drawInCanvas.fillRect(i*4,100+256-data[i]*2,3,200);
+
+            //ESSE ESTÁ COM ERRO NO FREQS, MAS SE DEIXAR O HEIGHT CONFIGURADO NA MÀO NO FILLRECT, ELE FUNCIONA
+            var value = freqs[i];
+            var percent = value / 256;
+            var height = HEIGHT * percent;
+            var offset = HEIGHT - height - 1;
+            var barWidth = WIDTH/analyser.frequencyBinCount;
+            var hue = i/analyser.frequencyBinCount * 360;
+            drawInCanvas.fillStyle = 'hsl(' + hue + ', 100%, 50%)';
+    //        drawInCanvas.fillRect(i * barWidth, offset, barWidth, height);
+    //        drawInCanvas.fillRect(i*barWidth,100+256-data[i]*2,barWidth,height);//Não Funciona
+            drawInCanvas.fillRect(i*barWidth,100+256-data[i]*2,barWidth,200);//Funciona
         } 
+    } 
 
-        var samples = analyser.fftSize;
-        var freqs = new Uint8Array(analyser.frequencyBinCount);
+    //ANIMAÇÃO DO ANALYZER NODE
 
-        function update() { 
-            webkitRequestAnimationFrame(update); 
-            if(!setupCanvas) return; 
-            drawInCanvas.clearRect(0,0,1800,600); 
-            drawInCanvas.fillStyle = 'black'; 
-            drawInCanvas.fillRect(0,0,1800,600); 
+    //var freqDomain = new Uint8Array(analyser.frequencyBinCount);
+    //analyser.getByteFrequencyData(freqDomain);
+    //for (var i = 0; i < analyser.frequencyBinCount; i++) {
+    //  var value = freqDomain[i];
+    //  var percent = value / 256;
+    //  var height = HEIGHT * percent;
+    //  var offset = HEIGHT - height - 1;
+    //  var barWidth = WIDTH/analyser.frequencyBinCount;
+    //  var hue = i/analyser.frequencyBinCount * 360;
+    //  drawContext.fillStyle = 'hsl(' + hue + ', 100%, 50%)';
+    //  drawContext.fillRect(i * barWidth, offset, barWidth, height);
+    //}
 
-            var data = new Uint8Array(samples);     
-        //    var data = new Uint8Array(analyser.frequencyBinCount);
-            analyser.getByteFrequencyData(data); 
-
-            for(var i=0; i<data.length; i++) { 
-                //ESSE FUNCIONA
-        //        var hue = i/analyser.frequencyBinCount * 360;
-        //        drawInCanvas.fillStyle = 'hsl(' + hue + ', 100%, 50%)';
-        ////        drawInCanvas.fillRect(100+i*4,100+256-data[i]*2,3,200);
-        //        drawInCanvas.fillRect(i*4,100+256-data[i]*2,3,200);
-
-                //ESSE ESTÁ COM ERRO NO FREQS, MAS SE DEIXAR O HEIGHT CONFIGURADO NA MÀO NO FILLRECT, ELE FUNCIONA
-                var value = freqs[i];
-                var percent = value / 256;
-                var height = HEIGHT * percent;
-                var offset = HEIGHT - height - 1;
-                var barWidth = WIDTH/analyser.frequencyBinCount;
-                var hue = i/analyser.frequencyBinCount * 360;
-                drawInCanvas.fillStyle = 'hsl(' + hue + ', 100%, 50%)';
-        //        drawInCanvas.fillRect(i * barWidth, offset, barWidth, height);
-        //        drawInCanvas.fillRect(i*barWidth,100+256-data[i]*2,barWidth,height);//Não Funciona
-                drawInCanvas.fillRect(i*barWidth,100+256-data[i]*2,barWidth,200);//Funciona
-            } 
-        } 
-
-        //ANIMAÇÃO DO ANALYZER NODE
-
-        //var freqDomain = new Uint8Array(analyser.frequencyBinCount);
-        //analyser.getByteFrequencyData(freqDomain);
-        //for (var i = 0; i < analyser.frequencyBinCount; i++) {
-        //  var value = freqDomain[i];
-        //  var percent = value / 256;
-        //  var height = HEIGHT * percent;
-        //  var offset = HEIGHT - height - 1;
-        //  var barWidth = WIDTH/analyser.frequencyBinCount;
-        //  var hue = i/analyser.frequencyBinCount * 360;
-        //  drawContext.fillStyle = 'hsl(' + hue + ', 100%, 50%)';
-        //  drawContext.fillRect(i * barWidth, offset, barWidth, height);
-        //}
-
-        //ANALIZER NODE ATÉ AQUI
+    //ANALIZER NODE ATÉ AQUI
 }
 
 function quantosSemitons() {

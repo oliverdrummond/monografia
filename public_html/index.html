@@ -2,83 +2,58 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>PocketStudio - Versão 0.5 - Sua Pedaleira Online</title>
+        <title>PocketStudio - Versão 0.6 - Sua Pedaleira Online</title>
         <link rel="stylesheet" type="text/css" href="style/stylesheet.css">
     </head>
     <body>
-        <h1> PocketStudio - Versão 0.5 </h1>
-    <div id="Oscilador">
-        <table>    
-            <tr>
-                <td colspan="10">Oscilador</td>
-            </tr>
-            <tr>
-                <td><button id="bLigar">Ligar o oscilador</button></td>
-                <td><button id="bDesligar">Desligar o oscilador</button></td>
-                <td><button id="bTocarSemSustain">Tocar uma nota</button></td>
-                <td><select id="bTipoOnda">
-                        <option value="0"> Onda Senóide </option>
-                        <option value="1"> Onda Quadrada </option>
-                        <option value="2"> Onda Dente de Serra </option>
-                        <option value="3"> Onda Triangular </option>
-                    </select>
-                <td><button id="bAumentarFreq">+ Semitom</button></td>
-                <td><button id="bDiminuirFreq">- Semitom</button></td>
-                <td><input id="dispFrequenciaOscilador" type="text" size="10" readonly="" /></td>
-                <td><input id="dispNotaOscilador" type="text" value="A" size="1" readonly="" /></td>
-                <td><button id="bLigarDelay">Ligar Delay</button></td>
-                <td><button id="bDesligarDelay">Desligar Delay</button></td>
-            </tr>
-            <tr>
-                <td colspan="10">
-                    Volume <input id="volumeOscilador" type="range" min="0" max="1" step="0.01" value="0.5" />
-                </td>
-            </tr>
-        </table>
-    </div>
-    <br><br>
-    
-    <table>
-        <tr>
-            <td colspan="10">Microfone</td>
-        </tr>
-        <tr>
-            <td>
+        <h1>PocketStudio - Versão 0.6</h1>
+        <div id="Oscilador">
+            <div>
+                <h2>Oscilador</h2>
+            </div>
+            <div id="botoes_oscilador">
+                <button id="bLigar">Ligar o oscilador</button>
+                <button id="bDesligar">Desligar o oscilador</button>
+                <button id="bTocarSemSustain">Tocar uma nota</button>
+                <select id="bTipoOnda">
+                    <option value="0"> Onda Senóide </option>
+                    <option value="1"> Onda Quadrada </option>
+                    <option value="2"> Onda Dente de Serra </option>
+                    <option value="3"> Onda Triangular </option>
+                </select>
+                <button id="bAumentarFreq">+ Semitom</button>
+                <button id="bDiminuirFreq">- Semitom</button>
+                <input id="dispFrequenciaOscilador" type="text" size="10" readonly="" />
+                <input id="dispNotaOscilador" type="text" value="A" size="1" readonly="" />
+                <button id="bLigarDelay">Ligar Delay</button>
+                <button id="bDesligarDelay">Desligar Delay</button>
+            </div>
+            <div id"niveis_do_oscilador">
+                Volume <input id="volumeOscilador" type="range" min="0" max="1" step="0.01" value="0.5" />
+            </div>
+        </div>
+
+        <div id="Microfone">
+            <h2>Microfone</h2>
+            <div id="botoes_microfone">
                 <button id="bLigarLiveInput">Ligar Microfone</button>
-            </td>
-            <td>
                 <button id="bDesligarLiveInput">Desligar Microfone</button>
-            </td>
-            <td>
                 <button id="bIniciarGravacao">Iniciar Gravação</button>
-            </td>
-            <td>
                 <button id="bPararGravacao">Parar Gravação</button>
-            </td>
-            <td>
                 <button id="bAbrirAnalizer">Abrir Analisador de Espectro</button>
-            </td>
-            <td>
                 <button id="bFecharAnalizer" style="display:none;">Fechar Analisador de Espectro</button>
-            </td>
-            <td>
                 <input id="dispGravando" type="text" STYLE="background-color: #FFFFFF;" size="1" maxlength="30">
-            </td>
-        </tr>
-        <tr>
-            <td colspan="5">
+            </div>
+            <div id"seletor_de_efeito">
                 <select id="bEfeitoAudio1">
                     <option value="0"> --- </option>
                     <option value="1"> Delay </option>
                     <option value="2"> Compressão </option>
                     <option value="3"> Filtro Telefone </option>
-                    <option value="4"> Distorção </option>
                     <option value="5"> Vibrato </option>
                     <option value="6"> Bit Crusher </option>
                     <option value="7"> Reverb </option>
                 </select>
-            </td>
-            <td colspan="5">
                 <div id="compressor" style="display:none;"> 
                     Threshold
                     <input id="compressorThreshold" type="range" min="-100" max="0" step="0.1" value="-24"/>
@@ -137,66 +112,29 @@
                         <option value="small_amb.wav"> Ambiente Pequeno </option>
                     </select>
                 </div>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <select id="bEfeitoAudio2">
-                    <option value="0"> --- </option>
-                    <option value="1"> Delay </option>
-                    <option value="2"> Compressão </option>
-                    <option value="3"> Filtro Telefone </option>
-                </select>
-            </td>
-        </tr>
-        <tr>
-            <td><select id="bEfeitoAudio3">
-                    <option value="0"> --- </option>
-                    <option value="1"> Delay </option>
-                    <option value="2"> Compressão </option>
-                    <option value="3"> Filtro Telefone </option>
-                </select>
-        </tr>
-        <tr>
-            <td><select id="bEfeitoAudio4">
-                    <option value="0"> --- </option>
-                    <option value="1"> Delay </option>
-                    <option value="2"> Compressão </option>
-                    <option value="3"> Filtro Telefone </option>
-                </select>
-        </tr>
-        <tr>
-            <audio controls></audio>
-        </tr>
-        <br>
-        <tr>
-            Volume <input id="volumeLiveInput" type="range" min="0" max="1" step="0.001" value="0.5"/>
-        </tr>
-        <tr>
-            Grave <input id="graveLiveInput" type="range" min="-50" max="50" step="0.1" value="0"/>
-        </tr>
-        <tr>
-            Médio <input id="medioLiveInput" type="range" min="-50" max="50" step="0.1" value="0"/>
-        </tr>
-        <tr>
-            Agudo <input id="agudoLiveInput" type="range" min="-50" max="50" step="0.1" value="0"/>
-        </tr>
-        <tr><br> 
-        </tr><br>
-        <tr>
-            <div>
-                Pan <input id="panLiveInput" type="range" min="-90" max="90" step="0.001" value="0"/>
-                <input id="dispPanPositionLiveInput" type="text" size="10" readonly=""/>
             </div>
-        </tr>
-        <div> <canvas id="canvas" style="display:none;"></canvas></div>
-        <tr id="linkPlaceholder">
-        </tr>
-    </table>
-    <script type="text/javascript" src="javascript/recorder.js"></script>
-    <script type="text/javascript" src="javascript/recorderWorker.js"></script>
-    <script type="text/javascript" src="javascript/jquery-2.0.3.js"></script>
-    <script type="text/javascript" src="javascript/Gravador.js"></script>
-    <script type="text/javascript" src="javascript/AudioProcess.js"></script>
+            <div id"niveis_do_microfone">
+                Volume <input id="volumeLiveInput" type="range" min="0" max="1" step="0.001" value="0.5"/>
+                Grave <input id="graveLiveInput" type="range" min="-50" max="50" step="0.1" value="0"/>
+                Médio <input id="medioLiveInput" type="range" min="-50" max="50" step="0.1" value="0"/>
+                Agudo <input id="agudoLiveInput" type="range" min="-50" max="50" step="0.1" value="0"/>
+                <div>
+                    Pan <input id="panLiveInput" type="range" min="-90" max="90" step="0.001" value="0"/>
+                    <input id="dispPanPositionLiveInput" type="text" size="10" readonly=""/>
+                </div>
+            </div>
+            <div id="analisador_de_espectro"> 
+                <canvas id="canvas" style="display:none;"></canvas>
+            </div>
+            <div id="controles_audio">
+                <audio controls></audio>
+            </div>
+            <div id="linkPlaceholder"></div>
+        </div>
+        <script type="text/javascript" src="javascript/recorder.js"></script>
+        <script type="text/javascript" src="javascript/recorderWorker.js"></script>
+        <script type="text/javascript" src="javascript/jquery-2.0.3.js"></script>
+        <script type="text/javascript" src="javascript/Gravador.js"></script>
+        <script type="text/javascript" src="javascript/AudioProcess.js"></script>
     </body>
 </html>
