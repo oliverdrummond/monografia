@@ -496,9 +496,6 @@ botaoAbrirAnalizer.onclick = function () {
         setInterval(function(){
             frequencyDomain = new Float32Array(analyser.frequencyBinCount);
             analyser.getFloatFrequencyData(frequencyDomain);
-    //        console.log("Dados sendo mostrados");
-    //        console.log("0 - " + frequencyDomain[0] + frequencyDomain.length + frequencyDomain[frequencyDomain.length-1]);
-    //        console.log("Index de 440 é "+ getFrequencyValue(440));
         },10);
     }
     var drawInCanvas; 
@@ -526,16 +523,9 @@ botaoAbrirAnalizer.onclick = function () {
         drawInCanvas.fillRect(0,0,1800,600); 
 
         var data = new Uint8Array(samples);     
-    //    var data = new Uint8Array(analyser.frequencyBinCount);
         analyser.getByteFrequencyData(data); 
 
-        for(var i=0; i<data.length; i++) { 
-            //ESSE FUNCIONA
-    //        var hue = i/analyser.frequencyBinCount * 360;
-    //        drawInCanvas.fillStyle = 'hsl(' + hue + ', 100%, 50%)';
-    ////        drawInCanvas.fillRect(100+i*4,100+256-data[i]*2,3,200);
-    //        drawInCanvas.fillRect(i*4,100+256-data[i]*2,3,200);
-
+        for(var i=0; i<data.length; i++) {
             //ESSE ESTÁ COM ERRO NO FREQS, MAS SE DEIXAR O HEIGHT CONFIGURADO NA MÀO NO FILLRECT, ELE FUNCIONA
             var value = freqs[i];
             var percent = value / 256;
@@ -549,23 +539,6 @@ botaoAbrirAnalizer.onclick = function () {
             drawInCanvas.fillRect(i*barWidth,100+256-data[i]*2,barWidth,200);//Funciona
         } 
     } 
-
-    //ANIMAÇÃO DO ANALYZER NODE
-
-    //var freqDomain = new Uint8Array(analyser.frequencyBinCount);
-    //analyser.getByteFrequencyData(freqDomain);
-    //for (var i = 0; i < analyser.frequencyBinCount; i++) {
-    //  var value = freqDomain[i];
-    //  var percent = value / 256;
-    //  var height = HEIGHT * percent;
-    //  var offset = HEIGHT - height - 1;
-    //  var barWidth = WIDTH/analyser.frequencyBinCount;
-    //  var hue = i/analyser.frequencyBinCount * 360;
-    //  drawContext.fillStyle = 'hsl(' + hue + ', 100%, 50%)';
-    //  drawContext.fillRect(i * barWidth, offset, barWidth, height);
-    //}
-
-    //ANALIZER NODE ATÉ AQUI
 }
 
 function quantosSemitons() {
