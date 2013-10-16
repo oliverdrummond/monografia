@@ -135,8 +135,8 @@ botaoTocarSemSustain.onmouseup = function () {
 botaoAumentarFreq.onclick = function () {
     var semitoneRatio = Math.pow(2, 1 / 12);
     frequencia =  semitoneRatio * frequencia;
-//    oscillatorOne.frequency.value = frequencia;
-    oscillatorOne.frequency.linearRampToValueAtTime(frequencia, context.currentTime + 1);
+    oscillatorOne.frequency.value = frequencia;
+//    oscillatorOne.frequency.linearRampToValueAtTime(frequencia, context.currentTime + 1);
     dispFrequenciaOscilador.value = frequencia.toString().substring(0,7);
     quantosSemitons();
 };
@@ -145,50 +145,50 @@ botaoAumentarFreq.onclick = function () {
 botaoDiminuirFreq.onclick = function () {
     var semitoneRatio = Math.pow(2, 1 / 12);
     frequencia =  frequencia / semitoneRatio;
-//    oscillatorOne.frequency.value = frequencia;
-    oscillatorOne.frequency.linearRampToValueAtTime(frequencia, context.currentTime + 1);
+    oscillatorOne.frequency.value = frequencia;
+//    oscillatorOne.frequency.linearRampToValueAtTime(frequencia, context.currentTime + 1);
     dispFrequenciaOscilador.value = frequencia.toString().substring(0,7);
     quantosSemitons();
 };
 
 
-function checkKey(e) {
-    e = e || window.event;
-    if (e.keyCode == '37') {
-        oscillatorOne = context.createOscillator();
-        oscillatorOne.type = parseInt(botaoSelecionarTipoOnda.value, 10);
-        oscillatorOne.frequency.value = frequencia;
-        oscillatorOne.start(0);
-        oscillatorOne.connect(oscillatorGainNode);
-    }else if (e.keyCode == '38') {
-        oscillatorTwo = context.createOscillator();
-        oscillatorTwo.type = parseInt(botaoSelecionarTipoOnda.value, 10);
-        oscillatorTwo.frequency.value = frequencia * (Math.pow(2, 4 / 12));;
-        oscillatorTwo.start(0);
-        oscillatorTwo.connect(oscillatorGainNode);
-    }else if (e.keyCode == '39') {
-        oscillatorThree = context.createOscillator();
-        oscillatorThree.type = parseInt(botaoSelecionarTipoOnda.value, 10);
-        oscillatorThree.frequency.value = frequencia * (Math.pow(2, 7 / 12));
-        oscillatorThree.start(0);
-        oscillatorThree.connect(oscillatorGainNode);
-    }
-}
+//function checkKey(e) {
+//    e = e || window.event;
+//    if (e.keyCode == '37') {
+//        oscillatorOne = context.createOscillator();
+//        oscillatorOne.type = parseInt(botaoSelecionarTipoOnda.value, 10);
+//        oscillatorOne.frequency.value = frequencia;
+//        oscillatorOne.start(0);
+//        oscillatorOne.connect(oscillatorGainNode);
+//    }else if (e.keyCode == '38') {
+//        oscillatorTwo = context.createOscillator();
+//        oscillatorTwo.type = parseInt(botaoSelecionarTipoOnda.value, 10);
+//        oscillatorTwo.frequency.value = frequencia * (Math.pow(2, 4 / 12));;
+//        oscillatorTwo.start(0);
+//        oscillatorTwo.connect(oscillatorGainNode);
+//    }else if (e.keyCode == '39') {
+//        oscillatorThree = context.createOscillator();
+//        oscillatorThree.type = parseInt(botaoSelecionarTipoOnda.value, 10);
+//        oscillatorThree.frequency.value = frequencia * (Math.pow(2, 7 / 12));
+//        oscillatorThree.start(0);
+//        oscillatorThree.connect(oscillatorGainNode);
+//    }
+//}
 
-document.onkeydown = checkKey;
+//document.onkeydown = checkKey;
 
-function checkKeyUp(e) {
-    e = e || window.event;
-    if (e.keyCode == '37') {
-        oscillatorOne.stop(0);
-    }else if (e.keyCode == '38') {
-        oscillatorTwo.stop(0);
-    }else if (e.keyCode == '39') {
-        oscillatorThree.start(0);
-    }
-}
-
-document.onkeyup = checkKeyUp;
+//function checkKeyUp(e) {
+//    e = e || window.event;
+//    if (e.keyCode == '37') {
+//        oscillatorOne.stop(0);
+//    }else if (e.keyCode == '38') {
+//        oscillatorTwo.stop(0);
+//    }else if (e.keyCode == '39') {
+//        oscillatorThree.start(0);
+//    }
+//}
+//
+//document.onkeyup = checkKeyUp;
 
 //Ligar Delay
 botaoLigarDelay.disabled = true;
