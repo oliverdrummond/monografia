@@ -1,7 +1,12 @@
 //"use strict";
 /*global window, alert, document*/
+//SEPARAR EM UM JAVASCRIPT A CRIAÇÃO DO CONTEXTO E DOS BOTÕES
 try {
-    var contextClass = (window.AudioContext || window.webkitAudioContext || window.mozAudioContext || window.oAudioContext || window.msAudioContext);
+    var contextClass = (window.AudioContext 
+            || window.webkitAudioContext 
+            || window.mozAudioContext 
+            || window.oAudioContext 
+            || window.msAudioContext);
     var context = new contextClass();
 } catch (e) {
     alert('Infelizmente o seu navegador não é compatível com a Web Audio API, tente baixar o Google Chrome para poder utilizar nosso site');
@@ -10,9 +15,6 @@ try {
 //CRIAÇÃO DE BOTÕES
 var botaoLigar = document.getElementById("bLigar");
 var botaoDesligar = document.getElementById("bDesligar");
-var botaoTocarSemSustain = document.getElementById("bTocarSemSustain");
-var botaoLigarDelay = document.getElementById("bLigarDelay");
-var botaoDesligarDelay = document.getElementById("bDesligarDelay");
 var botaoAumentarFreq = document.getElementById("bAumentarFreq");
 var botaoDiminuirFreq = document.getElementById("bDiminuirFreq");
 var botaoLigarLiveInput = document.getElementById("bLigarLiveInput");
@@ -72,17 +74,13 @@ botaoSelecionarEfeitoAudio1.disabled = true;
 dispPanPositionLiveInput.value = 0;
 dispDelayTime.value = 0;
 
+//SEPARAR EM OUTRO JAVASCRIPT A PARTE DO OSCILADOR
+var oscillatorOne;
 
 //Ligar o oscilador
-var oscillatorOne;
-var oscillatorTwo;
-var oscillatorThree;
-
 botaoLigar.onclick = function () {
     botaoLigar.disabled = true;
-    botaoTocarSemSustain.disabled = true;
     botaoDesligar.disabled = false;
-    botaoLigarDelay.disabled = false;
     botaoSelecionarTipoOnda.disabled = false;
     botaoAumentarFreq.disabled = false;
     botaoDiminuirFreq.disabled = false;
@@ -96,47 +94,16 @@ botaoLigar.onclick = function () {
 //Desligar o oscilador
 botaoDesligar.onclick = function () {
     botaoLigar.disabled = false;
-    botaoTocarSemSustain.disabled = false;
     botaoDesligar.disabled = true;
-    botaoLigarDelay.disabled = true;
-    botaoDesligarDelay.disabled = true;
-//    oscillatorGainNode.gain.value.linearRampToValueAtTime(0, context.currentTime + 0.5);
     oscillatorGainNode.gain.value = 0;
     oscillatorOne.stop(0);
 };
-
-//TOCAR UMA ÚNICA NOTA
-botaoTocarSemSustain.onmousedown = function () {
-    oscillatorOne = context.createOscillator();
-    oscillatorTwo = context.createOscillator();
-    oscillatorThree = context.createOscillator();
-    oscillatorOne.type = parseInt(botaoSelecionarTipoOnda.value, 10);
-    oscillatorTwo.type = parseInt(botaoSelecionarTipoOnda.value, 10);
-    oscillatorThree.type = parseInt(botaoSelecionarTipoOnda.value, 10);
-    oscillatorOne.frequency.value = frequencia;
-    oscillatorTwo.frequency.value = frequencia * (Math.pow(2, 4 / 12));
-    oscillatorThree.frequency.value = frequencia * (Math.pow(2, 7 / 12));
-    oscillatorOne.start(0);
-    oscillatorTwo.start(0);
-    oscillatorThree.start(0);
-    oscillatorOne.connect(oscillatorGainNode);
-    oscillatorTwo.connect(oscillatorGainNode);
-    oscillatorThree.connect(oscillatorGainNode);
-};
-
-botaoTocarSemSustain.onmouseup = function () {
-    oscillatorOne.stop(0);
-    oscillatorTwo.stop(0);
-    oscillatorThree.stop(0);
-};
-
 
 //Aumentar um semitom no oscilador
 botaoAumentarFreq.onclick = function () {
     var semitoneRatio = Math.pow(2, 1 / 12);
     frequencia =  semitoneRatio * frequencia;
     oscillatorOne.frequency.value = frequencia;
-//    oscillatorOne.frequency.linearRampToValueAtTime(frequencia, context.currentTime + 1);
     dispFrequenciaOscilador.value = frequencia.toString().substring(0,7);
     quantosSemitons();
 };
@@ -146,69 +113,8 @@ botaoDiminuirFreq.onclick = function () {
     var semitoneRatio = Math.pow(2, 1 / 12);
     frequencia =  frequencia / semitoneRatio;
     oscillatorOne.frequency.value = frequencia;
-//    oscillatorOne.frequency.linearRampToValueAtTime(frequencia, context.currentTime + 1);
     dispFrequenciaOscilador.value = frequencia.toString().substring(0,7);
     quantosSemitons();
-};
-
-
-//function checkKey(e) {
-//    e = e || window.event;
-//    if (e.keyCode == '37') {
-//        oscillatorOne = context.createOscillator();
-//        oscillatorOne.type = parseInt(botaoSelecionarTipoOnda.value, 10);
-//        oscillatorOne.frequency.value = frequencia;
-//        oscillatorOne.start(0);
-//        oscillatorOne.connect(oscillatorGainNode);
-//    }else if (e.keyCode == '38') {
-//        oscillatorTwo = context.createOscillator();
-//        oscillatorTwo.type = parseInt(botaoSelecionarTipoOnda.value, 10);
-//        oscillatorTwo.frequency.value = frequencia * (Math.pow(2, 4 / 12));;
-//        oscillatorTwo.start(0);
-//        oscillatorTwo.connect(oscillatorGainNode);
-//    }else if (e.keyCode == '39') {
-//        oscillatorThree = context.createOscillator();
-//        oscillatorThree.type = parseInt(botaoSelecionarTipoOnda.value, 10);
-//        oscillatorThree.frequency.value = frequencia * (Math.pow(2, 7 / 12));
-//        oscillatorThree.start(0);
-//        oscillatorThree.connect(oscillatorGainNode);
-//    }
-//}
-
-//document.onkeydown = checkKey;
-
-//function checkKeyUp(e) {
-//    e = e || window.event;
-//    if (e.keyCode == '37') {
-//        oscillatorOne.stop(0);
-//    }else if (e.keyCode == '38') {
-//        oscillatorTwo.stop(0);
-//    }else if (e.keyCode == '39') {
-//        oscillatorThree.start(0);
-//    }
-//}
-//
-//document.onkeyup = checkKeyUp;
-
-//Ligar Delay
-botaoLigarDelay.disabled = true;
-botaoLigarDelay.onclick = function () {
-    botaoLigarDelay.disabled = true;
-    botaoDesligarDelay.disabled = false;
-    delayNode = context.createDelayNode();
-    delayNode.delayTime.value = 3000;
-    oscillatorOne.connect(delayNode);
-    delayNode.connect(context.destination);
-};
-
-//Desligar Delay
-botaoDesligarDelay.disabled = true;
-botaoDesligarDelay.onclick = function () {
-    botaoLigarDelay.disabled = false;
-    botaoDesligarDelay.disabled = true;
-    oscillatorOne.disconnect(0);
-    delayNode.disconnect(0);
-    oscillatorOne.connect(context.destination);
 };
 
 //Volume
@@ -216,6 +122,8 @@ document.getElementById('volumeOscilador').addEventListener('change', function (
     oscillatorGainNode.gain.value = this.value;
 });
 
+
+//SEPARAR EM OUTRO JAVASCRIPT A PARTE DO MICROFONE
 //
 //MICROFONE 
 //
@@ -260,14 +168,13 @@ document.getElementById('panLiveInput').addEventListener('change', function () {
   dispPanPositionLiveInput.value = range;
 });
 
+//SEPARAR EM OUTRO JAVASCRIPT A PARTE DAS CONEXÕES
 //CONEXÕES DOS AUDIO NODES
 liveInputGainNode.connect(liveInputGrave);
 liveInputGrave.connect(liveInputMedio);
 liveInputMedio.connect(liveInputAgudo);
 liveInputAgudo.connect(panner);
 panner.connect(context.destination);
-
-//TESTAR O MÉTODO getFrequencyResponse que teoricamente calcula a resposta de frequência
 
 //Ligar Microfone
 botaoLigarLiveInput.onclick = function () {
@@ -279,10 +186,10 @@ botaoLigarLiveInput.onclick = function () {
         liveInput = context.createMediaStreamSource(stream);
         liveInput.connect(liveInputGainNode);
     }   
-    navigator.getUserMedia = navigator.getUserMedia ||
-                       navigator.webkitGetUserMedia ||
-                       navigator.mozGetUserMedia ||
-                       navigator.msGetUserMedia;
+    navigator.getUserMedia = (navigator.getUserMedia 
+            || navigator.webkitGetUserMedia 
+            || navigator.mozGetUserMedia 
+            || navigator.msGetUserMedia);
     navigator.getUserMedia({audio: true}, gotStream);
 };
 
@@ -293,6 +200,7 @@ botaoDesligarLiveInput.onclick = function () {
     liveInput.disconnect(0);
 };
 
+//Iniciar Gravação
 botaoIniciarGravacao.onclick = function () {
     botaoIniciarGravacao.disabled = true;
     botaoPararGravacao.disabled = false;
@@ -301,6 +209,7 @@ botaoIniciarGravacao.onclick = function () {
     document.getElementById("dispGravando").style.backgroundColor = "#FF0000";
 };
 
+//Parar Gravação
 botaoPararGravacao.onclick = function () {
     botaoIniciarGravacao.disabled = false;
     botaoPararGravacao.disabled = true;
@@ -309,23 +218,20 @@ botaoPararGravacao.onclick = function () {
     document.getElementById("dispGravando").style.backgroundColor = "#FFFFFF";
 };
 
+//LFO do Vibrato
 var osc = context.createOscillator();
 document.getElementById('vibratoFrequency').addEventListener('change', function () {
             osc.frequency.value = this.value;
             dispVibratoFrequency.value = osc.frequency.value + " Hz";
         });
 
-//CONECTAR NOVO EFEITO - SLOT 1
+//CONECTAR NOVO EFEITO
 botaoSelecionarEfeitoAudio1.onchange = function () {
     hideAllParameters();
     switch (parseInt(botaoSelecionarEfeitoAudio1.value, 10)) {
     case 0://SEM EFEITO
         liveInput.disconnect(0);
-        if (typeof pluginSlot2 === 'undefined') {
-            liveInput.connect(liveInputGainNode);
-        } else {
-            liveInput.connect(pluginSlot2);
-        }
+        liveInput.connect(liveInputGainNode);
         break;
     case 1://DELAY
         delay = context.createDelay(12.0);
@@ -478,6 +384,7 @@ botaoFecharAnalizer.onclick = function () {
     analyser.disconnect(0);
 };
 
+//SEPARAR EM UM JAVASCRIPT O ANALISADOR
 var analyser;
 
 botaoAbrirAnalizer.onclick = function () {
@@ -541,6 +448,8 @@ botaoAbrirAnalizer.onclick = function () {
     } 
 }
 
+
+//SEPARAR EM UM JAVASCRIPT ESSES MÉTODOS
 function quantosSemitons() {
     var NOTES = {0: "A", 1: "A#", 2: "B", 3: "C", 4: "C#", 5: "D", 6: "D#", 7: "E", 8: "F", 9: "F#", 10: "G", 11: "G#"},
     semitons = (12 * ((log10(oscillatorOne.frequency.value)) / 0.3010)) - 105.376;
@@ -622,7 +531,7 @@ function createReverb(type) {
     request.responseType = "arraybuffer";
     request.onload = function () {
       pluginSlot1.buffer = context.createBuffer(request.response, false);
-    }
+    };
     request.send();
     liveInput.connect(pluginSlot1);
     pluginSlot1.connect(reverbLevel);
