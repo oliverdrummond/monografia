@@ -4,6 +4,8 @@ oscillatorGainNode.connect(context.destination);
 
 var audio = document.querySelector('audio');
 
+var oscillatorOne;
+
 botaoSelecionarTipoOnda.onchange = function () {
     oscillatorOne.type = parseInt(botaoSelecionarTipoOnda.value, 10);
 };
@@ -24,7 +26,6 @@ botaoSelecionarEfeitoAudio1.disabled = true;
 dispPanPositionLiveInput.value = 0;
 dispDelayTime.value = 0;
 
-var oscillatorOne;
 
 //Ligar o oscilador
 botaoLigar.onclick = function () {
