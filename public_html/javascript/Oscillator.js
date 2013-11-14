@@ -34,6 +34,7 @@ botaoLigar.onclick = function () {
     botaoSelecionarTipoOnda.disabled = false;
     botaoAumentarFreq.disabled = false;
     botaoDiminuirFreq.disabled = false;
+    oscillatorGainNode.gain.value = document.getElementById('volumeOscilador').value;
     oscillatorOne = context.createOscillator();
     oscillatorOne.type = parseInt(botaoSelecionarTipoOnda.value, 10);
     oscillatorOne.frequency.value = frequencia;
