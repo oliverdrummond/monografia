@@ -1,8 +1,3 @@
-//SEPARAR EM OUTRO JAVASCRIPT A PARTE DO MICROFONE
-//
-//MICROFONE 
-//
-
 var liveInput = 0;
 //VOLUME GERAL DO LIVE INPUT
 var liveInputGainNode = context.createGain();
@@ -259,7 +254,6 @@ botaoFecharAnalizer.onclick = function () {
     analyser.disconnect(0);
 };
 
-//SEPARAR EM UM JAVASCRIPT O ANALISADOR
 var analyser;
 
 botaoAbrirAnalizer.onclick = function () {
@@ -308,7 +302,6 @@ botaoAbrirAnalizer.onclick = function () {
         analyser.getByteFrequencyData(data); 
 
         for(var i=0; i<data.length; i++) {
-            //ESSE ESTÁ COM ERRO NO FREQS, MAS SE DEIXAR O HEIGHT CONFIGURADO NA MÀO NO FILLRECT, ELE FUNCIONA
             var value = freqs[i];
             var percent = value / 256;
             var height = HEIGHT * percent;
@@ -316,15 +309,11 @@ botaoAbrirAnalizer.onclick = function () {
             var barWidth = WIDTH/analyser.frequencyBinCount;
             var hue = i/analyser.frequencyBinCount * 360;
             drawInCanvas.fillStyle = 'hsl(' + hue + ', 100%, 50%)';
-    //        drawInCanvas.fillRect(i * barWidth, offset, barWidth, height);
-    //        drawInCanvas.fillRect(i*barWidth,100+256-data[i]*2,barWidth,height);//Não Funciona
-            drawInCanvas.fillRect(i*barWidth,100+256-data[i]*2,barWidth,200);//Funciona
+            drawInCanvas.fillRect(i*barWidth,100+256-data[i]*2,barWidth,200);
         } 
     } 
 }
 
-
-//SEPARAR EM UM JAVASCRIPT ESSES MÉTODOS
 function quantosSemitons() {
     var NOTES = {0: "A", 1: "A#", 2: "B", 3: "C", 4: "C#", 5: "D", 6: "D#", 7: "E", 8: "F", 9: "F#", 10: "G", 11: "G#"},
     semitons = (12 * ((log10(oscillatorOne.frequency.value)) / 0.3010)) - 105.376;
@@ -362,8 +351,6 @@ function createCurve(amount, n_samples) {
         ND.dist = amount;
         var k = 2 * ND.dist / (1 - ND.dist);
         for (var i = 0; i < n_samples; i+=1) {
-            // LINEAR INTERPOLATION: x := (c - a) * (z - y) / (b - a) + y
-            // a = 0, b = 2048, z = 1, y = -1, c = i
             var x = (i - 0) * (1 - (-1)) / (n_samples - 0) + (-1);
             this.wsCurve[i] = (1 + k) * x / (1+ k * Math.abs(x));
         }
