@@ -30,7 +30,18 @@
                 <input id="dispNotaOscilador" type="text" value="A" size="1" readonly="" />
             </div>
             <div id="niveis_do_oscilador">
-                Volume <input id="volumeOscilador" type="range" min="0" max="1" step="0.01" value="0.5" />
+                Volume <input id="volumeOscilador" class="volume" type="range" min="0" max="1" step="0.01" value="0.5" />
+            </div>
+        </div>
+        
+        <div id="Gerador_de_acordes">
+            <div>
+                <h2>Gerador de Acordes</h2>
+            </div>
+            <div id="acorde_input">
+                Digite o acorde desejado   <input id="acorde_escolhido" type="search" value="A">
+                <button id="bGerarAcorde">Gerar</button>
+                Volume <input id="volumeGerador" class="volume" type="range" min="0" max="1" step="0.01" value="0.5"/>
             </div>
         </div>
 
@@ -116,7 +127,7 @@
             </div>
             <div id="niveis_do_microfone">
                 Volume 
-                <input id="volumeLiveInput" type="range" min="0" max="1" step="0.001" value="0.5"/>
+                <input id="volumeLiveInput" class="volume" type="range" min="0" max="1" step="0.001" value="0.5"/>
                 Grave 
                 <input id="graveLiveInput" type="range" min="-50" max="50" step="0.1" value="0"/>
                 Médio 
@@ -146,5 +157,12 @@
         <script type="text/javascript" src="javascript/CreateDisplays.js"></script>
         <script type="text/javascript" src="javascript/Oscillator.js"></script>
         <script type="text/javascript" src="javascript/AudioProcess.js"></script>
+       <!--Para utilizar o Gerador de Acordes--> 
+        <script type="text/javascript" src="javascript/underscore-min.js"></script>
+        <script type="text/javascript" src="javascript/FrequenciasDasNotas.js"></script>
+        <script type="text/javascript" src="javascript/Intervalos.js"></script>
+        <script type="text/javascript" src="javascript/Osciladores.js"></script>
+        <script type="text/javascript" src="javascript/FormacaoDeAcordes.js"></script>
+        <script type="text/javascript" src="javascript/AudioProcessChordGenerator.js"></script>
     </body>
 </html>

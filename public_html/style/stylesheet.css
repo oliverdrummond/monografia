@@ -24,20 +24,27 @@
 }
 
 
-#Oscilador, #Microfone {
+#Oscilador, #Microfone, #Gerador_de_acordes {
     border: 1px solid #ddd;
     border-radius: 3px;
     margin: 10px 10px 30px;
     padding: 2px 6px 6px;
-    box-shadow: 1px 1px 3px #ccc;
+    /*box-shadow: 1px 1px 3px #ccc;*/
+    box-shadow: 100px 100px 300px;
     background-color: #ebedf0;
-    background-image: url('bg/feature-background.jpg');
+    background-image: url('../bg/feature-background.jpg');
     background-repeat: repeat-x;
 }
    
 
 #niveis_do_microfone  input {
     display: block;
+}
+
+.volume {
+    -webkit-appearance: slider-vertical;
+    width: 20px;
+    height: 100px;
 }
 
 
@@ -56,6 +63,6 @@
 
 body {
     background-repeat: repeat-x !important;
-    background-image: url('bg/header-left.jpg') !important;
+    background-image: url('../bg/header-left.jpg') !important;
     background-color: #28292b !important;
 }

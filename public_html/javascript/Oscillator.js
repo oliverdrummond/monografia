@@ -1,3 +1,7 @@
+//Criação do Volume do Gerador de Frequências
+var generatorGainNode = context.createGain();
+generatorGainNode.connect(context.destination);
+
 //Criação do Volume do Oscilador
 var oscillatorGainNode = context.createGain();
 oscillatorGainNode.connect(context.destination);

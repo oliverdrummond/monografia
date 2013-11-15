@@ -14,3 +14,4 @@ var botaoSelecionarEfeitoAudio3 = document.getElementById("bEfeitoAudio3");
 var botaoSelecionarEfeitoAudio4 = document.getElementById("bEfeitoAudio4");
 var botaoAbrirAnalizer = document.getElementById("bAbrirAnalizer");
 var botaoFecharAnalizer = document.getElementById("bFecharAnalizer");
+var botaoGerarAcorde = document.getElementById("bGerarAcorde");
