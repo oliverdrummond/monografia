@@ -44,9 +44,14 @@
 
 #titulo {
     font-family: 'Sonsie One' !important;
+    font-size:250%;
     display: block;
     text-align: center;
     color: #a91e1c;
+}
+
+.bigger{
+    font-size:130%;
 }
 
 body {
