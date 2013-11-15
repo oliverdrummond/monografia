@@ -35,13 +35,20 @@
     background-repeat: repeat-x;
 }
    
+#niveis_do_microfone {
+    border: 10px solid #28292b;
+    border-radius: 6px;
+    margin: 10px 30px 30px;
+    padding: 2px 6px 6px;
+    box-shadow: 1px 1px 3px #ccc;
+    background-color: #ebedf0;
+    background-image: url('../bg/feature-background.jpg');
+    background-repeat: repeat-x;
+}
 
 #niveis_do_microfone  input {
     display: block;
 }
-
-
-
 
 #titulo {
     font-family: 'Sonsie One' !important;
@@ -51,7 +58,6 @@
     font-size: 48px;
     text-shadow: 1px 1px 70px #ccc;
 }
-
 
 .bigger{
     font-size:130%;
@@ -96,4 +102,8 @@ body {
     position: absolute;
     top: 87px;
     height: 65px;
+}
+
+.knob, #niveis_do_microfone > div {
+    display: inline-block;
 }
