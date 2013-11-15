@@ -40,11 +40,6 @@
     display: block;
 }
 
-.volume {
-    -webkit-appearance: slider-vertical;
-    width: 20px;
-    height: 100px;
-}
 
 
 

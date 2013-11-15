@@ -16,9 +16,6 @@ botaoGerarAcorde.onclick = function () {
         }, vez*1000);
     });
 
-    document.getElementById('volumeGerador').addEventListener('change', function () {
-        generatorGainNode.gain.value = this.value;
-    });
 }
 
 function quantosSemitons() {

@@ -30,8 +30,7 @@
                 <input id="dispNotaOscilador" type="text" value="A" size="1" readonly="" />
             </div>
             <div id="niveis_do_oscilador">
-                Volume <input id="volumeOscilador" class="volume" type="range" min="0" max="1" step="0.01" value="0.5" />
-                <div id="control"></div>
+                Volume <div id="volumeOscilador"></div>
             </div>
         </div>
         
@@ -42,7 +41,7 @@
             <div id="acorde_input">
                 Digite o acorde desejado   <input id="acorde_escolhido" type="search" value="A">
                 <button id="bGerarAcorde">Gerar</button>
-                Volume <input id="volumeGerador" class="volume" type="range" min="0" max="1" step="0.01" value="0.5"/>
+                Volume <div id="volumeGerador"></div>
             </div>
         </div>
 
@@ -128,7 +127,7 @@
             </div>
             <div id="niveis_do_microfone">
                 Volume 
-                <input id="volumeLiveInput" class="volume" type="range" min="0" max="1" step="0.001" value="0.5"/>
+                <div id="volumeLiveInput"></div>
                 Grave 
                 <input id="graveLiveInput" type="range" min="-50" max="50" step="0.1" value="0"/>
                 Médio 

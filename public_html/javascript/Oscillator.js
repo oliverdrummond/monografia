@@ -72,9 +72,3 @@ botaoDiminuirFreq.onclick = function () {
     quantosSemitons();
 };
 
-var aoMecherOscilador = function (value) {
-    oscillatorGainNode.gain.value = value;
-}
-
-//Volume
-//document.getElementById('volumeOscilador').addEventListener('change', aoMecherOscilador);

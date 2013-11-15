@@ -1,9 +1,6 @@
 var liveInput = 0;
 //VOLUME GERAL DO LIVE INPUT
 var liveInputGainNode = context.createGain();
-document.getElementById('volumeLiveInput').addEventListener('change', function () {
-    liveInputGainNode.gain.value = this.value;
-});
 
 //GRAVE GERAL DO LIVE INPUT
 var liveInputGrave = context.createBiquadFilter();
