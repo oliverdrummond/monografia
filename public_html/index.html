@@ -68,13 +68,14 @@
                 </select>
                 <br>
                 <div id="delay" class="effects" style="display:none;">
-                    Delay Time <div id="delayTime"></div>
+                    <div class="Text">Delay Time</div>
+                    <div id="delayTime"></div>
                     <!--<input id="delayTime" type="range" min="0.001" max="1" step="0.001" value="0.5"/>-->
                     <input id="dispDelayTime" type="text" size="10" readonly="" value="0.5 s"/>
-                    Delay Level <div id="delayLevel"></div>
+                    <div class="Text">Delay Level</div> <div id="delayLevel"></div>
                     <!--<input id="delayLevel" type="range" min="0.001" max="2" step="0.01" value="0.5"/>-->
                     <input id="dispDelayLevel" type="text" size="10" readonly="" value="0.5 "/>
-                    Feedback <div id="delayFeedback"></div>
+                    <div class="Text">Feedback</div> <div id="delayFeedback"></div>
                     <!--<input id="delayFeedback" type="range" min="0" max="1" step="0.01" value="0.6"/>--> 
                     <input id="dispDelayFeedback" type="text" size="10" readonly="" value="0.5 "/>
                 </div>
@@ -127,19 +128,18 @@
                 </div>
             </div>
             <div id="niveis_do_microfone">
-                Volume 
+                <div class="Text">Volume </div>
                 <div id="volumeLiveInput"></div>
-                Grave 
+                <div class="Text">Grave</div> 
                 <div id="graveLiveInput"></div>
-                Médio
+                <div class="Text">Médio</div>
                 <div id="medioLiveInput"></div>
-                Agudo
+                <div class="Text">Agudo</div>
                 <div id="agudoLiveInput"></div>
-                <div>
+                <div class="Text">Pan   </div>
+                <div id="panLiveInput"></div>
                     <!--Pan <input id="panLiveInput" type="range" min="-90" max="90" step="0.001" value="0"/>-->
-                    <div id="panLiveInput"></div>
-                    <input id="dispPanPositionLiveInput" type="text" size="10" readonly=""/>
-                </div>
+<!--                    <input id="dispPanPositionLiveInput" type="text" size="10" readonly=""/>-->
             </div>
             <div id="analisador_de_espectro"> 
                 <canvas id="canvas" style="display:none;"></canvas>

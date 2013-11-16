@@ -360,6 +360,8 @@ function hideAllParameters () {
     document.getElementById('compressor').style.display = 'none';
     document.getElementById('delay').style.display = 'none';
     document.getElementById('vibrato').style.display = 'none';
+    document.getElementById('bitCrusher').style.display = 'none';
+    document.getElementById('reverb').style.display = 'none';
 }
 
 function createbitCrusher(bits, normfreq) {
