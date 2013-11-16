@@ -36,13 +36,22 @@
 }
    
 #niveis_do_microfone {
-    border: 10px solid #28292b;
-    border-radius: 6px;
+    /*-webkit-border-image:url('../bg/black-leather-small.jpg') 30px 30px round;  Safari 5 */
+/*    border-image:url('../bg/black-leather-smallest.jpg');
+    border-image-width: 90px;*/
+    /*border: 10px url('../bg/black-leather-small.jpg');*/
+    /*border-image-repeat: repeat-x;*/
+    /*border-image-source: url('../bg/black-leather.jpg');*/
+    /*border-image: url('../bg/black-leather.jpg');*/
+    /*border-radius: 6px;*/
     margin: 10px 30px 30px;
     padding: 2px 6px 6px;
     box-shadow: 1px 1px 3px #ccc;
     background-color: #ebedf0;
-    background-image: url('../bg/feature-background.jpg');
+    border-radius: 6px;
+    background-image: url('../bg/amp-background-flowers.jpg');
+    
+    
     background-repeat: repeat-x;
 }
 
@@ -85,7 +94,9 @@ body {
 
 #amp-grill #grill {
     background-repeat: repeat;
-    background-image: url('../bg/amp-grill.png');    
+    /*background-image: url('../bg/amp-grill.png');*/ 
+    background-image: url('../bg/amp-grill-2.jpg');
+    /*background-image: url('../bg/amp-grill-3.jpg');*/
     z-index: 10;
 }
 
