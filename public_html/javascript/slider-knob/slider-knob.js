@@ -62,7 +62,6 @@ $(function() {
      
      $('#delayLevel').knobKnob({
         value: 0,
-                pluginSlot1
         turn: function(value) {
             pluginSlot1.gain.value = value;
             dispDelayLevel.value = value.toString().substring(0,5);
