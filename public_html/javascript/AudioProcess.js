@@ -92,6 +92,8 @@ document.getElementById('vibratoFrequency').addEventListener('change', function 
             dispVibratoFrequency.value = osc.frequency.value + " Hz";
         });
 
+var pluginSlot1;
+
 //CONECTAR NOVO EFEITO
 botaoSelecionarEfeitoAudio1.onchange = function () {
     hideAllParameters();

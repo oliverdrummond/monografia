@@ -41,7 +41,7 @@ $(function() {
         }
      });
      
-     $('#panLiveInput').knobKnob({
+     $('#panLiveInput').knobKnob({//Não está OK ainda
         value: 0,
         turn: function(range) {
          range =  range * 100 - 45;
@@ -50,5 +50,33 @@ $(function() {
             
         }
      });
+     
+     
+     $('#delayTime').knobKnob({
+        value: 0,
+        turn: function(value) {
+            delay.delayTime.value = value;
+            dispDelayTime.value = value.toString().substring(0,5) + " s";
+        }
+     });
+     
+     $('#delayLevel').knobKnob({
+        value: 0,
+        turn: function(value) {
+            pluginSlot1.gain.value = value;
+            dispDelayLevel.value = value.toString().substring(0,5);
+        }
+     });
+     
+     $('#delayFeedback').knobKnob({
+        value: 0,
+        turn: function(value) {
+            feedback.gain.value = value;
+            dispDelayFeedback.value = value.toString().substring(0,5);
+        }
+     });
+     
+     
+     
 });
 
