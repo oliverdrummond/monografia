@@ -55,13 +55,14 @@ $(function() {
      $('#delayTime').knobKnob({
         value: 0,
         turn: function(value) {
-            delay.delayTime.value = value;
+            delay.delayTime.value = value * 2;
             dispDelayTime.value = value.toString().substring(0,5) + " s";
         }
      });
      
      $('#delayLevel').knobKnob({
         value: 0,
+                pluginSlot1
         turn: function(value) {
             pluginSlot1.gain.value = value;
             dispDelayLevel.value = value.toString().substring(0,5);
@@ -73,6 +74,85 @@ $(function() {
         turn: function(value) {
             feedback.gain.value = value;
             dispDelayFeedback.value = value.toString().substring(0,5);
+        }
+     });
+     
+     $('#reverbMix').knobKnob({
+        value: 0,
+        turn: function(value) {
+            reverbLevel.gain.value = value * 100;
+            dispReverbMix.value = (reverbLevel.gain.value).toString().substring(0,5) + "%";
+        }
+     });
+     
+     $('#bitCrusherBits').knobKnob({
+        value: 0,
+        turn: function(value) {
+            pluginSlot1.disconnect(0);
+            liveInput.disconnect(0);
+            window.BITS = this.value;
+            pluginSlot1 = createbitCrusher(BITS, NORM_FREQUENCY);
+            liveInput.connect(pluginSlot1);
+            pluginSlot1.connect(liveInputGainNode);
+            dispBitCrusherBits.value = pluginSlot1.bits + " bits";
+        }
+     });
+     
+     $('#compressorThreshold').knobKnob({
+        value: 0,
+        turn: function(value) {
+            pluginSlot1.threshold.value = value;
+            dispCompressorThreshold.value = pluginSlot1.threshold.value.toString().substring(0,5) + " dB";
+        }
+     });
+     
+     $('#compressorKnee').knobKnob({
+        value: 0,
+        turn: function(value) {
+            pluginSlot1.knee.value = this.value;
+            dispCompressorKnee.value = pluginSlot1.knee.value;
+        }
+     });
+     
+     $('#compressorRatio').knobKnob({
+        value: 0,
+        turn: function(value) {
+            pluginSlot1.ratio.value = this.value;
+            dispCompressorRatio.value = pluginSlot1.ratio.value;
+        }
+     });
+     
+     
+     $('#compressorAttack').knobKnob({
+        value: 0,
+        turn: function(value) {
+            pluginSlot1.attack.value = value;
+            dispCompressorAttack.value = pluginSlot1.attack.value.toString().substring(0,5) + " ms";
+        }
+     });
+     
+     $('#compressorRelease').knobKnob({
+        value: 0,
+        turn: function(value) {
+            pluginSlot1.release.value = this.value;
+            dispCompressorRelease.value = pluginSlot1.release.value.toString().substring(0,5) + " ms";
+        }
+     });
+     
+     
+     $('#vibratoFrequency').knobKnob({
+        value: 0,
+        turn: function(value) {
+            osc.frequency.value = value * 20;
+            dispVibratoFrequency.value = osc.frequency.value.toString().substring(0,5) + " Hz";
+        }
+     });
+     
+     $('#vibratoRange').knobKnob({
+        value: 0,
+        turn: function(value) {
+            pluginSlot1.gain.value = value * 2;
+            dispVibratoRange.value = pluginSlot1.gain.value;
         }
      });
      

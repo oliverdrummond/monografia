@@ -27,7 +27,7 @@ botaoPararGravacao.disabled = true;
 botaoDesligarLiveInput.disabled = true;
 botaoDesligar.disabled = true;
 botaoSelecionarEfeitoAudio1.disabled = true;
-dispPanPositionLiveInput.value = 0;
+//dispPanPositionLiveInput.value = 0;
 dispDelayTime.value = 0;
 
 

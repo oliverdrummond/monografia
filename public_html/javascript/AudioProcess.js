@@ -1,4 +1,6 @@
 var liveInput = 0;
+var pluginSlot1 = 0;
+
 //VOLUME GERAL DO LIVE INPUT
 var liveInputGainNode = context.createGain();
 
@@ -92,8 +94,6 @@ document.getElementById('vibratoFrequency').addEventListener('change', function 
             dispVibratoFrequency.value = osc.frequency.value + " Hz";
         });
 
-var pluginSlot1;
-
 //CONECTAR NOVO EFEITO
 botaoSelecionarEfeitoAudio1.onchange = function () {
     hideAllParameters();
@@ -105,7 +105,7 @@ botaoSelecionarEfeitoAudio1.onchange = function () {
     case 1://DELAY
         delay = context.createDelay(12.0);
         feedback = context.createGain();
-        pluginSlot1 = context.createGainNode();
+        pluginSlot1 = context.createGain();
         
         delay.delayTime.value = 0.5;
         feedback.gain.value = 0.5;

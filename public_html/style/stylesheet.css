@@ -5,7 +5,6 @@
   src: url('../style/Sonsie_One/SonsieOne-Regular.ttf') format('truetype');
 }
 
-
 .meter {
   height: 20px;
   width: 200px;
@@ -38,31 +37,31 @@
 .Text{
     position: relative;
     top: -91px;
-    right: -74px;
+    right: -112px;
     color: #FFCC56;
     font-size: 20px;
 }
    
 #niveis_do_microfone {
-    /*-webkit-border-image:url('../bg/black-leather-small.jpg') 30px 30px round;  Safari 5 */
-/*    border-image:url('../bg/black-leather-smallest.jpg');
-    border-image-width: 90px;*/
-    /*border: 10px url('../bg/black-leather-small.jpg');*/
-    /*border-image-repeat: repeat-x;*/
-    /*border-image-source: url('../bg/black-leather.jpg');*/
-    /*border-image: url('../bg/black-leather.jpg');*/
-    /*border-radius: 6px;*/
+/*    border-image-width: 20px;
+    border-image-repeat: repeat !important;
+    border-image-source: url('../bg/black-leather.jpg');*/
+    border: 10px solid #0E0D0D; 
+    border-radius: 6px;
     margin: 10px 30px 30px;
     padding: 35px 6px 20px;
     box-shadow: 1px 1px 3px #ccc;
     background-color: #ebedf0;
-    border-radius: 6px;
     background-image: url('../bg/amp-background-flowers.jpg');
     background-repeat: repeat-x;
 }
 
+#niveis_do_microfone > div {
+    padding: 0px 17px 0px; 
+}
+
 #niveis_do_microfone  input {
-    display: block;
+    display: block; 
 }
 
 #titulo {
@@ -93,24 +92,67 @@ body {
 
 #delay{
     margin: 10px 30px 30px;
-    padding: 104px 145px 8px;
+    padding: 104px 145px 38px;
     background-color: #339970;
+    background-image: url('../bg/textures/green-chalkboard.jpg');
+}
+
+#delay > input{
+    position: relative;
+    top: 30px;
+    right: 87px;
 }
 
 #compressor{
     background-color: #33EEEE;
+    margin: 10px 30px 30px;
+    padding: 106px 6px 20px;
+    background-image: url('../bg/textures/red-grunge-background.jpg');
+}
+
+#compressor > div {
+    padding: 106px 6px 20px;
+}
+
+#compressor > input{
+    position: relative;
+    top: 30px;
+    right: 87px;
 }
 
 #vibrato{
+    margin: 10px 30px 30px;
+    padding: 106px 275px 41px;
+    background-image: url('../bg/textures/yellow-texture.jpg');
     background-color: #FFCC55;
 }
 
+#vibrato .Text{
+    color: #00086E;
+}
+
+#vibrato > input{
+    position: relative;
+    top: 30px;
+    right: 87px;
+}
+
 #reverb{
+    margin: 10px 30px 30px;
+    padding: 104px 341px 8px;
     background-color: #45A6E6;
 }
 
 #bitCrusher{
+    margin: 10px 30px 30px;
+    padding: 104px 463px 40px;
     background-color: #983030;
+}
+
+#bitCrusher > input{
+    position: relative;
+    top: 30px;
+    right: 87px;
 }
 
 .effects > div{
