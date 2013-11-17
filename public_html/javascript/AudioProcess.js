@@ -1,5 +1,6 @@
 var liveInput = 0;
 var pluginSlot1 = 'nada';
+var reverbLevel = 'nada';
 var delay = 'nada';
 
 //VOLUME GERAL DO LIVE INPUT
@@ -90,16 +91,24 @@ botaoPararGravacao.onclick = function () {
 
 //LFO do Vibrato
 var osc = context.createOscillator();
-document.getElementById('vibratoFrequency').addEventListener('change', function () {
-            osc.frequency.value = this.value;
-            dispVibratoFrequency.value = osc.frequency.value + " Hz";
-        });
 
 //CONECTAR NOVO EFEITO
 botaoSelecionarEfeitoAudio1.onchange = function () {
     hideAllParameters();
+    if (delay != "nada"){
+            delay.disconnect(0);
+    }
+    osc.disconnect(0);
+    if (pluginSlot1 != 'nada'){
+        pluginSlot1.disconnect(0);
+    }
+    liveInput.disconnect(0);
+    liveInput.connect(liveInputGainNode);
     switch (parseInt(botaoSelecionarEfeitoAudio1.value, 10)) {
     case 0://SEM EFEITO
+        if (pluginSlot1 != 'nada'){
+            pluginSlot1.disconnect(0);
+        }
         liveInput.disconnect(0);
         liveInput.connect(liveInputGainNode);
         break;
@@ -191,12 +200,9 @@ botaoSelecionarEfeitoAudio1.onchange = function () {
         break;
     case 5://VIBRATO
         document.getElementById('vibrato').style.display = 'inline';
-        document.getElementById('vibratoRange').addEventListener('change', function () {
-            pluginSlot1.gain.value = this.value;
-            dispVibratoRange.value = pluginSlot1.gain.value;
-        });
         var FREQUENCY = 5;
         var SCALE = 0.8;
+        osc = context.createOscillator();
         osc.frequency.value = FREQUENCY;
         pluginSlot1 = context.createGain();
         pluginSlot1.gain.value = SCALE;
@@ -210,26 +216,12 @@ botaoSelecionarEfeitoAudio1.onchange = function () {
         window.BITS = 4;
         window.NORM_FREQUENCY = 0.1;
         pluginSlot1 = createbitCrusher(window.BITS, window.NORM_FREQUENCY);
-        
-        document.getElementById('bitCrusherBits').addEventListener('change', function () {
-            pluginSlot1.disconnect(0);
-            liveInput.disconnect(0);
-            window.BITS = this.value;
-            pluginSlot1 = createbitCrusher(BITS, NORM_FREQUENCY);
-            liveInput.connect(pluginSlot1);
-            pluginSlot1.connect(liveInputGainNode);
-            dispBitCrusherBits.value = pluginSlot1.bits + " bits";
-        });
         liveInput.disconnect(0);
         break
     case 7://REVERB
         reverbLevel = context.createGain();
         reverbLevel.gain.value = 0.5;
         document.getElementById('reverb').style.display = 'inline';
-        document.getElementById('reverbMix').addEventListener('change', function () {
-            reverbLevel.gain.value = this.value;
-            dispReverbMix.value = (reverbLevel.gain.value * 100).toString().substring(0,5) + "%";
-        });
         pluginSlot1 = context.createConvolver();
         createReverb("cathedral.wav");
         document.getElementById('reverbType').addEventListener('change', function () {

@@ -149,7 +149,7 @@ $(function() {
         value: 0,
         turn: function(value) {
             pluginSlot1.gain.value = value * 2;
-            dispVibratoRange.value = pluginSlot1.gain.value;
+            dispVibratoRange.value = pluginSlot1.gain.value.toString().substring(0,5);
         }
      });
 });

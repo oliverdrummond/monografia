@@ -94,7 +94,7 @@ body {
 
 #delay{
     margin: 10px 30px 30px;
-    padding: 104px 136px 38px;
+    padding: 104px 190px 38px;
     background-color: #339970;
     background-image: url('../bg/textures/green-chalkboard.jpg');
 }
@@ -102,7 +102,7 @@ body {
 #delay > input{
     position: relative;
     top: 30px;
-    right: 87px;
+    right: 73px;
 }
 
 #delay .Text{
