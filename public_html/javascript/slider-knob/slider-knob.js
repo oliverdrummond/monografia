@@ -100,7 +100,8 @@ $(function() {
      $('#compressorThreshold').knobKnob({
         value: 0,
         turn: function(value) {
-            pluginSlot1.threshold.value = value;
+            pluginSlot1.threshold.value = value -100;
+            console.log(value - 100);
             dispCompressorThreshold.value = pluginSlot1.threshold.value.toString().substring(0,5) + " dB";
         }
      });
@@ -108,16 +109,16 @@ $(function() {
      $('#compressorKnee').knobKnob({
         value: 0,
         turn: function(value) {
-            pluginSlot1.knee.value = this.value;
-            dispCompressorKnee.value = pluginSlot1.knee.value;
+            pluginSlot1.knee.value = value * 40;
+            dispCompressorKnee.value = pluginSlot1.knee.value.toString().substring(0,5);
         }
      });
      
      $('#compressorRatio').knobKnob({
         value: 0,
         turn: function(value) {
-            pluginSlot1.ratio.value = this.value;
-            dispCompressorRatio.value = pluginSlot1.ratio.value;
+            pluginSlot1.ratio.value = (value * 19) + 1;
+            dispCompressorRatio.value = pluginSlot1.ratio.value.toString().substring(0,5);
         }
      });
      
@@ -133,7 +134,7 @@ $(function() {
      $('#compressorRelease').knobKnob({
         value: 0,
         turn: function(value) {
-            pluginSlot1.release.value = this.value;
+            pluginSlot1.release.value = value;
             dispCompressorRelease.value = pluginSlot1.release.value.toString().substring(0,5) + " ms";
         }
      });
