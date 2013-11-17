@@ -90,7 +90,6 @@ body {
     border-radius: 7px;
     margin: 10px 30px 30px;
     padding: 10px 10px 8px;
-    box-shadow: 5px 1px 3px #ccc;
 }
 
 #delay{
@@ -114,7 +113,13 @@ body {
     background-color: #9C2A2A;
     margin: 10px 30px 30px;
     padding: 106px 6px 42px;
-    background-image: url('../bg/textures/red-grunge-background.jpg');
+/*    background-image: url('../bg/textures/red-grunge-background.jpg');*/
+    background-image: url('../bg/textures/red-grunge-background-smaller.jpg');
+    /*background-image: url('../bg/textures/red-chalkboard-1.jpg');*/
+    /*background-image: url('../bg/textures/red-chalkboard-2.jpg');*/
+    /*background-image: url('../bg/textures/red-snonic.jpg');*/
+    /*background-image: url('../bg/textures/red-sonic2.jpg');*/
+    /*background-image: url('../bg/textures/red-vintage-rising-sun-crop.jpg');*/
 }
 
 #compressor>div {
