@@ -6,9 +6,11 @@
 }
 
 .meter {
-  height: 20px;
-  width: 200px;
+  height: 2px;
+  width: 116px;
   position: relative;
+  top: -55px;
+  right: 60px;
   border: 1px solid #ccc;
 }
 
@@ -84,15 +86,16 @@ body {
 }
 
 .effects {
+    border: 10px solid #0E0D0D; 
+    border-radius: 7px;
     margin: 10px 30px 30px;
     padding: 10px 10px 8px;
     box-shadow: 5px 1px 3px #ccc;
-    border-radius: 7px;
 }
 
 #delay{
     margin: 10px 30px 30px;
-    padding: 104px 145px 38px;
+    padding: 104px 136px 38px;
     background-color: #339970;
     background-image: url('../bg/textures/green-chalkboard.jpg');
 }
@@ -103,26 +106,39 @@ body {
     right: 87px;
 }
 
+.img {
+    height: 100px;
+    width: 100px;
+}
 #compressor{
-    background-color: #33EEEE;
+    background-color: #9C2A2A;
     margin: 10px 30px 30px;
-    padding: 106px 6px 20px;
+    padding: 106px 6px 42px;
     background-image: url('../bg/textures/red-grunge-background.jpg');
 }
 
-#compressor > div {
+#compressor>div {
+    margin-top: -100px;
+    margin-left: -49px;
+    margin-bottom:-100px;
     padding: 106px 6px 20px;
 }
+
+#compressor .Text {
+    position: relative;
+    right: -50px;
+}
+
 
 #compressor > input{
     position: relative;
     top: 30px;
-    right: 87px;
+    right: 95px;
 }
 
 #vibrato{
     margin: 10px 30px 30px;
-    padding: 106px 275px 41px;
+    padding: 106px 267px 41px;
     background-image: url('../bg/textures/yellow-texture.jpg');
     background-color: #FFCC55;
 }
@@ -139,13 +155,13 @@ body {
 
 #reverb{
     margin: 10px 30px 30px;
-    padding: 104px 341px 8px;
+    padding: 104px 331px 8px;
     background-color: #45A6E6;
 }
 
 #bitCrusher{
     margin: 10px 30px 30px;
-    padding: 104px 463px 40px;
+    padding: 104px 454px 40px;
     background-color: #983030;
 }
 
