@@ -1,5 +1,6 @@
 var liveInput = 0;
 var pluginSlot1 = 'nada';
+var delay = 'nada';
 
 //VOLUME GERAL DO LIVE INPUT
 var liveInputGainNode = context.createGain();
