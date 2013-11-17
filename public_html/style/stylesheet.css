@@ -105,6 +105,11 @@ body {
     right: 87px;
 }
 
+#delay .Text{
+    position: relative;
+    right: -95px;
+}
+
 .img {
     height: 100px;
     width: 100px;
@@ -174,6 +179,11 @@ body {
     position: relative;
     top: 30px;
     right: 87px;
+}
+
+#bitCrusher .Text {
+    position: relative;
+    right: -63px;
 }
 
 .effects > div{

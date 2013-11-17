@@ -1,5 +1,5 @@
 var liveInput = 0;
-var pluginSlot1 = 0;
+var pluginSlot1 = 'nada';
 
 //VOLUME GERAL DO LIVE INPUT
 var liveInputGainNode = context.createGain();
@@ -197,7 +197,7 @@ botaoSelecionarEfeitoAudio1.onchange = function () {
         var FREQUENCY = 5;
         var SCALE = 0.8;
         osc.frequency.value = FREQUENCY;
-        var pluginSlot1 = context.createGain();
+        pluginSlot1 = context.createGain();
         pluginSlot1.gain.value = SCALE;
         osc.connect(pluginSlot1);
         pluginSlot1.connect(liveInputGainNode.gain);
@@ -388,7 +388,7 @@ function createbitCrusher(bits, normfreq) {
 };
 
 function createReverb(type) {
-    var pluginSlot1 = context.createConvolver();
+    pluginSlot1 = context.createConvolver();
     var request = new XMLHttpRequest();
     request.open("GET", "impulses/" + type, true);
     request.responseType = "arraybuffer";

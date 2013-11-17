@@ -154,8 +154,5 @@ $(function() {
             dispVibratoRange.value = pluginSlot1.gain.value;
         }
      });
-     
-     
-     
 });
 
