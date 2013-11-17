@@ -98,7 +98,7 @@ $(function() {
      $('#compressorThreshold').knobKnob({
         value: 0,
         turn: function(value) {
-            pluginSlot1.threshold.value = value -100;
+            pluginSlot1.threshold.value = value * -100;
             dispCompressorThreshold.value = pluginSlot1.threshold.value.toString().substring(0,5) + " dB";
         }
      });
