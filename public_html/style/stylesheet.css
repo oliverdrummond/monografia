@@ -24,6 +24,11 @@
   -webkit-transition: all ease-out 0.250s;
 }
 
+#analisador_de_espectro {
+    position: relative;
+    top: 50px;
+    right: -320px;
+}
 
 #Oscilador, #Microfone, #Gerador_de_acordes {
     border: 1px solid #ddd;
